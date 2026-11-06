@@ -1,7 +1,7 @@
 # Plan — pyaff3ct
 
 Wrapper Python (pybind11) de la bibliothèque [AFF3CT](https://github.com/aff3ct/aff3ct), construit comme un
-**plugin de [pystreampu](https://github.com/aff3ct/pystreampu)** et reparti de zéro (le prototype `_pyaff3ct` sert
+**extension de [pystreampu](https://github.com/aff3ct/pystreampu)** (paquet séparé qui dépend de `streampu`) et reparti de zéro (le prototype `_pyaff3ct` sert
 uniquement de retour d'expérience, via ses *Development Guidelines*).
 
 Documents associés :
@@ -58,8 +58,9 @@ libaff3ct (static, MULTI_PREC)      │
   pystreampu (`streampu.utils.get_cmake_dirs()`, comme dans `pystreampu/examples/custom_cpp_module`).
 - Les helpers C++ de pystreampu (`wrapper/Common/Tools/type_list.hpp`, `type_functions.h`, `Type.hpp` : `dtype`,
   `ALL_DTYPES`, `str2typeid`…) sont réutilisés depuis les en-têtes installés par pystreampu.
-- Le paquet s'enregistre comme plugin : `entry_points` du groupe `streampu.plugins` (`aff3ct = "aff3ct"`), donc
-  `streampu.plugins["aff3ct"]` fonctionne.
+- Aucun mécanisme d'enregistrement auprès de pystreampu (`streampu.plugins` n'existe plus) : `aff3ct` est un paquet
+  autonome qui déclare `streampu` en dépendance et l'importe ; l'intégration repose uniquement sur le partage des
+  types pybind11 (import de `streampu._ext` avant l'enregistrement des classes AFF3CT).
 
 ### 3.2 Build et packaging
 
@@ -242,10 +243,11 @@ inventaire mis à jour (`done`), docstrings présentes.
 
 ### Phase 0 — Amorçage du dépôt
 - `pyproject.toml`, `CMakeLists.txt`, sous-module `lib/aff3ct` épinglé, CI (build + tests sur Linux/macOS).
-- `aff3ct._ext` vide qui importe `streampu` ; entry point `streampu.plugins` ; `aff3ct.__version__`.
+- `aff3ct._ext` vide qui importe `streampu` ; `aff3ct.__version__`.
 - **Vérification bloquante** : un objet AFF3CT créé côté `aff3ct._ext` est manipulable par `streampu` (Task, Socket,
   Sequence, exception traduite) avec une seule StreamPU liée.
-- DoD : `pip install .` puis `python -c "import streampu, aff3ct"` ; `streampu.plugins["aff3ct"]` est présent.
+- DoD : `pip install .` puis `python -c "import aff3ct"` (qui importe `streampu` en interne) ; un module AFF3CT est
+  reconnu comme `streampu.Stateful` (`isinstance`).
 
 ### Phase 1 — Socle (infrastructure générique)
 - `internal/include/internal/Common/Tools` : dispatch des instanciations (listes générées par `gen_instantiations.py`),
