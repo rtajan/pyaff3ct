@@ -272,12 +272,14 @@ def classify(classes: list[dict]) -> list[dict]:
                 prio = "P0"
             short = re.sub(r"^" + c["domain"] + "_", "", n).lower()
             c["py"] = f"aff3ct.{mod}.{short}" if strat != "abstract" else f"aff3ct.{mod}.{n}"
-            if strat == "factory":
-                c["py"] = f"aff3ct.factory.{factory_for(c)}(...).build()"
+            if strat == "factory":  # factory hidden behind the module-level function of the family
+                fam = factory_for(c)
+                short_fam = re.sub(r"^" + c["domain"] + "_?", "", fam).lower() or "generic"
+                c["py"] = f"aff3ct.{mod}.{short_fam}(…) [factory {fam}]"
         elif c["kind"] == "Factory":
             strat = "abstract" if n == "Factory" else "wrap"
             prio = "P0" if n in P0_FACTORIES else "P1"
-            c["py"] = f"aff3ct.factory.{n}"
+            c["py"] = f"(interne) aff3ct.factory.{n}"
             c["domain"] = "Factory/" + c["domain"]
         else:
             strat, prio, mod = tool_rule(n)
@@ -337,6 +339,8 @@ def graph(title: str, nodes: list[dict], all_by_id: dict, uses: bool = False, di
 
 def main() -> None:
     inc, out = Path(sys.argv[1]), Path(sys.argv[2])
+    status_file = out / "status.json"
+    status = json.loads(status_file.read_text()) if status_file.exists() else {}
     classes = classify(parse(inc, "Module") + parse(inc, "Tools") + parse(inc, "Factory"))
     by_id = {c["id"]: c for c in classes}
     mods = [c for c in classes if c["kind"] == "Module"]
@@ -445,8 +449,8 @@ def main() -> None:
     rows = [
         "# Inventaire de wrapping",
         "",
-        "> Généré par `scripts/gen_class_graph.py`. Colonne *Statut* à mettre à jour au fil de l'implémentation "
-        "(`todo` → `wip` → `done`).",
+        "> Généré par `scripts/gen_class_graph.py`. La colonne *Statut* vient de `status.json` "
+        "(clé `Kind::Name`, valeurs `todo` → `wip` → `done`) : c'est ce fichier qu'on édite, pas celui-ci.",
         "",
     ]
     counts = defaultdict(lambda: defaultdict(int))
@@ -466,7 +470,7 @@ def main() -> None:
             bases = ", ".join(re.sub(r"<.*", "", b) for b in c["bases"])
             rows.append(
                 f"| `{c['name']}` | `{c['file']}` | `{tpl}` | {bases} | {c['strategy']} | {c['priority']} | "
-                f"`{c['py']}` | todo |"
+                f"`{c['py']}` | {status.get(c['kind'] + '::' + c['name'], 'todo')} |"
             )
         rows.append("")
     (out / "inventory.md").write_text("\n".join(rows))

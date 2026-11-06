@@ -1,14 +1,18 @@
 # Plan — pyaff3ct
 
 Wrapper Python (pybind11) de la bibliothèque [AFF3CT](https://github.com/aff3ct/aff3ct), construit comme un
-**extension de [pystreampu](https://github.com/aff3ct/pystreampu)** (paquet séparé qui dépend de `streampu`) et reparti de zéro (le prototype `_pyaff3ct` sert
-uniquement de retour d'expérience, via ses *Development Guidelines*).
+**extension de [pystreampu](https://github.com/aff3ct/pystreampu)** (paquet séparé qui dépend de `streampu`), reparti
+de zéro : le prototype `_pyaff3ct` sert de retour d'expérience (guidelines, code, cf. §2).
 
 Documents associés :
 
 - [`docs/design/class_graph.md`](docs/design/class_graph.md) : graphe de toutes les classes à wrapper (Mermaid, généré).
 - [`docs/design/inventory.md`](docs/design/inventory.md) : inventaire classe par classe (stratégie, priorité, nom Python, statut).
-- [`scripts/gen_class_graph.py`](scripts/gen_class_graph.py) : générateur des deux documents ci-dessus à partir des en-têtes AFF3CT.
+- [`docs/design/status.json`](docs/design/status.json) : statut de wrapping par classe (`Kind::Name` → `todo`/`wip`/`done`), seule source éditée à la main.
+- [`docs/design/aff3ct_api.json`](docs/design/aff3ct_api.json) : empreinte de l'API AFF3CT de référence (cf. §7).
+- [`docs/design/changes/`](docs/design/changes/) : rapports d'évolution d'AFF3CT.
+- `scripts/` : `gen_class_graph.py` (graphe + inventaire), `aff3ct_api.py` (empreinte), `aff3ct_diff.py` (comparaison),
+  `track_aff3ct.py` (suivi d'une révision à l'autre).
 
 ---
 
@@ -17,25 +21,31 @@ Documents associés :
 1. **Interaction Python fluide**, dans la philosophie pystreampu : un module AFF3CT *est* un `streampu.Module` ;
    ses tâches s'appellent comme des fonctions (`enc.encode(u)`), ses sockets se lisent en `numpy`, et les chaînes
    s'exécutent avec `streampu.Sequence` / `streampu.Pipeline`.
-2. **Factory-first** : la création passe par les factories AFF3CT dès qu'elles existent, pour garder le même
-   comportement que la CLI `aff3ct` (validation, valeurs par défaut, choix des implémentations SIMD/template).
+2. **Factory-first mais transparent** : la création passe par les factories AFF3CT dès qu'elles existent, pour garder
+   le même comportement que la CLI `aff3ct` (validation, valeurs par défaut, choix des implémentations SIMD/template),
+   **sans que l'utilisateur ait à manipuler la factory** : il appelle une fonction qui rend directement le module.
 3. **Héritage fidèle** : chaque `py::class_` reproduit la chaîne d'héritage C++, interfaces StreamPU comprises.
 4. **Séparation nette** : liaisons C++ dans `internal/`, API utilisateur dans `aff3ct/`.
 5. **Couverture exhaustive mais pilotée** : l'inventaire généré sert de backlog, et chaque classe passe de `todo` à `done`.
+6. **Suivi d'AFF3CT outillé** : chaque évolution amont produit un rapport d'impact sur les bindings (§7).
 
 ## 2. Ce qu'on garde et ce qu'on change par rapport à `_pyaff3ct`
 
 | Guideline `_pyaff3ct` | Décision pour `pyaff3ct` |
 |---|---|
 | Arborescence `internal/include/internal/Wrapper/{Factory,Module,Tools}` + `internal/src/...` en miroir | **Conservée** (règle `.hpp`/`.hxx`/`.cpp` incluse) |
-| Factory-first | **Conservé**, et durci : les classes à paramètres template de *politique* ne sont **que** via factory |
+| Factory-first | **Conservé**, durci (classes à template de *politique* uniquement via factory) **et rendu transparent** (R5) |
 | Héritage reproduit | **Conservé** ; les bases StreamPU sont **importées** de pystreampu, jamais re-wrappées |
 | Constructeurs « avec des types classiques » | **Conservé** ; les types AFF3CT nécessaires aux constructeurs (tools) sont wrappés (cf. arêtes `uses` du graphe) |
 | Une précision par build (implicite) | **Changé** : build `AFF3CT_MULTI_PREC`, choix du type au runtime via `dtype` (comme pystreampu) |
 | Liste de classes à la main | **Changé** : inventaire généré depuis les en-têtes, donc reproductible et vérifiable |
 
-Le dépôt `_pyaff3ct` n'a pas été consulté directement (inaccessible depuis l'environnement de travail). Si des
-choix d'implémentation y méritent d'être repris (helpers, caster numpy, tests), il faudra les intégrer en phase 1.
+État du prototype `_pyaff3ct` (consulté) : AFF3CT épinglé en **v4.1.2** (`60e113d`) ; wrappés : `CRC`,
+`CRC_polynomial(_fast/_inter)`, `Decoder`/`_HIHO`/`_SIHO`/`_SISO`, `Encoder`, `Modem`, `Sparse_matrix`, `Galois`,
+`RS_polynomial_generator`, constantes DVB-S2, et les factories Encoder/Decoder (LDPC, polar, RS, RSC, RSC_DB) + Modem ;
+helpers `data_validator`, `str_operations`, `type_list`. Le rapport
+`docs/design/changes/v4.1.2_60e113d4..v4.7.2_e1b52965.md` liste ce qui a bougé depuis : à reprendre en connaissance
+de cause (helpers à relire en phase 1, rien à copier tel quel).
 
 ## 3. Architecture cible
 
@@ -47,15 +57,26 @@ aff3ct (Python)  ──import──▶  streampu (Python, pystreampu)
 aff3ct._ext (pybind11)  ──py::module_::import("streampu")──▶  streampu._ext
      │                              │
 libaff3ct (static, MULTI_PREC)      │
-     └──────── link ──────▶  libstreampu  (UNE seule copie, celle livrée par pystreampu)
+     └──────── link ──────▶  libstreampu statique (exportée par pystreampu, même commit)
 ```
+
+Constats sur pystreampu (`develop` local, `c7318f4`) qui fixent le cadre :
+
+- StreamPU **v1.10.0 `85ed022`**, exactement le commit épinglé par AFF3CT `develop` → l'ABI des `Task`/`Socket`/`Module`
+  est commune ; `track_aff3ct.py` signale toute divergence future.
+- pybind11 épinglé **3.0.4** (dépendance `pybind11>=3.0.4,<3.1`, *internals* v11) : pyaff3ct utilise la même contrainte.
+- Python ≥ 3.10, y compris **3.14t sans GIL** : `PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())` comme pystreampu,
+  et aucune donnée globale mutable non protégée côté wrapper.
+- Le modèle officiel d'extension (`examples/custom_cpp_module`) lie **sa propre copie statique** de StreamPU et refait
+  `spu::tools::Buffer_allocator::set_task_autoalloc(true)` à l'import : pyaff3ct suit ce modèle (cf. risque 2).
+- `streampu._ext.sfl` expose `Stateful` (C++ `spu::module::Stateful`) et `Stateful_core` (modules Python).
 
 - Le module compilé `aff3ct._ext` fait `py::module_::import("streampu")` à l'initialisation. Les types
   `spu::module::Module`, `Stateful`, `Source`, `Sink`, `spu::runtime::Task`, `Socket`, les interfaces
   `spu::tools::Interface_*`, `Reporter`, `Terminal*` et `dtype` sont **ceux de pystreampu**.
 - AFF3CT est compilé en **bibliothèque statique** (`AFF3CT_COMPILE_STATIC_LIB=ON`, `AFF3CT_COMPILE_EXE=OFF`,
   `-fPIC`, `AFF3CT_MULTI_PREC`), avec **`AFF3CT_INCLUDE_SPU_LIB=OFF`**, pour lier la StreamPU exportée par
-  pystreampu (`streampu.utils.get_cmake_dirs()`, comme dans `pystreampu/examples/custom_cpp_module`).
+  pystreampu (`streampu.get_cmake_dirs()`, comme dans `pystreampu/examples/custom_cpp_module`).
 - Les helpers C++ de pystreampu (`wrapper/Common/Tools/type_list.hpp`, `type_functions.h`, `Type.hpp` : `dtype`,
   `ALL_DTYPES`, `str2typeid`…) sont réutilisés depuis les en-têtes installés par pystreampu.
 - Aucun mécanisme d'enregistrement auprès de pystreampu (`streampu.plugins` n'existe plus) : `aff3ct` est un paquet
@@ -64,7 +85,7 @@ libaff3ct (static, MULTI_PREC)      │
 
 ### 3.2 Build et packaging
 
-- `scikit-build-core` + `pybind11>=3` + `setuptools_scm` (même chaîne que pystreampu), C++17.
+- `scikit-build-core>=1.0` + `pybind11==3.0.4` (build) / `>=3.0.4,<3.1` (runtime) + `setuptools_scm`, C++17.
 - `lib/aff3ct` en sous-module git, épinglé.
 - Options CMake exposées via `-Ccmake.define.*` : précisions instanciées, `AFF3CT_LINK_GSL/MKL`, `-march`.
 - Une unité de compilation par famille (`Encoder_polar.cpp`, `Decoder_LDPC.cpp`…) pour paralléliser et limiter la RAM.
@@ -93,14 +114,14 @@ pyaff3ct/
 │   ├── __init__.py                   # sous-modules, version (aucun dtype défini ici)
 │   ├── _dispatch.py                  # choix de l'instanciation C++ selon les dtypes
 │   ├── crc.py chn.py dec.py enc.py ext.py itl.py mdm.py mnt.py pct.py qnt.py src.py cst.py
-│   ├── factory/                      # surcouche Pythonique des factories
+│   ├── factory/                      # factories (usage avancé : from_cli, params) ; cachées par défaut
 │   ├── tools/                        # polar, ldpc, itl, cst, gen, turbo…
 │   ├── codec.py reporter.py interfaces.py
 │   └── py.typed + *.pyi              # stubs générés (pybind11-stubgen)
 ├── tests/
 ├── examples/
 ├── docs/                             # mkdocs (comme pystreampu) ; docs/design/* générés
-└── scripts/gen_class_graph.py, scripts/gen_instantiations.py
+└── scripts/                          # gen_class_graph, aff3ct_api, aff3ct_diff, track_aff3ct, gen_instantiations
 ```
 
 Sous-modules Python = préfixes de factory AFF3CT (`crc`, `chn`, `cst`, `dec`, `enc`, `ext`, `itl`, `mdm`, `mnt`,
@@ -159,14 +180,24 @@ choisit l'implémentation (`Decoder_polar` avec `implem="FAST"`, `Decoder_LDPC` 
 exemple `Decoder_SIHO_int32_float32`, avec toutes ses tâches. Les familles intermédiaires sans politique
 (`Decoder_LDPC_BP`, `Decoder_RSC_BCJR`, `Decoder_turbo`…) sont enregistrées pour exposer leurs accesseurs (`n_ite`…).
 
-**R5 — Factories (API Pythonique).**
+**R5 — Factories transparentes.** L'utilisateur ne crée pas de factory : il appelle la fonction de la famille, qui
+rend le module prêt à l'emploi. En interne : instanciation de la factory, affectation des paramètres passés par
+mots-clés, `build` avec les dtypes demandés.
 
-- Chaque paramètre public (`K`, `N_cw`, `type`, `implem`, `n_ite`…) devient un `def_readwrite`.
-- Constructeur à mots-clés et chaînage : `aff3ct.factory.Decoder_polar(K=K, N_cw=N, type="SCL", implem="FAST", L=8)`.
-- `build(..., B=..., Q=...)` dispatche vers les `build<B,Q>` instanciés ; `build_siso`, `build_gen`… suivent le même modèle.
-- `store(argv)` / `from_cli("--dec-type SCL --dec-L 8")` réutilisent `cli::Argument_map_*`, d'où une parité exacte avec la CLI.
-- `params` (dict) et `__repr__` sont construits depuis `get_headers()` ; `help()` provient de `get_description()`.
-- `clone()` est lié via `spu::tools::Interface_clone`.
+```python
+dec = af.dec.polar(K, N, frozen_bits, type="SCL", implem="FAST", L=8)    # Decoder_SIHO prêt à l'emploi
+```
+
+- Les mots-clés acceptés = paramètres publics de la factory (extraits dans `aff3ct_api.json` avec leurs défauts) +
+  arguments de `build` (`frozen_bits`, `crc`, `encoder`…) + dtypes. Signatures, docstrings et stubs sont **générés**
+  depuis l'empreinte : une évolution amont d'un paramètre de factory apparaît dans le rapport de suivi et se répercute
+  par régénération.
+- Un paramètre inconnu lève une `TypeError` qui liste les paramètres valides (pas d'affectation silencieuse).
+- Sans factory (classe simple), la même fonction appelle directement le constructeur : l'utilisateur ne voit pas la
+  différence.
+- Usage avancé, explicitement opt-in dans `aff3ct.factory` : `from_cli("--dec-type SCL --dec-L 8")` (parité CLI via
+  `cli::Argument_map_*`), `params`/`__repr__` (depuis `get_headers()`), `help()` (depuis `get_description()`), `clone()`.
+  Une factory configurée s'utilise comme un « gabarit » : `fac(K=…)` rend un module.
 
 **R6 — Ownership et durée de vie.**
 
@@ -216,7 +247,7 @@ src = af.src.random(K, dtype=spu.int32)                              # Source_ra
 enc = af.enc.polar(K, N, fb)
 mdm = af.mdm.bpsk(N)
 chn = af.chn.awgn_llr(N, seed=42)
-dec = af.factory.Decoder_polar(K=K, N_cw=N, type="SC", implem="FAST").build(fb)
+dec = af.dec.polar(K, N, fb, type="SC", implem="FAST")                 # factory Decoder_polar, cachée
 mnt = af.mnt.bfer(K, max_fe=100)
 
 cp  = spu.array([sigma], dtype=spu.float32)          # paramètre de canal (socket CP)
@@ -253,6 +284,7 @@ inventaire mis à jour (`done`), docstrings présentes.
 - `internal/include/internal/Common/Tools` : dispatch des instanciations (listes générées par `gen_instantiations.py`),
   casters (`vector<bool>`, numpy), helpers `keep_alive`, macros de docstring.
 - Interfaces AFF3CT (6) + 13 bases abstraites de modules + `factory::Factory` (params/headers/CLI).
+- Mécanique des factories transparentes (R5) : générateur des fonctions de famille depuis `aff3ct_api.json`.
 - `aff3ct/_dispatch.py` : résolution des `streampu.dtype` → classe C++ (nom construit avec `dtype.name`, comme
   `streampu._incrementer`), avec un message d'erreur listant les combinaisons disponibles.
 - DoD : tests de dispatch et d'héritage (`isinstance(enc, streampu.Stateful)`, `Interface_set_seed`…).
@@ -283,7 +315,55 @@ inventaire mis à jour (`done`), docstrings présentes.
 - Docs mkdocs (API générée, guides, galerie d'exemples), stubs `.pyi`, wheels `cibuildwheel`, publication.
 - Outils de debug optionnels : `Dumper`, `Frame_trace`, `Histogram`, générateurs GSL/MKL.
 
-## 7. Stratégie de tests
+## 7. Suivi des évolutions d'AFF3CT
+
+Principe : l'API d'AFF3CT dont dépendent les bindings est réduite à une **empreinte** versionnée
+(`docs/design/aff3ct_api.json`, produite par `scripts/aff3ct_api.py`). Pour chaque classe : en-tête, paramètres
+template, bases, constructeurs (types **et** valeurs par défaut), méthodes publiques, paramètres publics des factories
+(avec défauts), tâches et sockets (direction, type, ordre — l'ordre conditionne l'appel positionnel Python),
+instanciations `MULTI_PREC` (classes et `build<…>`, donc les combinaisons de dtypes disponibles) ; plus les commits des
+sous-modules StreamPU et cli.
+
+Comparer deux empreintes (`aff3ct_diff.py`) classe chaque changement :
+
+| Niveau | Exemples | Conséquence |
+|---|---|---|
+| Cassant | classe/constructeur/méthode/tâche/socket/paramètre/instanciation supprimé ou modifié, base changée, en-tête déplacé | binding ou API Python à modifier |
+| Défauts | valeur par défaut modifiée (constructeur, paramètre de factory, `build`) | défauts Python à aligner |
+| Ajout | nouvelle classe (avec sa stratégie et priorité calculées), constructeur, paramètre, tâche, instanciation | backlog |
+| Réorganisation | méthode désormais héritée d'une base | vérification rapide |
+
+Chaque changement est croisé avec `status.json` : un changement cassant ou de défaut sur une classe `done`/`wip` est
+une **action requise**, mise en tête du rapport ; `--fail-on-impact` rend alors le code de sortie 1 (CI).
+
+Utilisation :
+
+```bash
+# Quoi de neuf en amont depuis la référence de pyaff3ct ?
+python3 scripts/track_aff3ct.py --repo lib/aff3ct --fetch --to origin/develop
+# Montée de version acceptée : nouvelle référence + graphe + inventaire régénérés
+python3 scripts/track_aff3ct.py --repo lib/aff3ct --to <ref> --update
+```
+
+Les révisions sont extraites dans des `git worktree` temporaires : le sous-module de travail n'est jamais touché.
+
+Validé sur deux cas réels :
+- `v4.1.2 → v4.7.2` (écart `_pyaff3ct` → aujourd'hui) : 13 cassants (ajout de `Syndrome_checker` aux décodeurs LDPC BP,
+  Viterbi déplacé de `RSC/` vers `Conv/`, `Encoder_polar_PAC` qui hérite d'`Encoder_polar`…), 1 défaut, 42 ajouts ;
+- `ec05893^ → v4.7.2` (Polar PT + encodeur bitpacked) : 1 cassant, 24 ajouts, 3 réorganisations, changement de
+  StreamPU signalé.
+
+Organisation proposée :
+1. **CI planifiée (hebdomadaire)** : `track_aff3ct.py --fetch --to origin/develop --fail-on-impact` ; le rapport est
+   publié comme artefact, et une issue est ouverte (ou mise à jour) s'il y a des changements.
+2. **Montée du sous-module** = une MR dédiée qui contient : bump de `lib/aff3ct`, `--update` (empreinte, graphe,
+   inventaire), le rapport dans `docs/design/changes/`, et les corrections de bindings pour chaque action requise.
+3. **Test de cohérence** (dès la phase 1) : chaque classe `done` de `status.json` doit exister dans `aff3ct._ext` avec
+   ses tâches/sockets conformes à l'empreinte ; une classe wrappée absente de `status.json` fait aussi échouer le test.
+4. Alignement StreamPU : le rapport signale tout changement du sous-module StreamPU d'AFF3CT, à confronter au commit
+   épinglé par pystreampu avant d'accepter la montée.
+
+## 8. Stratégie de tests
 
 | Niveau | Contenu |
 |---|---|
@@ -294,29 +374,29 @@ inventaire mis à jour (`done`), docstrings présentes.
 | Multi-thread | `Sequence(n_threads>1)` sur une chaîne complète (vérifie clone/deep_copy) |
 | Numérique | BER/FER vs `refs/` AFF3CT sur quelques points d'Eb/N0 (marquage `@pytest.mark.slow`) |
 
-## 8. Risques et points ouverts
+## 9. Risques et points ouverts
 
-1. **Version de StreamPU divergente** : AFF3CT `develop` épingle `lib/streampu@85ed022`, pystreampu `develop`
-   épingle `lib/streampu@cf60c36`. Il faut aligner (même commit, ou API compatible) **avant** la phase 0, sinon l'ABI
-   des objets partagés (`Task`, `Socket`, `Module`) n'est pas garantie.
-2. **Copie unique de StreamPU** : deux copies statiques dupliqueraient les états globaux
-   (`Buffer_allocator::set_task_autoalloc`, `Signal_handler`, tables `type_to_string`) et casseraient la
-   comparaison de `typeid` (traduction d'exceptions, downcast) avec `-fvisibility=hidden`. Cible : lier la StreamPU de
-   pystreampu, ou idéalement une `libstreampu` partagée exportée par pystreampu (à proposer en amont).
-3. **ABI pybind11** : `streampu._ext` et `aff3ct._ext` doivent partager les *internals* pybind11 (même version majeure,
-   même compilateur et même stdlib). À contrôler dans la CI, et à documenter pour les builds depuis les sources.
+1. **Version de StreamPU** : *résolu à date* (pystreampu et AFF3CT sur `85ed022`, v1.10.0) ; surveillé par le suivi (§7).
+2. **Deux copies statiques de StreamPU** (modèle officiel des extensions) : états globaux dupliqués
+   (`set_task_autoalloc` refait à l'import ; `Signal_handler`, `type_to_string`) et `typeid` potentiellement distincts
+   avec `-fvisibility=hidden` (traduction des exceptions `spu::tools::*`, downcast polymorphe). À vérifier en phase 1
+   par des tests dédiés ; repli : ré-enregistrer les traducteurs d'exceptions dans `aff3ct._ext`.
+3. **ABI pybind11** : même contrainte que pystreampu (`>=3.0.4,<3.1`, même compilateur et stdlib), contrôlée en CI.
 4. **Temps de compilation et taille binaire** : environ 190 classes × 4 à 6 instanciations. Leviers : une TU par famille,
    option CMake pour restreindre les précisions (`PYAFF3CT_PRECISIONS=32` en dev), ccache, LTO uniquement en release.
 5. **Références internes et `clone()`** : certains modules (turbo, CA) gardent des références vers d'autres objets ;
    à auditer famille par famille (R6).
 6. **Dépendances optionnelles** (GSL, MKL, MPI) : désactivées par défaut, exposées seulement si compilées.
-7. **Évolution AFF3CT** : relancer `scripts/gen_class_graph.py` à chaque montée du sous-module, puis comparer
-   l'inventaire (`inventory.json`) pour détecter classes ajoutées ou supprimées.
+7. **Évolution AFF3CT** : couverte par §7 ; limite connue : l'empreinte est extraite par analyse textuelle des
+   en-têtes (pas de compilateur), donc une construction C++ inhabituelle peut échapper au diff — les tests de
+   cohérence (§7, point 3) servent de filet.
+8. **Sans GIL (3.14t)** : les modules AFF3CT exécutés par `Sequence` multi-thread n'appellent pas Python ; les seuls
+   callbacks Python (reporters, conditions d'arrêt) reprennent le GIL comme dans pystreampu.
 
-## 9. Conventions de contribution
+## 10. Conventions de contribution
 
 - Branches `feat/<domaine>-<famille>`, `fix/...` ; une MR par famille ou phase.
 - Messages de commit à l'impératif, préfixés par le domaine (`enc: wrap Encoder_polar`, `factory: add Decoder_LDPC build`).
-- Toute MR met à jour `docs/design/inventory.md` (statut) et ajoute ses tests.
+- Toute MR met à jour `docs/design/status.json` (puis régénère `inventory.md`) et ajoute ses tests.
 - Checklist MR (reprise des guidelines) : miroir include/src respecté, compilation et import OK, API Python documentée,
   tests ajoutés, chemins et noms de classes corrects dans la doc.

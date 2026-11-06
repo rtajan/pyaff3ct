@@ -699,7 +699,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+  "py": "aff3ct.dec.ldpc(\u2026) [factory Decoder_LDPC]"
  },
  {
   "kind": "Module",
@@ -721,7 +721,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+  "py": "aff3ct.dec.ldpc(\u2026) [factory Decoder_LDPC]"
  },
  {
   "kind": "Module",
@@ -799,7 +799,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+  "py": "aff3ct.dec.ldpc(\u2026) [factory Decoder_LDPC]"
  },
  {
   "kind": "Module",
@@ -822,7 +822,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+  "py": "aff3ct.dec.ldpc(\u2026) [factory Decoder_LDPC]"
  },
  {
   "kind": "Module",
@@ -844,7 +844,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+  "py": "aff3ct.dec.ldpc(\u2026) [factory Decoder_LDPC]"
  },
  {
   "kind": "Module",
@@ -907,7 +907,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+  "py": "aff3ct.dec.ldpc(\u2026) [factory Decoder_LDPC]"
  },
  {
   "kind": "Module",
@@ -929,7 +929,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+  "py": "aff3ct.dec.ldpc(\u2026) [factory Decoder_LDPC]"
  },
  {
   "kind": "Module",
@@ -967,7 +967,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -988,7 +988,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1009,7 +1009,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1030,7 +1030,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1050,7 +1050,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1073,7 +1073,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1095,7 +1095,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1117,7 +1117,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1139,7 +1139,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1160,7 +1160,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1181,7 +1181,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1202,7 +1202,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1223,7 +1223,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1244,7 +1244,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1265,7 +1265,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1285,7 +1285,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1304,7 +1304,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar(...).build()"
+  "py": "aff3ct.dec.polar(\u2026) [factory Decoder_polar]"
  },
  {
   "kind": "Module",
@@ -1482,7 +1482,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P2",
-  "py": "aff3ct.factory.Decoder_polar_PAC(...).build()"
+  "py": "aff3ct.dec.polar_pac(\u2026) [factory Decoder_polar_PAC]"
  },
  {
   "kind": "Module",
@@ -1502,7 +1502,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P2",
-  "py": "aff3ct.factory.Decoder_polar_PAC(...).build()"
+  "py": "aff3ct.dec.polar_pac(\u2026) [factory Decoder_polar_PAC]"
  },
  {
   "kind": "Module",
@@ -1524,7 +1524,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P2",
-  "py": "aff3ct.factory.Decoder_polar_PT(...).build()"
+  "py": "aff3ct.dec.polar_pt(\u2026) [factory Decoder_polar_PT]"
  },
  {
   "kind": "Module",
@@ -1634,7 +1634,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1652,7 +1652,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1670,7 +1670,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1705,7 +1705,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P2",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1723,7 +1723,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P2",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1741,7 +1741,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P2",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1776,7 +1776,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1794,7 +1794,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1831,7 +1831,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1869,7 +1869,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1889,7 +1889,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1926,7 +1926,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1946,7 +1946,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P2",
-  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+  "py": "aff3ct.dec.rsc(\u2026) [factory Decoder_RSC]"
  },
  {
   "kind": "Module",
@@ -1981,7 +1981,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC_DB(...).build()"
+  "py": "aff3ct.dec.rsc_db(\u2026) [factory Decoder_RSC_DB]"
  },
  {
   "kind": "Module",
@@ -1999,7 +1999,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC_DB(...).build()"
+  "py": "aff3ct.dec.rsc_db(\u2026) [factory Decoder_RSC_DB]"
  },
  {
   "kind": "Module",
@@ -2017,7 +2017,7 @@
   "domain": "Decoder",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC_DB(...).build()"
+  "py": "aff3ct.dec.rsc_db(\u2026) [factory Decoder_RSC_DB]"
  },
  {
   "kind": "Module",
@@ -2976,7 +2976,7 @@
   "domain": "Modem",
   "strategy": "factory",
   "priority": "P2",
-  "py": "aff3ct.factory.Modem(...).build()"
+  "py": "aff3ct.mdm.generic(\u2026) [factory Modem]"
  },
  {
   "kind": "Module",
@@ -2997,7 +2997,7 @@
   "domain": "Modem",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Modem(...).build()"
+  "py": "aff3ct.mdm.generic(\u2026) [factory Modem]"
  },
  {
   "kind": "Module",
@@ -3019,7 +3019,7 @@
   "domain": "Modem",
   "strategy": "factory",
   "priority": "P1",
-  "py": "aff3ct.factory.Modem(...).build()"
+  "py": "aff3ct.mdm.generic(\u2026) [factory Modem]"
  },
  {
   "kind": "Module",
@@ -3168,7 +3168,7 @@
   "domain": "Modem",
   "strategy": "factory",
   "priority": "P2",
-  "py": "aff3ct.factory.Modem(...).build()"
+  "py": "aff3ct.mdm.generic(\u2026) [factory Modem]"
  },
  {
   "kind": "Module",
@@ -6665,7 +6665,7 @@
   "domain": "Factory/Base",
   "strategy": "abstract",
   "priority": "P0",
-  "py": "aff3ct.factory.Factory"
+  "py": "(interne) aff3ct.factory.Factory"
  },
  {
   "kind": "Factory",
@@ -6679,7 +6679,7 @@
   "domain": "Factory/CRC",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.CRC"
+  "py": "(interne) aff3ct.factory.CRC"
  },
  {
   "kind": "Factory",
@@ -6695,7 +6695,7 @@
   "domain": "Factory/Channel",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Channel"
+  "py": "(interne) aff3ct.factory.Channel"
  },
  {
   "kind": "Factory",
@@ -6709,7 +6709,7 @@
   "domain": "Factory/Coset",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Coset"
+  "py": "(interne) aff3ct.factory.Coset"
  },
  {
   "kind": "Factory",
@@ -6726,7 +6726,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_BCH"
+  "py": "(interne) aff3ct.factory.Decoder_BCH"
  },
  {
   "kind": "Factory",
@@ -6743,7 +6743,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_conv"
+  "py": "(interne) aff3ct.factory.Decoder_conv"
  },
  {
   "kind": "Factory",
@@ -6759,7 +6759,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder"
+  "py": "(interne) aff3ct.factory.Decoder"
  },
  {
   "kind": "Factory",
@@ -6776,7 +6776,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_LDPC"
+  "py": "(interne) aff3ct.factory.Decoder_LDPC"
  },
  {
   "kind": "Factory",
@@ -6792,7 +6792,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_NO"
+  "py": "(interne) aff3ct.factory.Decoder_NO"
  },
  {
   "kind": "Factory",
@@ -6809,7 +6809,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_polar"
+  "py": "(interne) aff3ct.factory.Decoder_polar"
  },
  {
   "kind": "Factory",
@@ -6827,7 +6827,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar_MK"
+  "py": "(interne) aff3ct.factory.Decoder_polar_MK"
  },
  {
   "kind": "Factory",
@@ -6844,7 +6844,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar_PAC"
+  "py": "(interne) aff3ct.factory.Decoder_polar_PAC"
  },
  {
   "kind": "Factory",
@@ -6861,7 +6861,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_polar_PT"
+  "py": "(interne) aff3ct.factory.Decoder_polar_PT"
  },
  {
   "kind": "Factory",
@@ -6878,7 +6878,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RA"
+  "py": "(interne) aff3ct.factory.Decoder_RA"
  },
  {
   "kind": "Factory",
@@ -6895,7 +6895,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_RS"
+  "py": "(interne) aff3ct.factory.Decoder_RS"
  },
  {
   "kind": "Factory",
@@ -6912,7 +6912,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC"
+  "py": "(interne) aff3ct.factory.Decoder_RSC"
  },
  {
   "kind": "Factory",
@@ -6928,7 +6928,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_RSC_DB"
+  "py": "(interne) aff3ct.factory.Decoder_RSC_DB"
  },
  {
   "kind": "Factory",
@@ -6944,7 +6944,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Decoder_repetition"
+  "py": "(interne) aff3ct.factory.Decoder_repetition"
  },
  {
   "kind": "Factory",
@@ -6965,7 +6965,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_turbo"
+  "py": "(interne) aff3ct.factory.Decoder_turbo"
  },
  {
   "kind": "Factory",
@@ -6981,7 +6981,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_turbo_common"
+  "py": "(interne) aff3ct.factory.Decoder_turbo_common"
  },
  {
   "kind": "Factory",
@@ -6999,7 +6999,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_turbo_DB"
+  "py": "(interne) aff3ct.factory.Decoder_turbo_DB"
  },
  {
   "kind": "Factory",
@@ -7017,7 +7017,7 @@
   "domain": "Factory/Decoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Decoder_turbo_product"
+  "py": "(interne) aff3ct.factory.Decoder_turbo_product"
  },
  {
   "kind": "Factory",
@@ -7033,7 +7033,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Encoder_BCH"
+  "py": "(interne) aff3ct.factory.Encoder_BCH"
  },
  {
   "kind": "Factory",
@@ -7047,7 +7047,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_conv"
+  "py": "(interne) aff3ct.factory.Encoder_conv"
  },
  {
   "kind": "Factory",
@@ -7061,7 +7061,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Encoder"
+  "py": "(interne) aff3ct.factory.Encoder"
  },
  {
   "kind": "Factory",
@@ -7077,7 +7077,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Encoder_LDPC"
+  "py": "(interne) aff3ct.factory.Encoder_LDPC"
  },
  {
   "kind": "Factory",
@@ -7091,7 +7091,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Encoder_NO"
+  "py": "(interne) aff3ct.factory.Encoder_NO"
  },
  {
   "kind": "Factory",
@@ -7105,7 +7105,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Encoder_polar"
+  "py": "(interne) aff3ct.factory.Encoder_polar"
  },
  {
   "kind": "Factory",
@@ -7121,7 +7121,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_polar_MK"
+  "py": "(interne) aff3ct.factory.Encoder_polar_MK"
  },
  {
   "kind": "Factory",
@@ -7135,7 +7135,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_polar_PAC"
+  "py": "(interne) aff3ct.factory.Encoder_polar_PAC"
  },
  {
   "kind": "Factory",
@@ -7149,7 +7149,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_polar_PT"
+  "py": "(interne) aff3ct.factory.Encoder_polar_PT"
  },
  {
   "kind": "Factory",
@@ -7165,7 +7165,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_RA"
+  "py": "(interne) aff3ct.factory.Encoder_RA"
  },
  {
   "kind": "Factory",
@@ -7181,7 +7181,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Encoder_RS"
+  "py": "(interne) aff3ct.factory.Encoder_RS"
  },
  {
   "kind": "Factory",
@@ -7195,7 +7195,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_RSC"
+  "py": "(interne) aff3ct.factory.Encoder_RSC"
  },
  {
   "kind": "Factory",
@@ -7209,7 +7209,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_RSC_DB"
+  "py": "(interne) aff3ct.factory.Encoder_RSC_DB"
  },
  {
   "kind": "Factory",
@@ -7223,7 +7223,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Encoder_repetition"
+  "py": "(interne) aff3ct.factory.Encoder_repetition"
  },
  {
   "kind": "Factory",
@@ -7243,7 +7243,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_turbo"
+  "py": "(interne) aff3ct.factory.Encoder_turbo"
  },
  {
   "kind": "Factory",
@@ -7258,7 +7258,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_turbo_common"
+  "py": "(interne) aff3ct.factory.Encoder_turbo_common"
  },
  {
   "kind": "Factory",
@@ -7275,7 +7275,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_turbo_DB"
+  "py": "(interne) aff3ct.factory.Encoder_turbo_DB"
  },
  {
   "kind": "Factory",
@@ -7292,7 +7292,7 @@
   "domain": "Factory/Encoder",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Encoder_turbo_product"
+  "py": "(interne) aff3ct.factory.Encoder_turbo_product"
  },
  {
   "kind": "Factory",
@@ -7306,7 +7306,7 @@
   "domain": "Factory/Interleaver",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Interleaver"
+  "py": "(interne) aff3ct.factory.Interleaver"
  },
  {
   "kind": "Factory",
@@ -7323,7 +7323,7 @@
   "domain": "Factory/Modem",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Modem"
+  "py": "(interne) aff3ct.factory.Modem"
  },
  {
   "kind": "Factory",
@@ -7337,7 +7337,7 @@
   "domain": "Factory/Monitor",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Monitor_BFER"
+  "py": "(interne) aff3ct.factory.Monitor_BFER"
  },
  {
   "kind": "Factory",
@@ -7351,7 +7351,7 @@
   "domain": "Factory/Monitor",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Monitor_EXIT"
+  "py": "(interne) aff3ct.factory.Monitor_EXIT"
  },
  {
   "kind": "Factory",
@@ -7365,7 +7365,7 @@
   "domain": "Factory/Monitor",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Monitor_MI"
+  "py": "(interne) aff3ct.factory.Monitor_MI"
  },
  {
   "kind": "Factory",
@@ -7379,7 +7379,7 @@
   "domain": "Factory/Monitor",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Monitor"
+  "py": "(interne) aff3ct.factory.Monitor"
  },
  {
   "kind": "Factory",
@@ -7393,7 +7393,7 @@
   "domain": "Factory/Puncturer",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Puncturer_LDPC"
+  "py": "(interne) aff3ct.factory.Puncturer_LDPC"
  },
  {
   "kind": "Factory",
@@ -7409,7 +7409,7 @@
   "domain": "Factory/Puncturer",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Puncturer_polar"
+  "py": "(interne) aff3ct.factory.Puncturer_polar"
  },
  {
   "kind": "Factory",
@@ -7423,7 +7423,7 @@
   "domain": "Factory/Puncturer",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Puncturer"
+  "py": "(interne) aff3ct.factory.Puncturer"
  },
  {
   "kind": "Factory",
@@ -7437,7 +7437,7 @@
   "domain": "Factory/Puncturer",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Puncturer_turbo"
+  "py": "(interne) aff3ct.factory.Puncturer_turbo"
  },
  {
   "kind": "Factory",
@@ -7451,7 +7451,7 @@
   "domain": "Factory/Puncturer",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Puncturer_turbo_DB"
+  "py": "(interne) aff3ct.factory.Puncturer_turbo_DB"
  },
  {
   "kind": "Factory",
@@ -7465,7 +7465,7 @@
   "domain": "Factory/Quantizer",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Quantizer"
+  "py": "(interne) aff3ct.factory.Quantizer"
  },
  {
   "kind": "Factory",
@@ -7479,7 +7479,7 @@
   "domain": "Factory/Sink",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Sink"
+  "py": "(interne) aff3ct.factory.Sink"
  },
  {
   "kind": "Factory",
@@ -7493,7 +7493,7 @@
   "domain": "Factory/Source",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Source"
+  "py": "(interne) aff3ct.factory.Source"
  },
  {
   "kind": "Factory",
@@ -7507,7 +7507,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Frozenbits_generator"
+  "py": "(interne) aff3ct.factory.Frozenbits_generator"
  },
  {
   "kind": "Factory",
@@ -7523,7 +7523,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Frozenbits_generator_MK"
+  "py": "(interne) aff3ct.factory.Frozenbits_generator_MK"
  },
  {
   "kind": "Factory",
@@ -7537,7 +7537,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Polar_code"
+  "py": "(interne) aff3ct.factory.Polar_code"
  },
  {
   "kind": "Factory",
@@ -7551,7 +7551,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Pretransform_generator"
+  "py": "(interne) aff3ct.factory.Pretransform_generator"
  },
  {
   "kind": "Factory",
@@ -7567,7 +7567,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Flip_and_check"
+  "py": "(interne) aff3ct.factory.Flip_and_check"
  },
  {
   "kind": "Factory",
@@ -7583,7 +7583,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Flip_and_check_DB"
+  "py": "(interne) aff3ct.factory.Flip_and_check_DB"
  },
  {
   "kind": "Factory",
@@ -7597,7 +7597,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Scaling_factor"
+  "py": "(interne) aff3ct.factory.Scaling_factor"
  },
  {
   "kind": "Factory",
@@ -7613,7 +7613,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_BCH"
+  "py": "(interne) aff3ct.factory.Codec_BCH"
  },
  {
   "kind": "Factory",
@@ -7627,7 +7627,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec"
+  "py": "(interne) aff3ct.factory.Codec"
  },
  {
   "kind": "Factory",
@@ -7643,7 +7643,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_HIHO"
+  "py": "(interne) aff3ct.factory.Codec_HIHO"
  },
  {
   "kind": "Factory",
@@ -7659,7 +7659,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_SIHO"
+  "py": "(interne) aff3ct.factory.Codec_SIHO"
  },
  {
   "kind": "Factory",
@@ -7675,7 +7675,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_SISO"
+  "py": "(interne) aff3ct.factory.Codec_SISO"
  },
  {
   "kind": "Factory",
@@ -7691,7 +7691,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_conv"
+  "py": "(interne) aff3ct.factory.Codec_conv"
  },
  {
   "kind": "Factory",
@@ -7707,7 +7707,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_LDPC"
+  "py": "(interne) aff3ct.factory.Codec_LDPC"
  },
  {
   "kind": "Factory",
@@ -7723,7 +7723,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_polar"
+  "py": "(interne) aff3ct.factory.Codec_polar"
  },
  {
   "kind": "Factory",
@@ -7739,7 +7739,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_polar_MK"
+  "py": "(interne) aff3ct.factory.Codec_polar_MK"
  },
  {
   "kind": "Factory",
@@ -7755,7 +7755,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_polar_PAC"
+  "py": "(interne) aff3ct.factory.Codec_polar_PAC"
  },
  {
   "kind": "Factory",
@@ -7771,7 +7771,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_polar_PT"
+  "py": "(interne) aff3ct.factory.Codec_polar_PT"
  },
  {
   "kind": "Factory",
@@ -7787,7 +7787,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_RA"
+  "py": "(interne) aff3ct.factory.Codec_RA"
  },
  {
   "kind": "Factory",
@@ -7803,7 +7803,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_RS"
+  "py": "(interne) aff3ct.factory.Codec_RS"
  },
  {
   "kind": "Factory",
@@ -7819,7 +7819,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_RSC"
+  "py": "(interne) aff3ct.factory.Codec_RSC"
  },
  {
   "kind": "Factory",
@@ -7835,7 +7835,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_RSC_DB"
+  "py": "(interne) aff3ct.factory.Codec_RSC_DB"
  },
  {
   "kind": "Factory",
@@ -7851,7 +7851,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_repetition"
+  "py": "(interne) aff3ct.factory.Codec_repetition"
  },
  {
   "kind": "Factory",
@@ -7867,7 +7867,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_turbo"
+  "py": "(interne) aff3ct.factory.Codec_turbo"
  },
  {
   "kind": "Factory",
@@ -7883,7 +7883,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_turbo_DB"
+  "py": "(interne) aff3ct.factory.Codec_turbo_DB"
  },
  {
   "kind": "Factory",
@@ -7899,7 +7899,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_turbo_product"
+  "py": "(interne) aff3ct.factory.Codec_turbo_product"
  },
  {
   "kind": "Factory",
@@ -7915,7 +7915,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P1",
-  "py": "aff3ct.factory.Codec_uncoded"
+  "py": "(interne) aff3ct.factory.Codec_uncoded"
  },
  {
   "kind": "Factory",
@@ -7929,7 +7929,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Terminal"
+  "py": "(interne) aff3ct.factory.Terminal"
  },
  {
   "kind": "Factory",
@@ -7943,7 +7943,7 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Interleaver_core"
+  "py": "(interne) aff3ct.factory.Interleaver_core"
  },
  {
   "kind": "Factory",
@@ -7957,6 +7957,6 @@
   "domain": "Factory/Tools",
   "strategy": "wrap",
   "priority": "P0",
-  "py": "aff3ct.factory.Noise"
+  "py": "(interne) aff3ct.factory.Noise"
  }
 ]
