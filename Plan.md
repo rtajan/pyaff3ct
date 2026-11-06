@@ -89,7 +89,7 @@ pyaff3ct/
 │       ├── ext.cpp                   # PYBIND11_MODULE(_ext, m)
 │       └── Wrapper/...               # miroir exact de include/
 ├── aff3ct/                           # API Python
-│   ├── __init__.py                   # dtypes ré-exportés, sous-modules, version
+│   ├── __init__.py                   # sous-modules, version (aucun dtype défini ici)
 │   ├── _dispatch.py                  # choix de l'instanciation C++ selon les dtypes
 │   ├── crc.py chn.py dec.py enc.py ext.py itl.py mdm.py mnt.py pct.py qnt.py src.py cst.py
 │   ├── factory/                      # surcouche Pythonique des factories
@@ -126,7 +126,16 @@ Chiffres tirés de `docs/design/inventory.md` (AFF3CT `develop` @ `e1b5296`) :
 à l'exécution : l'accès `mod.encode`, `mod["encode::U_K"]` et l'appel `mod.encode(u)` viennent de la surcouche de
 `streampu.Module`, sans code supplémentaire.
 
-**R3 — Templates et dtypes.** Une classe template est instanciée **pour les seules combinaisons compilées par AFF3CT**
+**R3 — Templates et dtypes.** pyaff3ct **ne définit aucun type de données** : les seuls dtypes sont ceux de
+pystreampu (`streampu.dtype`, `spu.int8`, `spu.int16`, `spu.int32`, `spu.int64`, `spu.float32`, `spu.float64`),
+côté Python comme côté C++ (`pyspu::dtype`, `pyspu::dtype::of<T>()`, `spu::runtime::type_to_string`,
+`tl::type_list`). Il n'y a donc ni ré-export, ni alias, ni conversion : un socket produit par un module AFF3CT a le
+même `dtype` qu'un socket pystreampu, et `spu.int32(x)` / `socket.astype(spu.float32)` s'appliquent directement.
+Correspondance avec `Tools/types.h` : `B_8/Q_8 → spu.int8`, `B_16/Q_16 → spu.int16`, `B_32 → spu.int32`,
+`B_64 → spu.int64`, `R_8/R_16/R_32/Q_32 → spu.float32`, `R_64/Q_64 → spu.float64`. Les dtypes non signés de
+pystreampu (`uint*`) ne sont instanciés par aucun module AFF3CT : les passer lève une `TypeError` explicite.
+
+Une classe template est instanciée **pour les seules combinaisons compilées par AFF3CT**
 en `MULTI_PREC` (par exemple `Modem_BPSK<B,R,Q>` : `(i8,f32,f32)`, `(i8,f32,i8)`, `(i16,f32,f32)`, `(i16,f32,i16)`,
 `(i32,f32,f32)`, `(i64,f64,f64)` ; `Decoder_*<B,Q>` : `(i8,i8)`, `(i16,i16)`, `(i32,f32)`, `(i64,f64)`).
 `scripts/gen_instantiations.py` extrait ces listes des blocs `explicit template instantiation` des `.cpp`, ce qui
@@ -134,11 +143,12 @@ en `MULTI_PREC` (par exemple `Modem_BPSK<B,R,Q>` : `(i8,f32,f32)`, `(i8,f32,i8)`
 (convention pystreampu) ; côté Python, une fonction dispatch selon des `dtype` :
 
 ```python
-enc = aff3ct.enc.polar(K, N, frozen_bits, dtype=aff3ct.int32)       # -> _ext.enc.Encoder_polar_int32
-mdm = aff3ct.mdm.bpsk(N, B=aff3ct.int32, R=aff3ct.float32)           # Q = R par défaut, comme en C++
+import streampu as spu
+enc = aff3ct.enc.polar(K, N, frozen_bits, dtype=spu.int32)         # -> _ext.enc.Encoder_polar_int32
+mdm = aff3ct.mdm.bpsk(N, B=spu.int32, R=spu.float32)               # Q = R par défaut, comme en C++
 ```
 
-Valeurs par défaut identiques aux défauts C++ (`B=int32`, `R=Q=float32`). Une combinaison absente lève une
+Valeurs par défaut identiques aux défauts C++ (`B=spu.int32`, `R=Q=spu.float32`). Une combinaison absente lève une
 `TypeError` qui liste les combinaisons disponibles.
 
 **R4 — Factory-only (orange).** Les classes dont le template porte des paramètres de *politique* (`API_polar`,
@@ -201,7 +211,7 @@ K, N, ebn0 = 512, 1024, 2.5
 sigma = af.tools.esn0_to_sigma(af.tools.ebn0_to_esn0(ebn0, K / N))
 
 fb  = af.tools.polar.frozen_bits(K, N, sigma, method="GA_Arikan")   # np.ndarray[bool]
-src = af.src.random(K)                                               # Source_random_fast<int32>
+src = af.src.random(K, dtype=spu.int32)                              # Source_random_fast<int32_t>
 enc = af.enc.polar(K, N, fb)
 mdm = af.mdm.bpsk(N)
 chn = af.chn.awgn_llr(N, seed=42)
@@ -241,7 +251,8 @@ inventaire mis à jour (`done`), docstrings présentes.
 - `internal/include/internal/Common/Tools` : dispatch des instanciations (listes générées par `gen_instantiations.py`),
   casters (`vector<bool>`, numpy), helpers `keep_alive`, macros de docstring.
 - Interfaces AFF3CT (6) + 13 bases abstraites de modules + `factory::Factory` (params/headers/CLI).
-- `aff3ct/_dispatch.py` : résolution `dtype` → classe C++, avec message d'erreur listant les combinaisons.
+- `aff3ct/_dispatch.py` : résolution des `streampu.dtype` → classe C++ (nom construit avec `dtype.name`, comme
+  `streampu._incrementer`), avec un message d'erreur listant les combinaisons disponibles.
 - DoD : tests de dispatch et d'héritage (`isinstance(enc, streampu.Stateful)`, `Interface_set_seed`…).
 
 ### Phase 2 — MVP : chaîne BFER complète (priorité **P0**, 93 entrées)
@@ -274,7 +285,7 @@ inventaire mis à jour (`done`), docstrings présentes.
 
 | Niveau | Contenu |
 |---|---|
-| Unitaire | construction pour chaque combinaison de dtypes ; propriétés ; erreurs (`TypeError` dtype, `ValueError` paramètres) |
+| Unitaire | construction pour chaque combinaison de dtypes pystreampu ; `uint*` refusés ; propriétés ; erreurs (`TypeError` dtype, `ValueError` paramètres) |
 | Tâches | exécution d'une tâche sur des entrées `numpy` connues (ex. encodeur systématique : `U == X[sys]`) |
 | Factory | `build()` vs construction directe ; `from_cli()` vs paramètres Python ; `params` vs `get_headers` |
 | Durée de vie | création d'objets dépendants, suppression des références Python, `gc.collect()`, exécution |
