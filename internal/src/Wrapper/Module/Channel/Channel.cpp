@@ -23,6 +23,7 @@ Tasks: ``add_noise(CP, X_N -> Y_N)``, ``add_noise_wg(CP, X_N -> H_N, Y_N)``; ``C
         "noised_data",
         [](const C& c) { return to_numpy(c.get_noised_data()); },
         "numpy.ndarray: last noise drawn by the channel (copy).");
+    add_module_class<C>();
 }
 } // namespace wrapper
 } // namespace pyaf

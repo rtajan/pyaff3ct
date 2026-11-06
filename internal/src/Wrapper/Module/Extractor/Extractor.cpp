@@ -17,6 +17,7 @@ wrap_extractor_internal(py::handle scope)
 
 Tasks: ``get_sys_llr``, ``get_sys_bit``, ``get_sys_and_par_llr``, ``add_sys_and_ext_llr``.
 )pbdoc");
+    add_module_class<X>();
 }
 } // namespace wrapper
 } // namespace pyaf

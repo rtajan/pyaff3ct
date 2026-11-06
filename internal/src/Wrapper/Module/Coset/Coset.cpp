@@ -18,6 +18,7 @@ wrap_coset_internal(py::handle scope)
 Task: ``apply(ref, in -> out)``.
 )pbdoc")
       .def_property_readonly("size", &C::get_size, "int: frame size.");
+    add_module_class<C>();
 }
 } // namespace wrapper
 } // namespace pyaf

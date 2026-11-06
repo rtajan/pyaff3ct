@@ -20,6 +20,7 @@ Tasks: ``puncture(X_N1 -> X_N2)``, ``depuncture(Y_N1 -> Y_N2)``.
       .def_property_readonly("K", &P::get_K, "int: number of information bits.")
       .def_property_readonly("N", &P::get_N, "int: frame size after puncturing.")
       .def_property_readonly("N_cw", &P::get_N_cw, "int: codeword size before puncturing.");
+    add_module_class<P>();
 }
 } // namespace wrapper
 } // namespace pyaf

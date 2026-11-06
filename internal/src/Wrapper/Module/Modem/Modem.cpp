@@ -23,6 +23,7 @@ Tasks: ``modulate(X_N1 -> X_N2)``, ``filter(CP, Y_N1 -> Y_N2)``, ``demodulate(CP
       .def_property_readonly("N_fil", &M::get_N_fil, "int: number of real values after filtering.")
       .def("is_demodulator", &M::is_demodulator, "Return True if the modem can demodulate.")
       .def("is_filter", &M::is_filter, "Return True if the modem has a filter (task ``filter``).");
+    add_module_class<M>();
 }
 } // namespace wrapper
 } // namespace pyaf

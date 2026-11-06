@@ -20,6 +20,7 @@ wrap_decoder_hiho_internal(py::handle scope)
 
 Tasks: ``decode_hiho(Y_N -> V_K)``, ``decode_hiho_cw(Y_N -> V_N)`` (``CWD``: socket of the corrected-codeword flag).
 )pbdoc");
+    add_module_class<D>();
 }
 
 template<typename B, typename R>
@@ -33,6 +34,7 @@ wrap_decoder_siho_internal(py::handle scope)
 
 Tasks: ``decode_siho(Y_N -> V_K)``, ``decode_siho_cw(Y_N -> V_N)``.
 )pbdoc");
+    add_module_class<D>();
 }
 
 template<typename B, typename R>
@@ -47,6 +49,7 @@ wrap_decoder_siso_internal(py::handle scope)
 Tasks: ``decode_siso(Y_N1 -> Y_N2)``, ``decode_siso_alt(sys, par -> ext)``.
 )pbdoc")
       .def_property_readonly("tail_length", &D::tail_length, "int: number of tail bits.");
+    add_module_class<D>();
 }
 } // namespace wrapper
 } // namespace pyaf
@@ -64,6 +67,7 @@ pyaf::wrapper::wrap_decoder(py::handle scope)
            &Decoder::set_auto_reset,
            "auto_reset"_a,
            "Reset (or not) the decoder state before each frame (default True).");
+    add_module_class<Decoder>();
 
     for_each_combo<gen::Module_Decoder_HIHO>(
       [&](auto c) { wrap_decoder_hiho_internal<typename decltype(c)::template at<0>>(scope); });

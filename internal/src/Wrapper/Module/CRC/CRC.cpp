@@ -20,6 +20,7 @@ Tasks: ``build(U_K1 -> U_K2)``, ``extract(V_K1 -> V_K2)``, ``check(V_K)``, ``che
       .def_property_readonly("K", &C::get_K, "int: number of information bits (without the CRC bits).")
       .def_property_readonly(
         "size", [](C& c) { return c.get_size(); }, "int: number of CRC bits.");
+    add_module_class<C>();
 }
 } // namespace wrapper
 } // namespace pyaf

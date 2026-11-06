@@ -27,11 +27,6 @@ PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())
     // extensions): enable the automatic allocation of the task sockets here too, as streampu does for its modules.
     spu::tools::Buffer_allocator::set_task_autoalloc(true);
 
-#ifdef PYAF_HAS_STREAMPU_DOWNCAST_REGISTRY
-    m.attr("HAS_STREAMPU_DOWNCAST_REGISTRY") = true;
-#else
-    m.attr("HAS_STREAMPU_DOWNCAST_REGISTRY") = false;
-#endif
     m.attr("AFF3CT_VERSION") = aff3ct::tools::version();
     m.attr("AFF3CT_GIT_HASH") = aff3ct::tools::sha1();
 
@@ -56,4 +51,8 @@ PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())
     wrap_factory_crc(fac);
 
     wrap_testing(m.def_submodule("_testing", "Helpers of the test suite (not part of the public API)."));
+
+    // Module* returned by pystreampu (modules of a Sequence...) typed after their most derived AFF3CT class
+    m.attr("HAS_STREAMPU_DOWNCAST_REGISTRY") = pyaf::register_module_downcaster();
+    m.attr("_N_MODULE_CLASSES") = pyaf::n_module_classes();
 }

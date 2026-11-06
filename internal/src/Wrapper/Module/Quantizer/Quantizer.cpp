@@ -18,6 +18,7 @@ wrap_quantizer_internal(py::handle scope)
 Task: ``process(Y_N1 -> Y_N2)``.
 )pbdoc")
       .def_property_readonly("N", &Qz::get_N, "int: frame size.");
+    add_module_class<Qz>();
 }
 } // namespace wrapper
 } // namespace pyaf

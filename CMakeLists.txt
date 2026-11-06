@@ -74,7 +74,9 @@ add_subdirectory(lib/aff3ct EXCLUDE_FROM_ALL)
 file(GLOB_RECURSE PYAF_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/internal/src/*.cpp")
 file(GLOB_RECURSE PYAF_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/internal/include/*")
 pybind11_add_module(_ext MODULE ${PYAF_SOURCES} ${PYAF_HEADERS})
-target_include_directories(_ext PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/internal/include" "${PYAF_PYSTREAMPU_INCLUDE_DIR}")
+# pystreampu installs its wrapper headers in <streampu>/include/pystreampu ("wrapper/Common/...")
+target_include_directories(_ext PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/internal/include"
+                                        "${PYAF_PYSTREAMPU_INCLUDE_DIR}/pystreampu")
 target_link_libraries(_ext PRIVATE aff3ct-static-lib Threads::Threads)
 
 option(PYAFF3CT_WERROR "Treat the warnings of the wrapper as errors" OFF)

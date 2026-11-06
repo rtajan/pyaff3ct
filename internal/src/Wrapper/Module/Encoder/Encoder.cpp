@@ -41,6 +41,7 @@ Task: ``encode(U_K -> X_N)``.
         },
         "X_N"_a,
         "Return True if X_N (N bits) is a codeword.");
+    add_module_class<E>();
 }
 } // namespace wrapper
 } // namespace pyaf

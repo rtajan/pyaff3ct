@@ -19,6 +19,9 @@
 
 #include <streampu.hpp>
 
+// before any cast of a spu::module::Module* (pybind11 polymorphic_type_hook specialization, ODR)
+#include "internal/Common/Tools/downcast.hpp"
+
 #include "internal/Common/Tools/casters.hpp"
 #include "internal/Common/Tools/combos.hpp"
 #include "internal/Common/Tools/dtypes.hpp"

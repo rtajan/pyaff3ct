@@ -42,6 +42,18 @@ def test_modules_returned_by_streampu_keep_their_aff3ct_type():
         assert (crc.K, crc.size) == (K, 32)
 
 
+def test_every_module_class_is_recorded_for_the_downcast():
+    # each py::class_ of an AFF3CT module must call add_module_class<T>() (otherwise it is never downcast to)
+    classes = {
+        cls
+        for sub in vars(af._ext).values()
+        if getattr(sub, "__name__", "").startswith("aff3ct._ext")
+        for cls in vars(sub).values()
+        if isinstance(cls, type) and issubclass(cls, spu.Module)
+    }
+    assert af._ext._N_MODULE_CLASSES == len(classes)
+
+
 def test_aff3ct_exceptions_are_the_streampu_ones():
     with pytest.raises(spu.exceptions.InvalidArgument, match="NOT-A-POLY"):
         af.factory.CRC(K=64, type="NOT-A-POLY", implem="STD").build()

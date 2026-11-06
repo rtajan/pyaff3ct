@@ -15,4 +15,5 @@ pyaf::wrapper::wrap_monitor(py::handle scope)
 execution of a ``streampu.Sequence``.
 )pbdoc")
       .def("clear_callbacks", &Monitor::clear_callbacks, "Remove the callbacks registered on the monitor.");
+    add_module_class<Monitor>();
 }
