@@ -1,0 +1,7962 @@
+[
+ {
+  "kind": "Module",
+  "name": "CRC",
+  "file": "Module/CRC/CRC.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "spu::module::Stateful"
+  ],
+  "uses": [],
+  "domain": "CRC",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.crc.CRC"
+ },
+ {
+  "kind": "Module",
+  "name": "CRC_NO",
+  "file": "Module/CRC/NO/CRC_NO.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "CRC<B>"
+  ],
+  "uses": [],
+  "domain": "CRC",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.crc.no"
+ },
+ {
+  "kind": "Module",
+  "name": "CRC_polynomial",
+  "file": "Module/CRC/Polynomial/CRC_polynomial.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "CRC<B>"
+  ],
+  "uses": [],
+  "domain": "CRC",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.crc.polynomial"
+ },
+ {
+  "kind": "Module",
+  "name": "CRC_polynomial_fast",
+  "file": "Module/CRC/Polynomial/CRC_polynomial_fast.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "CRC_polynomial<B>"
+  ],
+  "uses": [],
+  "domain": "CRC",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.crc.polynomial_fast"
+ },
+ {
+  "kind": "Module",
+  "name": "CRC_polynomial_inter",
+  "file": "Module/CRC/Polynomial/CRC_polynomial_inter.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "CRC_polynomial<B>"
+  ],
+  "uses": [],
+  "domain": "CRC",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.crc.polynomial_inter"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_AWGN_LLR",
+  "file": "Module/Channel/AWGN/Channel_AWGN_LLR.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel<R>"
+  ],
+  "uses": [
+   "Gaussian_gen"
+  ],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.chn.awgn_llr"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_binary_erasure",
+  "file": "Module/Channel/Binary_erasure/Channel_binary_erasure.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel<R>"
+  ],
+  "uses": [
+   "Event_generator"
+  ],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.chn.binary_erasure"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_binary_symmetric",
+  "file": "Module/Channel/Binary_symmetric/Channel_binary_symmetric.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel<R>"
+  ],
+  "uses": [
+   "Event_generator"
+  ],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.chn.binary_symmetric"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel",
+  "file": "Module/Channel/Channel.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "spu::module::Stateful",
+   "spu::tools::Interface_set_seed"
+  ],
+  "uses": [],
+  "domain": "Channel",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.chn.Channel"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_NO",
+  "file": "Module/Channel/NO/Channel_NO.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel<R>"
+  ],
+  "uses": [],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.chn.no"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_optical",
+  "file": "Module/Channel/Optical/Channel_optical.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel<R>"
+  ],
+  "uses": [
+   "Distributions",
+   "User_pdf_noise_generator"
+  ],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.chn.optical"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_Rayleigh_LLR",
+  "file": "Module/Channel/Rayleigh/Channel_Rayleigh_LLR.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel<R>"
+  ],
+  "uses": [
+   "Gaussian_gen"
+  ],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.chn.rayleigh_llr"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_Rayleigh_LLR_user",
+  "file": "Module/Channel/Rayleigh/Channel_Rayleigh_LLR_user.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel<R>"
+  ],
+  "uses": [
+   "Gaussian_gen"
+  ],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.chn.rayleigh_llr_user"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_user",
+  "file": "Module/Channel/User/Channel_user.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel<R>"
+  ],
+  "uses": [],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.chn.user"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_user_add",
+  "file": "Module/Channel/User/Channel_user_add.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel_user<R>"
+  ],
+  "uses": [],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.chn.user_add"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_user_be",
+  "file": "Module/Channel/User/Channel_user_be.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel_user<R>"
+  ],
+  "uses": [],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.chn.user_be"
+ },
+ {
+  "kind": "Module",
+  "name": "Channel_user_bs",
+  "file": "Module/Channel/User/Channel_user_bs.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Channel_user<R>"
+  ],
+  "uses": [],
+  "domain": "Channel",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.chn.user_bs"
+ },
+ {
+  "kind": "Module",
+  "name": "Coset_bit",
+  "file": "Module/Coset/Bit/Coset_bit.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename D = int"
+  ],
+  "bases": [
+   "Coset<B, D>"
+  ],
+  "uses": [],
+  "domain": "Coset",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.cst.bit"
+ },
+ {
+  "kind": "Module",
+  "name": "Coset",
+  "file": "Module/Coset/Coset.hpp",
+  "tpl": [
+   "typename B",
+   "typename D"
+  ],
+  "bases": [
+   "spu::module::Stateful"
+  ],
+  "uses": [],
+  "domain": "Coset",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.cst.Coset"
+ },
+ {
+  "kind": "Module",
+  "name": "Coset_real",
+  "file": "Module/Coset/Real/Coset_real.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename D = float"
+  ],
+  "bases": [
+   "Coset<B, D>"
+  ],
+  "uses": [],
+  "domain": "Coset",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.cst.real"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_BCH",
+  "file": "Module/Decoder/BCH/Decoder_BCH.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.bch"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_BCH_fast",
+  "file": "Module/Decoder/BCH/Fast/Decoder_BCH_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_BCH<B, R>"
+  ],
+  "uses": [
+   "BCH_polynomial_generator"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.bch_fast"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_BCH_genius",
+  "file": "Module/Decoder/BCH/Genius/Decoder_BCH_genius.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_BCH<B, R>"
+  ],
+  "uses": [
+   "Encoder"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.bch_genius"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_BCH_std",
+  "file": "Module/Decoder/BCH/Standard/Decoder_BCH_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_BCH<B, R>"
+  ],
+  "uses": [
+   "BCH_polynomial_generator"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.dec.bch_std"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_Viterbi_SIHO",
+  "file": "Module/Decoder/Conv/Viterbi/Decoder_Viterbi_SIHO.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = int"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.viterbi_siho"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_Viterbi_list_parallel",
+  "file": "Module/Decoder/Conv/Viterbi_list/Decoder_Viterbi_list_parallel.hpp",
+  "tpl": [
+   "typename B",
+   "typename Q"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, Q>"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.viterbi_list_parallel"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder",
+  "file": "Module/Decoder/Decoder.hpp",
+  "tpl": [],
+  "bases": [
+   "spu::module::Stateful",
+   "spu::tools::Interface_set_seed",
+   "spu::tools::Interface_reset"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.dec.Decoder"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_HIHO",
+  "file": "Module/Decoder/Decoder_HIHO.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.dec.Decoder_HIHO"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_SIHO",
+  "file": "Module/Decoder/Decoder_SIHO.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_HIHO<B>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.dec.Decoder_SIHO"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_SISO",
+  "file": "Module/Decoder/Decoder_SISO.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.dec.Decoder_SISO"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_chase_std",
+  "file": "Module/Decoder/Generic/Chase/Decoder_chase_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [
+   "Encoder"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.chase_std"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_maximum_likelihood",
+  "file": "Module/Decoder/Generic/ML/Decoder_maximum_likelihood.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [
+   "Encoder"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.maximum_likelihood"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_maximum_likelihood_naive",
+  "file": "Module/Decoder/Generic/ML/Decoder_maximum_likelihood_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_maximum_likelihood<B, R>"
+  ],
+  "uses": [
+   "Encoder"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.maximum_likelihood_naive"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_maximum_likelihood_std",
+  "file": "Module/Decoder/Generic/ML/Decoder_maximum_likelihood_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_maximum_likelihood<B, R>"
+  ],
+  "uses": [
+   "Encoder"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.maximum_likelihood_std"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_bit_flipping",
+  "file": "Module/Decoder/LDPC/BF/Decoder_LDPC_bit_flipping.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_bit_flipping"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_bit_flipping_hard",
+  "file": "Module/Decoder/LDPC/BF/Decoder_LDPC_bit_flipping_hard.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_bit_flipping_hard"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_bit_flipping_OMWBF",
+  "file": "Module/Decoder/LDPC/BF/OMWBF/Decoder_LDPC_bit_flipping_OMWBF.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_LDPC_bit_flipping<B, R>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_bit_flipping_omwbf"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_probabilistic_parallel_bit_flipping",
+  "file": "Module/Decoder/LDPC/BF/PPBF/Decoder_LDPC_probabilistic_parallel_bit_flipping.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_LDPC_bit_flipping_hard<B, R>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_probabilistic_parallel_bit_flipping"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP",
+  "file": "Module/Decoder/LDPC/BP/Decoder_LDPC_BP.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_bp"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_flooding",
+  "file": "Module/Decoder/LDPC/BP/Flooding/Decoder_LDPC_BP_flooding.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class Update_rule = tools::Update_rule_SPA<R>",
+   "class Syndrome_checker = tools::LDPC_syndrome"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>",
+   "Decoder_LDPC_BP"
+  ],
+  "uses": [
+   "Sparse_matrix",
+   "Update_rule"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_flooding_inter",
+  "file": "Module/Decoder/LDPC/BP/Flooding/Decoder_LDPC_BP_flooding_inter.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class Update_rule = tools::Update_rule_NMS_simd<R>"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>",
+   "Decoder_LDPC_BP"
+  ],
+  "uses": [
+   "Sparse_matrix",
+   "Update_rule"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_flooding_Gallager_A",
+  "file": "Module/Decoder/LDPC/BP/Flooding/Gallager/Decoder_LDPC_BP_flooding_Gallager_A.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "Decoder_LDPC_BP"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_bp_flooding_gallager_a"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_flooding_Gallager_B",
+  "file": "Module/Decoder/LDPC/BP/Flooding/Gallager/Decoder_LDPC_BP_flooding_Gallager_B.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_LDPC_BP_flooding_Gallager_A<B, R>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_bp_flooding_gallager_b"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_flooding_Gallager_E",
+  "file": "Module/Decoder/LDPC/BP/Flooding/Gallager/Decoder_LDPC_BP_flooding_Gallager_E.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_LDPC_BP_flooding_Gallager_A<B, R>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_bp_flooding_gallager_e"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_flooding_SPA",
+  "file": "Module/Decoder/LDPC/BP/Flooding/SPA/Decoder_LDPC_BP_flooding_SPA.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class Syndrome_checker = tools::LDPC_syndrome"
+  ],
+  "bases": [
+   "Decoder_LDPC_BP_flooding<B, R, tools::Update_rule_SPA<R>>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_horizontal_layered",
+  "file": "Module/Decoder/LDPC/BP/Horizontal_layered/Decoder_LDPC_BP_horizontal_layered.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class Update_rule = tools::Update_rule_SPA<R>",
+   "class Syndrome_checker = tools::LDPC_syndrome"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>",
+   "Decoder_LDPC_BP"
+  ],
+  "uses": [
+   "Sparse_matrix",
+   "Update_rule"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_horizontal_layered_inter",
+  "file": "Module/Decoder/LDPC/BP/Horizontal_layered/Decoder_LDPC_BP_horizontal_layered_inter.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class Update_rule = tools::Update_rule_NMS_simd<R>"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>",
+   "Decoder_LDPC_BP"
+  ],
+  "uses": [
+   "Sparse_matrix",
+   "Update_rule"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_horizontal_layered_ONMS_inter",
+  "file": "Module/Decoder/LDPC/BP/Horizontal_layered/ONMS/Decoder_LDPC_BP_horizontal_layered_ONMS_inter.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>",
+   "Decoder_LDPC_BP"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_bp_horizontal_layered_onms_inter"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_peeling",
+  "file": "Module/Decoder/LDPC/BP/Peeling/Decoder_LDPC_BP_peeling.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "Decoder_LDPC_BP"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ldpc_bp_peeling"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_vertical_layered",
+  "file": "Module/Decoder/LDPC/BP/Vertical_layered/Decoder_LDPC_BP_vertical_layered.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class Update_rule = tools::Update_rule_SPA<R>",
+   "class Syndrome_checker = tools::LDPC_syndrome"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>",
+   "Decoder_LDPC_BP"
+  ],
+  "uses": [
+   "Sparse_matrix",
+   "Update_rule"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_LDPC_BP_vertical_layered_inter",
+  "file": "Module/Decoder/LDPC/BP/Vertical_layered/Decoder_LDPC_BP_vertical_layered_inter.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class Update_rule = tools::Update_rule_NMS_simd<R>"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>",
+   "Decoder_LDPC_BP"
+  ],
+  "uses": [
+   "Sparse_matrix",
+   "Update_rule"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_LDPC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_NO",
+  "file": "Module/Decoder/NO/Decoder_NO.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.dec.no"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_ASCL_MEM_fast_CA_sys",
+  "file": "Module/Decoder/Polar/ASCL/Decoder_polar_ASCL_MEM_fast_CA_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class API_polar = tools::API_polar_dynamic_seq<B, R, tools::f_LLR<R>, tools::g_LLR<B, R>, tools::g0_LLR<R>, tools::h_LLR<B, R>, tools::xo_STD<B>>"
+  ],
+  "bases": [
+   "Decoder_polar_SCL_MEM_fast_CA_sys<B, R, API_polar>"
+  ],
+  "uses": [
+   "CRC",
+   "Pattern_polar_i"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_ASCL_fast_CA_sys",
+  "file": "Module/Decoder/Polar/ASCL/Decoder_polar_ASCL_fast_CA_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class API_polar = tools::API_polar_dynamic_seq<B, R, tools::f_LLR<R>, tools::g_LLR<B, R>, tools::g0_LLR<R>, tools::h_LLR<B, R>, tools::xo_STD<B>>"
+  ],
+  "bases": [
+   "Decoder_polar_SCL_fast_CA_sys<B, R, API_polar>"
+  ],
+  "uses": [
+   "CRC",
+   "Pattern_polar_i"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SC_fast_sys",
+  "file": "Module/Decoder/Polar/SC/Decoder_polar_SC_fast_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class API_polar = tools::API_polar_dynamic_seq<B, R, tools::f_LLR<R>, tools::g_LLR<B, R>, tools::g0_LLR<R>, tools::h_LLR<B, R>, tools::xo_STD<B>>"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "Pattern_polar_i"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SC_naive",
+  "file": "Module/Decoder/Polar/SC/Decoder_polar_SC_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR",
+   "tools::proto_h<B, R> H = tools::h_LLR"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SC_naive_sys",
+  "file": "Module/Decoder/Polar/SC/Decoder_polar_SC_naive_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR",
+   "tools::proto_h<B, R> H = tools::h_LLR"
+  ],
+  "bases": [
+   "Decoder_polar_SC_naive<B, R, F, G, H>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCAN_naive",
+  "file": "Module/Decoder/Polar/SCAN/Decoder_polar_SCAN_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = &tools::f_LLR",
+   "tools::proto_v<R> V = &tools::v_LLR",
+   "tools::proto_h<B, R> H = &tools::h_LLR",
+   "tools::proto_i<R> I = &spu::tools::init_LLR",
+   "tools::proto_s<R> S = &spu::tools::sat_val"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCAN_naive_sys",
+  "file": "Module/Decoder/Polar/SCAN/Decoder_polar_SCAN_naive_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = &tools::f_LLR",
+   "tools::proto_v<R> V = &tools::v_LLR",
+   "tools::proto_h<B, R> H = &tools::h_LLR",
+   "tools::proto_i<R> I = &spu::tools::init_LLR",
+   "tools::proto_s<R> S = &spu::tools::sat_val"
+  ],
+  "bases": [
+   "Decoder_polar_SCAN_naive<B, R, F, V, H, I, S>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCF_naive",
+  "file": "Module/Decoder/Polar/SCF/Decoder_polar_SCF_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR",
+   "tools::proto_h<B, R> H = tools::h_LLR"
+  ],
+  "bases": [
+   "Decoder_polar_SC_naive<B, R, F, G, H>"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCF_naive_sys",
+  "file": "Module/Decoder/Polar/SCF/Decoder_polar_SCF_naive_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR",
+   "tools::proto_h<B, R> H = tools::h_LLR"
+  ],
+  "bases": [
+   "Decoder_polar_SCF_naive<B, R, F, G, H>"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCL_MEM_fast_CA_sys",
+  "file": "Module/Decoder/Polar/SCL/CRC/Decoder_polar_SCL_MEM_fast_CA_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class API_polar = tools::API_polar_dynamic_seq<B, R, tools::f_LLR<R>, tools::g_LLR<B, R>, tools::g0_LLR<R>, tools::h_LLR<B, R>, tools::xo_STD<B>>"
+  ],
+  "bases": [
+   "Decoder_polar_SCL_MEM_fast_sys<B, R, API_polar>"
+  ],
+  "uses": [
+   "CRC",
+   "Pattern_polar_i"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCL_fast_CA_sys",
+  "file": "Module/Decoder/Polar/SCL/CRC/Decoder_polar_SCL_fast_CA_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class API_polar = tools::API_polar_dynamic_seq<B, R, tools::f_LLR<R>, tools::g_LLR<B, R>, tools::g0_LLR<R>, tools::h_LLR<B, R>, tools::xo_STD<B>>"
+  ],
+  "bases": [
+   "Decoder_polar_SCL_fast_sys<B, R, API_polar>"
+  ],
+  "uses": [
+   "CRC",
+   "Pattern_polar_i"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCL_naive_CA",
+  "file": "Module/Decoder/Polar/SCL/CRC/Decoder_polar_SCL_naive_CA.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR"
+  ],
+  "bases": [
+   "Decoder_polar_SCL_naive<B, R, F, G>"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCL_naive_CA_sys",
+  "file": "Module/Decoder/Polar/SCL/CRC/Decoder_polar_SCL_naive_CA_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR"
+  ],
+  "bases": [
+   "Decoder_polar_SCL_naive_CA<B, R, F, G>"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCL_MEM_fast_sys",
+  "file": "Module/Decoder/Polar/SCL/Decoder_polar_SCL_MEM_fast_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class API_polar = tools::API_polar_dynamic_seq<B, R, tools::f_LLR<R>, tools::g_LLR<B, R>, tools::g0_LLR<R>, tools::h_LLR<B, R>, tools::xo_STD<B>>"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "Pattern_polar_i"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCL_fast_sys",
+  "file": "Module/Decoder/Polar/SCL/Decoder_polar_SCL_fast_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "class API_polar = tools::API_polar_dynamic_seq<B, R, tools::f_LLR<R>, tools::g_LLR<B, R>, tools::g0_LLR<R>, tools::h_LLR<B, R>, tools::xo_STD<B>>"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "Pattern_polar_i"
+  ],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCL_naive",
+  "file": "Module/Decoder/Polar/SCL/Decoder_polar_SCL_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_SCL_naive_sys",
+  "file": "Module/Decoder/Polar/SCL/Decoder_polar_SCL_naive_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR"
+  ],
+  "bases": [
+   "Decoder_polar_SCL_naive<B, R, F, G>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_MK_ASCL_naive_CA",
+  "file": "Module/Decoder/Polar_MK/ASCL/Decoder_polar_MK_ASCL_naive_CA.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_polar_MK_SCL_naive_CA<B, R>"
+  ],
+  "uses": [
+   "CRC",
+   "Polar_code"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.polar_mk_ascl_naive_ca"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_MK_ASCL_naive_CA_sys",
+  "file": "Module/Decoder/Polar_MK/ASCL/Decoder_polar_MK_ASCL_naive_CA_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_polar_MK_SCL_naive_CA_sys<B, R>"
+  ],
+  "uses": [
+   "CRC",
+   "Polar_code"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.polar_mk_ascl_naive_ca_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_MK_SC_naive",
+  "file": "Module/Decoder/Polar_MK/SC/Decoder_polar_MK_SC_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "Polar_code"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.polar_mk_sc_naive"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_MK_SC_naive_sys",
+  "file": "Module/Decoder/Polar_MK/SC/Decoder_polar_MK_SC_naive_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_polar_MK_SC_naive<B, R>"
+  ],
+  "uses": [
+   "Polar_code"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.polar_mk_sc_naive_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_MK_SCL_naive_CA",
+  "file": "Module/Decoder/Polar_MK/SCL/CRC/Decoder_polar_MK_SCL_naive_CA.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_polar_MK_SCL_naive<B, R>"
+  ],
+  "uses": [
+   "CRC",
+   "Polar_code"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.polar_mk_scl_naive_ca"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_MK_SCL_naive_CA_sys",
+  "file": "Module/Decoder/Polar_MK/SCL/CRC/Decoder_polar_MK_SCL_naive_CA_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_polar_MK_SCL_naive_CA<B, R>"
+  ],
+  "uses": [
+   "CRC",
+   "Polar_code"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.polar_mk_scl_naive_ca_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_MK_SCL_naive",
+  "file": "Module/Decoder/Polar_MK/SCL/Decoder_polar_MK_SCL_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "Polar_code"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.polar_mk_scl_naive"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_MK_SCL_naive_sys",
+  "file": "Module/Decoder/Polar_MK/SCL/Decoder_polar_MK_SCL_naive_sys.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_polar_MK_SCL_naive<B, R>"
+  ],
+  "uses": [
+   "Polar_code"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.polar_mk_scl_naive_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_PAC_Fano_naive",
+  "file": "Module/Decoder/Polar_PAC/Fano/Decoder_polar_PAC_Fano_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P2",
+  "py": "aff3ct.factory.Decoder_polar_PAC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_PAC_SCL_naive",
+  "file": "Module/Decoder/Polar_PAC/SCL/Decoder_polar_PAC_SCL_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P2",
+  "py": "aff3ct.factory.Decoder_polar_PAC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_polar_PT_SCL_naive",
+  "file": "Module/Decoder/Polar_PT/SCL/Decoder_polar_PT_SCL_naive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_f<R> F = tools::f_LLR",
+   "tools::proto_g<B, R> G = tools::g_LLR"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>",
+   "tools::Interface_get_set_pretransform",
+   "tools::Interface_get_set_dynamic_frozen_bits",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P2",
+  "py": "aff3ct.factory.Decoder_polar_PT(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RA",
+  "file": "Module/Decoder/RA/Decoder_RA.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [
+   "Interleaver"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.ra"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RS",
+  "file": "Module/Decoder/RS/Decoder_RS.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [
+   "RS_polynomial_generator"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.rs"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RS_genius",
+  "file": "Module/Decoder/RS/Genius/Decoder_RS_genius.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_RS<B, R>"
+  ],
+  "uses": [
+   "Encoder",
+   "RS_polynomial_generator"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.rs_genius"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR",
+  "file": "Module/Decoder/RSC/BCJR/Decoder_RSC_BCJR.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.rsc_bcjr"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_inter",
+  "file": "Module/Decoder/RSC/BCJR/Inter/Decoder_RSC_BCJR_inter.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.rsc_bcjr_inter"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_inter_fast",
+  "file": "Module/Decoder/RSC/BCJR/Inter/Decoder_RSC_BCJR_inter_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max_i<R> MAX = tools::max_i"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_inter<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_inter_std",
+  "file": "Module/Decoder/RSC/BCJR/Inter/Decoder_RSC_BCJR_inter_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max_i<R> MAX = tools::max_i"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_inter<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_inter_very_fast",
+  "file": "Module/Decoder/RSC/BCJR/Inter/Decoder_RSC_BCJR_inter_very_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max_i<R> MAX = tools::max_i"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_inter<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_inter_intra",
+  "file": "Module/Decoder/RSC/BCJR/Inter_intra/Decoder_RSC_BCJR_inter_intra.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.rsc_bcjr_inter_intra"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_inter_intra_fast_x2_AVX",
+  "file": "Module/Decoder/RSC/BCJR/Inter_intra/Decoder_RSC_BCJR_inter_intra_fast_x2_AVX.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max_i<R> MAX = tools::max_i"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_inter_intra<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P2",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_inter_intra_fast_x2_SSE",
+  "file": "Module/Decoder/RSC/BCJR/Inter_intra/Decoder_RSC_BCJR_inter_intra_fast_x2_SSE.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max_i<R> MAX = tools::max_i"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_inter_intra<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P2",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_inter_intra_fast_x4_AVX",
+  "file": "Module/Decoder/RSC/BCJR/Inter_intra/Decoder_RSC_BCJR_inter_intra_fast_x4_AVX.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max_i<R> MAX = tools::max_i"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_inter_intra<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P2",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_intra",
+  "file": "Module/Decoder/RSC/BCJR/Intra/Decoder_RSC_BCJR_intra.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.rsc_bcjr_intra"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_intra_fast",
+  "file": "Module/Decoder/RSC/BCJR/Intra/Decoder_RSC_BCJR_intra_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max_i<R> MAX = tools::max_i"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_intra<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_intra_std",
+  "file": "Module/Decoder/RSC/BCJR/Intra/Decoder_RSC_BCJR_intra_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max_i<R> MAX = tools::max_i"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_intra<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_seq",
+  "file": "Module/Decoder/RSC/BCJR/Seq/Decoder_RSC_BCJR_seq.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.rsc_bcjr_seq"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_seq_fast",
+  "file": "Module/Decoder/RSC/BCJR/Seq/Decoder_RSC_BCJR_seq_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename RD = float",
+   "tools::proto_max<R> MAX1 = tools::max",
+   "tools::proto_max<RD> MAX2 = tools::max"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_seq<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_seq_scan",
+  "file": "Module/Decoder/RSC/BCJR/Seq/Decoder_RSC_BCJR_seq_scan.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename RD = float"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_seq<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.rsc_bcjr_seq_scan"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_seq_std",
+  "file": "Module/Decoder/RSC/BCJR/Seq/Decoder_RSC_BCJR_seq_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename RD = float",
+   "tools::proto_max<R> MAX1 = tools::max",
+   "tools::proto_max<RD> MAX2 = tools::max"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_seq<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_seq_very_fast",
+  "file": "Module/Decoder/RSC/BCJR/Seq/Decoder_RSC_BCJR_seq_very_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename RD = float",
+   "tools::proto_max<R> MAX1 = tools::max",
+   "tools::proto_max<RD> MAX2 = tools::max"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_seq<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_seq_generic",
+  "file": "Module/Decoder/RSC/BCJR/Seq_generic/Decoder_RSC_BCJR_seq_generic.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.rsc_bcjr_seq_generic"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_seq_generic_std",
+  "file": "Module/Decoder/RSC/BCJR/Seq_generic/Decoder_RSC_BCJR_seq_generic_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename RD = float",
+   "tools::proto_max<R> MAX1 = tools::max",
+   "tools::proto_max<RD> MAX2 = tools::max"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_seq_generic<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_BCJR_seq_generic_std_json",
+  "file": "Module/Decoder/RSC/BCJR/Seq_generic/Decoder_RSC_BCJR_seq_generic_std_json.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename RD = float",
+   "tools::proto_max<R> MAX1 = tools::max",
+   "tools::proto_max<RD> MAX2 = tools::max"
+  ],
+  "bases": [
+   "Decoder_RSC_BCJR_seq_generic_std<B, R, RD, MAX1, MAX2>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P2",
+  "py": "aff3ct.factory.Decoder_RSC(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_DB_BCJR",
+  "file": "Module/Decoder/RSC_DB/BCJR/Decoder_RSC_DB_BCJR.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.rsc_db_bcjr"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_DB_BCJR_DVB_RCS1",
+  "file": "Module/Decoder/RSC_DB/BCJR/Decoder_RSC_DB_BCJR_DVB_RCS1.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max<R> MAX = tools::max"
+  ],
+  "bases": [
+   "Decoder_RSC_DB_BCJR<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC_DB(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_DB_BCJR_DVB_RCS2",
+  "file": "Module/Decoder/RSC_DB/BCJR/Decoder_RSC_DB_BCJR_DVB_RCS2.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max<R> MAX = tools::max"
+  ],
+  "bases": [
+   "Decoder_RSC_DB_BCJR<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC_DB(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_RSC_DB_BCJR_generic",
+  "file": "Module/Decoder/RSC_DB/BCJR/Decoder_RSC_DB_BCJR_generic.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "tools::proto_max<R> MAX = tools::max"
+  ],
+  "bases": [
+   "Decoder_RSC_DB_BCJR<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC_DB(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_repetition",
+  "file": "Module/Decoder/Repetition/Decoder_repetition.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.repetition"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_repetition_fast",
+  "file": "Module/Decoder/Repetition/Decoder_repetition_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_repetition<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.dec.repetition_fast"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_repetition_std",
+  "file": "Module/Decoder/Repetition/Decoder_repetition_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_repetition<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.dec.repetition_std"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_repetition_vote",
+  "file": "Module/Decoder/Repetition/Decoder_repetition_vote.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_repetition<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.repetition_vote"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_turbo",
+  "file": "Module/Decoder/Turbo/Decoder_turbo.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [
+   "Decoder_SISO",
+   "Interleaver"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.turbo"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_turbo_fast",
+  "file": "Module/Decoder/Turbo/Decoder_turbo_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_turbo<B, R>"
+  ],
+  "uses": [
+   "Decoder_SISO",
+   "Interleaver"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.turbo_fast"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_turbo_std",
+  "file": "Module/Decoder/Turbo/Decoder_turbo_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_turbo<B, R>"
+  ],
+  "uses": [
+   "Decoder_SISO",
+   "Interleaver"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.turbo_std"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_turbo_DB",
+  "file": "Module/Decoder/Turbo_DB/Decoder_turbo_DB.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SIHO<B, R>"
+  ],
+  "uses": [
+   "Decoder_RSC_DB_BCJR",
+   "Interleaver"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.dec.turbo_db"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_chase_pyndiah",
+  "file": "Module/Decoder/Turbo_product/Chase_pyndiah/Decoder_chase_pyndiah.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.chase_pyndiah"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_chase_pyndiah_fast",
+  "file": "Module/Decoder/Turbo_product/Chase_pyndiah/Decoder_chase_pyndiah_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_chase_pyndiah<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.chase_pyndiah_fast"
+ },
+ {
+  "kind": "Module",
+  "name": "Decoder_turbo_product",
+  "file": "Module/Decoder/Turbo_product/Decoder_turbo_product.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_SISO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.dec.turbo_product"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_AZCW",
+  "file": "Module/Encoder/AZCW/Encoder_AZCW.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.azcw"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_BCH",
+  "file": "Module/Encoder/BCH/Encoder_BCH.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [
+   "BCH_polynomial_generator"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.enc.bch"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_BCH_inter",
+  "file": "Module/Encoder/BCH/Encoder_BCH_inter.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_BCH<B>"
+  ],
+  "uses": [
+   "BCH_polynomial_generator"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.bch_inter"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_conv",
+  "file": "Module/Encoder/Conv/Encoder_conv.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>",
+   "tools::Interface_get_trellis"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.conv"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_coset",
+  "file": "Module/Encoder/Coset/Encoder_coset.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.coset"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder",
+  "file": "Module/Encoder/Encoder.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "spu::module::Stateful",
+   "spu::tools::Interface_set_seed"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.enc.Encoder"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_LDPC_DVBS2",
+  "file": "Module/Encoder/LDPC/DVBS2/Encoder_LDPC_DVBS2.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_LDPC<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.ldpc_dvbs2"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_LDPC",
+  "file": "Module/Encoder/LDPC/Encoder_LDPC.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.enc.ldpc"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_LDPC_from_H",
+  "file": "Module/Encoder/LDPC/From_H/Encoder_LDPC_from_H.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_LDPC<B>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.enc.ldpc_from_h"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_LDPC_from_IRA",
+  "file": "Module/Encoder/LDPC/From_IRA/Encoder_LDPC_from_IRA.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_LDPC<B>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.ldpc_from_ira"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_LDPC_from_QC",
+  "file": "Module/Encoder/LDPC/From_QC/Encoder_LDPC_from_QC.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_LDPC<B>"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.ldpc_from_qc"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_LDPC_QC",
+  "file": "Module/Encoder/LDPC/QC/Encoder_LDPC_QC.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_LDPC<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.ldpc_qc"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_LDPC_QC_fast",
+  "file": "Module/Encoder/LDPC/QC/Encoder_LDPC_QC_fast.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_LDPC_QC<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.ldpc_qc_fast"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_NO",
+  "file": "Module/Encoder/NO/Encoder_NO.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.enc.no"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_polar",
+  "file": "Module/Encoder/Polar/Encoder_polar.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.enc.polar"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_polar_bitpacked",
+  "file": "Module/Encoder/Polar/Encoder_polar_bitpacked.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_polar<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.polar_bitpacked"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_polar_bitpacked_sys",
+  "file": "Module/Encoder/Polar/Encoder_polar_bitpacked_sys.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_polar_bitpacked<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.polar_bitpacked_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_polar_sys",
+  "file": "Module/Encoder/Polar/Encoder_polar_sys.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_polar<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.enc.polar_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_polar_MK",
+  "file": "Module/Encoder/Polar_MK/Encoder_polar_MK.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "Polar_code"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.polar_mk"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_polar_MK_sys",
+  "file": "Module/Encoder/Polar_MK/Encoder_polar_MK_sys.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_polar_MK<B>"
+  ],
+  "uses": [
+   "Polar_code"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.polar_mk_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_polar_PAC",
+  "file": "Module/Encoder/Polar_PAC/Encoder_polar_PAC.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_polar<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.polar_pac"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_polar_PT",
+  "file": "Module/Encoder/Polar_PT/Encoder_polar_PT.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_polar<B>",
+   "tools::Interface_get_set_pretransform",
+   "tools::Interface_get_set_dynamic_frozen_bits"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.polar_pt"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_RA",
+  "file": "Module/Encoder/RA/Encoder_RA.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [
+   "Interleaver"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.ra"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_RS",
+  "file": "Module/Encoder/RS/Encoder_RS.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [
+   "RS_polynomial_generator"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.enc.rs"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_RSC3_CPE_sys",
+  "file": "Module/Encoder/RSC/Encoder_RSC3_CPE_sys.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_RSC_sys<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.rsc3_cpe_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_RSC_generic_json_sys",
+  "file": "Module/Encoder/RSC/Encoder_RSC_generic_json_sys.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_RSC_generic_sys<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.rsc_generic_json_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_RSC_generic_sys",
+  "file": "Module/Encoder/RSC/Encoder_RSC_generic_sys.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_RSC_sys<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.rsc_generic_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_RSC_sys",
+  "file": "Module/Encoder/RSC/Encoder_RSC_sys.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>",
+   "tools::Interface_get_trellis"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.rsc_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_RSC_DB",
+  "file": "Module/Encoder/RSC_DB/Encoder_RSC_DB.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>",
+   "tools::Interface_get_trellis"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.rsc_db"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_repetition_sys",
+  "file": "Module/Encoder/Repetition/Encoder_repetition_sys.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.enc.repetition_sys"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_turbo",
+  "file": "Module/Encoder/Turbo/Encoder_turbo.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.turbo"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_turbo_legacy",
+  "file": "Module/Encoder/Turbo/Encoder_turbo_legacy.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder_turbo<B>"
+  ],
+  "uses": [
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.turbo_legacy"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_turbo_DB",
+  "file": "Module/Encoder/Turbo_DB/Encoder_turbo_DB.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [
+   "Encoder_RSC_DB",
+   "Interleaver"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.enc.turbo_db"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_turbo_product",
+  "file": "Module/Encoder/Turbo_product/Encoder_turbo_product.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.turbo_product"
+ },
+ {
+  "kind": "Module",
+  "name": "Encoder_user",
+  "file": "Module/Encoder/User/Encoder_user.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Encoder<B>"
+  ],
+  "uses": [],
+  "domain": "Encoder",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.enc.user"
+ },
+ {
+  "kind": "Module",
+  "name": "Extractor",
+  "file": "Module/Extractor/Extractor.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "spu::module::Stateful"
+  ],
+  "uses": [],
+  "domain": "Extractor",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.ext.Extractor"
+ },
+ {
+  "kind": "Module",
+  "name": "Extractor_LDPC",
+  "file": "Module/Extractor/LDPC/Extractor_LDPC.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Extractor<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Extractor",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.ext.ldpc"
+ },
+ {
+  "kind": "Module",
+  "name": "Extractor_polar",
+  "file": "Module/Extractor/Polar/Extractor_polar.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Extractor<B, Q>",
+   "tools::Interface_get_set_frozen_bits"
+  ],
+  "uses": [],
+  "domain": "Extractor",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.ext.polar"
+ },
+ {
+  "kind": "Module",
+  "name": "Extractor_RSC",
+  "file": "Module/Extractor/RSC/Extractor_RSC.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Extractor<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Extractor",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.ext.rsc"
+ },
+ {
+  "kind": "Module",
+  "name": "Extractor_uncoded",
+  "file": "Module/Extractor/Uncoded/Extractor_uncoded.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Extractor<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Extractor",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.ext.uncoded"
+ },
+ {
+  "kind": "Module",
+  "name": "Interleaver",
+  "file": "Module/Interleaver/Interleaver.hpp",
+  "tpl": [
+   "typename D = int32_t",
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "spu::module::Stateful"
+  ],
+  "uses": [
+   "Interleaver_core"
+  ],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.itl.interleaver"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_BPSK",
+  "file": "Module/Modem/BPSK/Modem_BPSK.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R"
+  ],
+  "bases": [
+   "Modem<B, R, Q>"
+  ],
+  "uses": [],
+  "domain": "Modem",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.mdm.bpsk"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_BPSK_fast",
+  "file": "Module/Modem/BPSK/Modem_BPSK_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R"
+  ],
+  "bases": [
+   "Modem<B, R, Q>"
+  ],
+  "uses": [],
+  "domain": "Modem",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.mdm.bpsk_fast"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_CPM",
+  "file": "Module/Modem/CPM/Modem_CPM.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R",
+   "tools::proto_max<Q> MAX = tools::max_star"
+  ],
+  "bases": [
+   "Modem<B, R, Q>"
+  ],
+  "uses": [],
+  "domain": "Modem",
+  "strategy": "factory",
+  "priority": "P2",
+  "py": "aff3ct.factory.Modem(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_generic",
+  "file": "Module/Modem/Generic/Modem_generic.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R",
+   "tools::proto_max<Q> MAX = tools::max_star"
+  ],
+  "bases": [
+   "Modem<B, R, Q>"
+  ],
+  "uses": [
+   "Constellation"
+  ],
+  "domain": "Modem",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Modem(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_generic_fast",
+  "file": "Module/Modem/Generic/Modem_generic_fast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R",
+   "tools::proto_max<Q> MAX = tools::max_star",
+   "tools::proto_max_i<Q> MAXI = tools::max_star_i"
+  ],
+  "bases": [
+   "Modem_generic<B, R, Q, MAX>"
+  ],
+  "uses": [
+   "Constellation"
+  ],
+  "domain": "Modem",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.factory.Modem(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem",
+  "file": "Module/Modem/Modem.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R"
+  ],
+  "bases": [
+   "spu::module::Stateful"
+  ],
+  "uses": [],
+  "domain": "Modem",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.mdm.Modem"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_OOK",
+  "file": "Module/Modem/OOK/Modem_OOK.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R"
+  ],
+  "bases": [
+   "Modem<B, R, Q>"
+  ],
+  "uses": [],
+  "domain": "Modem",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.mdm.ook"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_OOK_AWGN",
+  "file": "Module/Modem/OOK/Modem_OOK_AWGN.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R"
+  ],
+  "bases": [
+   "Modem_OOK<B, R, Q>"
+  ],
+  "uses": [],
+  "domain": "Modem",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.mdm.ook_awgn"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_OOK_BEC",
+  "file": "Module/Modem/OOK/Modem_OOK_BEC.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R"
+  ],
+  "bases": [
+   "Modem_OOK<B, R, Q>"
+  ],
+  "uses": [],
+  "domain": "Modem",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.mdm.ook_bec"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_OOK_BSC",
+  "file": "Module/Modem/OOK/Modem_OOK_BSC.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R"
+  ],
+  "bases": [
+   "Modem_OOK<B, R, Q>"
+  ],
+  "uses": [],
+  "domain": "Modem",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.mdm.ook_bsc"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_OOK_optical",
+  "file": "Module/Modem/OOK/Modem_OOK_optical.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R"
+  ],
+  "bases": [
+   "Modem_OOK<B, R, Q>"
+  ],
+  "uses": [
+   "Distributions"
+  ],
+  "domain": "Modem",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.mdm.ook_optical"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_OOK_optical_rop_estimate",
+  "file": "Module/Modem/OOK/Modem_OOK_optical_rop_estimate.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R"
+  ],
+  "bases": [
+   "Modem_OOK<B, R, Q>"
+  ],
+  "uses": [
+   "Distributions"
+  ],
+  "domain": "Modem",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.mdm.ook_optical_rop_estimate"
+ },
+ {
+  "kind": "Module",
+  "name": "Modem_SCMA",
+  "file": "Module/Modem/SCMA/Modem_SCMA.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float",
+   "typename Q = R",
+   "tools::proto_psi<Q> PSI = tools::psi_0"
+  ],
+  "bases": [
+   "Modem<B, R, Q>"
+  ],
+  "uses": [],
+  "domain": "Modem",
+  "strategy": "factory",
+  "priority": "P2",
+  "py": "aff3ct.factory.Modem(...).build()"
+ },
+ {
+  "kind": "Module",
+  "name": "Monitor_BFER",
+  "file": "Module/Monitor/BFER/Monitor_BFER.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "Monitor"
+  ],
+  "uses": [],
+  "domain": "Monitor",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.mnt.bfer"
+ },
+ {
+  "kind": "Module",
+  "name": "Monitor_EXIT",
+  "file": "Module/Monitor/EXIT/Monitor_EXIT.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Monitor"
+  ],
+  "uses": [],
+  "domain": "Monitor",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.mnt.exit"
+ },
+ {
+  "kind": "Module",
+  "name": "Monitor_MI",
+  "file": "Module/Monitor/MI/Monitor_MI.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Monitor"
+  ],
+  "uses": [],
+  "domain": "Monitor",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.mnt.mi"
+ },
+ {
+  "kind": "Module",
+  "name": "Monitor",
+  "file": "Module/Monitor/Monitor.hpp",
+  "tpl": [],
+  "bases": [
+   "spu::module::Stateful",
+   "spu::tools::Interface_reset",
+   "spu::tools::Interface_is_done"
+  ],
+  "uses": [],
+  "domain": "Monitor",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.mnt.Monitor"
+ },
+ {
+  "kind": "Module",
+  "name": "Puncturer_5G",
+  "file": "Module/Puncturer/LDPC/Puncturer_5G.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Puncturer<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Puncturer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.pct.5g"
+ },
+ {
+  "kind": "Module",
+  "name": "Puncturer_LDPC",
+  "file": "Module/Puncturer/LDPC/Puncturer_LDPC.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Puncturer<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Puncturer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.pct.ldpc"
+ },
+ {
+  "kind": "Module",
+  "name": "Puncturer_NO",
+  "file": "Module/Puncturer/NO/Puncturer_NO.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Puncturer<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Puncturer",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.pct.no"
+ },
+ {
+  "kind": "Module",
+  "name": "Puncturer_polar_shortlast",
+  "file": "Module/Puncturer/Polar/Puncturer_polar_shortlast.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Puncturer<B, Q>"
+  ],
+  "uses": [
+   "Frozenbits_generator"
+  ],
+  "domain": "Puncturer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.pct.polar_shortlast"
+ },
+ {
+  "kind": "Module",
+  "name": "Puncturer",
+  "file": "Module/Puncturer/Puncturer.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "spu::module::Stateful"
+  ],
+  "uses": [],
+  "domain": "Puncturer",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.pct.Puncturer"
+ },
+ {
+  "kind": "Module",
+  "name": "Puncturer_turbo",
+  "file": "Module/Puncturer/Turbo/Puncturer_turbo.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Puncturer<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Puncturer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.pct.turbo"
+ },
+ {
+  "kind": "Module",
+  "name": "Puncturer_turbo_DB",
+  "file": "Module/Puncturer/Turbo_DB/Puncturer_turbo_DB.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Puncturer<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Puncturer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.pct.turbo_db"
+ },
+ {
+  "kind": "Module",
+  "name": "Quantizer_custom",
+  "file": "Module/Quantizer/Custom/Quantizer_custom.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Quantizer<R, Q>"
+  ],
+  "uses": [],
+  "domain": "Quantizer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.qnt.custom"
+ },
+ {
+  "kind": "Module",
+  "name": "Quantizer_NO",
+  "file": "Module/Quantizer/NO/Quantizer_NO.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename Q = int"
+  ],
+  "bases": [
+   "Quantizer<R, Q>"
+  ],
+  "uses": [],
+  "domain": "Quantizer",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.qnt.no"
+ },
+ {
+  "kind": "Module",
+  "name": "Quantizer_pow2",
+  "file": "Module/Quantizer/Pow2/Quantizer_pow2.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Quantizer<R, Q>"
+  ],
+  "uses": [],
+  "domain": "Quantizer",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.qnt.pow2"
+ },
+ {
+  "kind": "Module",
+  "name": "Quantizer_pow2_fast",
+  "file": "Module/Quantizer/Pow2/Quantizer_pow2_fast.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename Q = short"
+  ],
+  "bases": [
+   "Quantizer<R, Q>"
+  ],
+  "uses": [],
+  "domain": "Quantizer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.qnt.pow2_fast"
+ },
+ {
+  "kind": "Module",
+  "name": "Quantizer",
+  "file": "Module/Quantizer/Quantizer.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename Q = int"
+  ],
+  "bases": [
+   "spu::module::Stateful"
+  ],
+  "uses": [],
+  "domain": "Quantizer",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.qnt.Quantizer"
+ },
+ {
+  "kind": "Module",
+  "name": "Source_random_fast",
+  "file": "Module/Source/Random/Source_random_fast.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [
+   "spu::module::Source<B>"
+  ],
+  "uses": [],
+  "domain": "Source",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.src.random_fast"
+ },
+ {
+  "kind": "Tools",
+  "name": "Callback",
+  "file": "Tools/Algo/Callback/Callback.hpp",
+  "tpl": [
+   "class... Args"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Draw_generator",
+  "file": "Tools/Algo/Draw_generator/Draw_generator.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "spu::tools::Interface_set_seed",
+   "spu::tools::Interface_clone"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.Draw_generator"
+ },
+ {
+  "kind": "Tools",
+  "name": "Event_generator",
+  "file": "Tools/Algo/Draw_generator/Event_generator/Event_generator.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename E = typename tools::matching_types<R>::B"
+  ],
+  "bases": [
+   "Draw_generator<R>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.Event_generator"
+ },
+ {
+  "kind": "Tools",
+  "name": "Event_generator_fast",
+  "file": "Tools/Algo/Draw_generator/Event_generator/Fast/Event_generator_fast.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename E = typename tools::matching_types<R>::B"
+  ],
+  "bases": [
+   "Event_generator<R, E>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.Event_generator_fast"
+ },
+ {
+  "kind": "Tools",
+  "name": "Event_generator_GSL",
+  "file": "Tools/Algo/Draw_generator/Event_generator/GSL/Event_generator_GSL.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename E = typename tools::matching_types<R>::B"
+  ],
+  "bases": [
+   "Event_generator<R, E>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.gen.Event_generator_GSL"
+ },
+ {
+  "kind": "Tools",
+  "name": "Event_generator_MKL",
+  "file": "Tools/Algo/Draw_generator/Event_generator/MKL/Event_generator_MKL.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename E = typename tools::matching_types<R>::B"
+  ],
+  "bases": [
+   "Event_generator<R, E>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.gen.Event_generator_MKL"
+ },
+ {
+  "kind": "Tools",
+  "name": "Event_generator_std",
+  "file": "Tools/Algo/Draw_generator/Event_generator/Standard/Event_generator_std.hpp",
+  "tpl": [
+   "typename R = float",
+   "typename E = typename tools::matching_types<R>::B"
+  ],
+  "bases": [
+   "Event_generator<R, E>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.Event_generator_std"
+ },
+ {
+  "kind": "Tools",
+  "name": "Gaussian_noise_generator_fast",
+  "file": "Tools/Algo/Draw_generator/Gaussian_noise_generator/Fast/Gaussian_noise_generator_fast.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Gaussian_noise_generator<R>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.Gaussian_noise_generator_fast"
+ },
+ {
+  "kind": "Tools",
+  "name": "Gaussian_noise_generator_GSL",
+  "file": "Tools/Algo/Draw_generator/Gaussian_noise_generator/GSL/Gaussian_noise_generator_GSL.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Gaussian_noise_generator<R>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.gen.Gaussian_noise_generator_GSL"
+ },
+ {
+  "kind": "Tools",
+  "name": "Gaussian_noise_generator",
+  "file": "Tools/Algo/Draw_generator/Gaussian_noise_generator/Gaussian_noise_generator.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Draw_generator<R>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.Gaussian_noise_generator"
+ },
+ {
+  "kind": "Tools",
+  "name": "Gaussian_noise_generator_MKL",
+  "file": "Tools/Algo/Draw_generator/Gaussian_noise_generator/MKL/Gaussian_noise_generator_MKL.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Gaussian_noise_generator<R>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.gen.Gaussian_noise_generator_MKL"
+ },
+ {
+  "kind": "Tools",
+  "name": "Gaussian_noise_generator_std",
+  "file": "Tools/Algo/Draw_generator/Gaussian_noise_generator/Standard/Gaussian_noise_generator_std.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Gaussian_noise_generator<R>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.Gaussian_noise_generator_std"
+ },
+ {
+  "kind": "Tools",
+  "name": "User_pdf_noise_generator_fast",
+  "file": "Tools/Algo/Draw_generator/User_pdf_noise_generator/Fast/User_pdf_noise_generator_fast.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "User_pdf_noise_generator<R>"
+  ],
+  "uses": [
+   "Distributions"
+  ],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.User_pdf_noise_generator_fast"
+ },
+ {
+  "kind": "Tools",
+  "name": "User_pdf_noise_generator_GSL",
+  "file": "Tools/Algo/Draw_generator/User_pdf_noise_generator/GSL/User_pdf_noise_generator_GSL.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "User_pdf_noise_generator<R>"
+  ],
+  "uses": [
+   "Distributions"
+  ],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.gen.User_pdf_noise_generator_GSL"
+ },
+ {
+  "kind": "Tools",
+  "name": "User_pdf_noise_generator_MKL",
+  "file": "Tools/Algo/Draw_generator/User_pdf_noise_generator/MKL/User_pdf_noise_generator_MKL.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "User_pdf_noise_generator<R>"
+  ],
+  "uses": [
+   "Distributions"
+  ],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.gen.User_pdf_noise_generator_MKL"
+ },
+ {
+  "kind": "Tools",
+  "name": "User_pdf_noise_generator_std",
+  "file": "Tools/Algo/Draw_generator/User_pdf_noise_generator/Standard/User_pdf_noise_generator_std.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "User_pdf_noise_generator<R>"
+  ],
+  "uses": [
+   "Distributions"
+  ],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.User_pdf_noise_generator_std"
+ },
+ {
+  "kind": "Tools",
+  "name": "User_pdf_noise_generator",
+  "file": "Tools/Algo/Draw_generator/User_pdf_noise_generator/User_pdf_noise_generator.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Draw_generator<R>"
+  ],
+  "uses": [
+   "Distributions"
+  ],
+  "domain": "Algo",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.tools.gen.User_pdf_noise_generator"
+ },
+ {
+  "kind": "Tools",
+  "name": "Histogram",
+  "file": "Tools/Algo/Histogram.hpp",
+  "tpl": [
+   "typename R"
+  ],
+  "bases": [
+   "spu::tools::Interface_reset"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.Histogram"
+ },
+ {
+  "kind": "Tools",
+  "name": "Full_matrix",
+  "file": "Tools/Algo/Matrix/Full_matrix/Full_matrix.hpp",
+  "tpl": [
+   "typename T = int32_t"
+  ],
+  "bases": [
+   "Matrix",
+   "std::vector<std::vector<T>>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.Full_matrix"
+ },
+ {
+  "kind": "Tools",
+  "name": "Matrix",
+  "file": "Tools/Algo/Matrix/Matrix.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.tools.Matrix"
+ },
+ {
+  "kind": "Tools",
+  "name": "Sparse_matrix",
+  "file": "Tools/Algo/Matrix/Sparse_matrix/Sparse_matrix.hpp",
+  "tpl": [],
+  "bases": [
+   "Matrix"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.Sparse_matrix"
+ },
+ {
+  "kind": "Tools",
+  "name": "Vector_2D",
+  "file": "Tools/Algo/Multidimensional_vector/Vector_2D.hpp",
+  "tpl": [
+   "typename T"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Vector_3D",
+  "file": "Tools/Algo/Multidimensional_vector/Vector_3D.hpp",
+  "tpl": [
+   "typename T"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Vector_4D",
+  "file": "Tools/Algo/Multidimensional_vector/Vector_4D.hpp",
+  "tpl": [
+   "typename T"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "PRNG_MT19937",
+  "file": "Tools/Algo/PRNG/PRNG_MT19937.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "PRNG_MT19937_simd",
+  "file": "Tools/Algo/PRNG/PRNG_MT19937_simd.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "LC_sorter",
+  "file": "Tools/Algo/Sort/LC_sorter.hpp",
+  "tpl": [
+   "typename T"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "LC_sorter_simd",
+  "file": "Tools/Algo/Sort/LC_sorter_simd.hpp",
+  "tpl": [
+   "typename T"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Bitonic_Merge_Step",
+  "file": "Tools/Algo/Sort/Sorting_network.hpp",
+  "tpl": [
+   "int N",
+   "int DIST",
+   "int DIR"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Bitonic_Merge",
+  "file": "Tools/Algo/Sort/Sorting_network.hpp",
+  "tpl": [
+   "int N",
+   "int DIR"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Bitonic_Sort",
+  "file": "Tools/Algo/Sort/Sorting_network.hpp",
+  "tpl": [
+   "int N",
+   "int DIR"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Merge_Prune",
+  "file": "Tools/Algo/Sort/Sorting_network.hpp",
+  "tpl": [
+   "int L"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Sort_Blocks",
+  "file": "Tools/Algo/Sort/Sorting_network.hpp",
+  "tpl": [
+   "int N",
+   "int L"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Tree_Merge_Prune",
+  "file": "Tools/Algo/Sort/Sorting_network.hpp",
+  "tpl": [
+   "int N_BLOCKS",
+   "int L"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Partial_Sort",
+  "file": "Tools/Algo/Sort/Sorting_network.hpp",
+  "tpl": [
+   "int N",
+   "int L"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Sorting_network",
+  "file": "Tools/Algo/Sort/Sorting_network.hpp",
+  "tpl": [
+   "typename T"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Binary_node",
+  "file": "Tools/Algo/Tree/Binary/Binary_node.hpp",
+  "tpl": [
+   "typename T = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Binary_tree",
+  "file": "Tools/Algo/Tree/Binary/Binary_tree.hpp",
+  "tpl": [
+   "typename T = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Binary_tree_metric",
+  "file": "Tools/Algo/Tree/Binary/Binary_tree_metric.hpp",
+  "tpl": [
+   "typename T = float",
+   "typename R = int"
+  ],
+  "bases": [
+   "Binary_tree<T>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Generic_node",
+  "file": "Tools/Algo/Tree/Generic/Generic_node.hpp",
+  "tpl": [
+   "typename T = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Generic_tree",
+  "file": "Tools/Algo/Tree/Generic/Generic_tree.hpp",
+  "tpl": [
+   "typename T = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Generic_tree_metric",
+  "file": "Tools/Algo/Tree/Generic/Generic_tree_metric.hpp",
+  "tpl": [
+   "typename T = float",
+   "typename R = int"
+  ],
+  "bases": [
+   "Generic_tree<T>"
+  ],
+  "uses": [],
+  "domain": "Algo",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "BCH_polynomial_generator",
+  "file": "Tools/Code/BCH/BCH_polynomial_generator.hpp",
+  "tpl": [
+   "typename I = int"
+  ],
+  "bases": [
+   "Galois<I>"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.BCH_polynomial_generator"
+ },
+ {
+  "kind": "Tools",
+  "name": "CPM_BCJR",
+  "file": "Tools/Code/CPM/BCJR/CPM_BCJR.hpp",
+  "tpl": [
+   "typename SIN = int",
+   "typename SOUT = int",
+   "typename Q = float",
+   "proto_max<Q> MAX = max_star"
+  ],
+  "bases": [],
+  "uses": [
+   "CPM_parameters"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Encoder_CPE",
+  "file": "Tools/Code/CPM/CPE/Encoder_CPE.hpp",
+  "tpl": [
+   "typename SIN = int",
+   "typename SOUT = int"
+  ],
+  "bases": [],
+  "uses": [
+   "CPM_parameters"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Encoder_CPE_Rimoldi",
+  "file": "Tools/Code/CPM/CPE/Encoder_CPE_Rimoldi.hpp",
+  "tpl": [
+   "typename SIN = int",
+   "typename SOUT = int"
+  ],
+  "bases": [
+   "Encoder_CPE<SIN, SOUT>"
+  ],
+  "uses": [
+   "CPM_parameters"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "CPM_parameters",
+  "file": "Tools/Code/CPM/CPM_parameters.hpp",
+  "tpl": [
+   "typename SIN = int",
+   "typename SOUT = int"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "AList",
+  "file": "Tools/Code/LDPC/AList/AList.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "func",
+  "priority": "P1",
+  "py": "aff3ct.tools.ldpc.AList"
+ },
+ {
+  "kind": "Tools",
+  "name": "LDPC_matrix_handler",
+  "file": "Tools/Code/LDPC/Matrix_handler/LDPC_matrix_handler.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "func",
+  "priority": "P1",
+  "py": "aff3ct.tools.ldpc.LDPC_matrix_handler"
+ },
+ {
+  "kind": "Tools",
+  "name": "QC",
+  "file": "Tools/Code/LDPC/QC/QC.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "func",
+  "priority": "P1",
+  "py": "aff3ct.tools.ldpc.QC"
+ },
+ {
+  "kind": "Tools",
+  "name": "Std_5G_base_graph",
+  "file": "Tools/Code/LDPC/Standard/5G/5G_base_graph.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_1800",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_2880",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_3600",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_4320",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_5400",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_6480",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_9000",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_9720",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_10800",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_16200_12960",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_16200.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_6480",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_7200",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_10800",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_12960",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_16200",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_21600",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_25920",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_32400",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_38880",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_43200",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "dvbs2_values_64800_48600",
+  "file": "Tools/Code/LDPC/Standard/DVBS2/DVBS2_constants_64800.hpp",
+  "tpl": [],
+  "bases": [
+   "dvbs2_values"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "LDPC_syndrome",
+  "file": "Tools/Code/LDPC/Syndrome/LDPC_syndrome.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_AMS",
+  "file": "Tools/Code/LDPC/Update_rule/AMS/Update_rule_AMS.hpp",
+  "tpl": [
+   "typename R = float",
+   "proto_min<R> MIN = min_star_linear2"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_AMS_simd",
+  "file": "Tools/Code/LDPC/Update_rule/AMS/Update_rule_AMS_simd.hpp",
+  "tpl": [
+   "typename R = float",
+   "proto_min_i<R> MIN = min_star_linear2_i"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_LSPA",
+  "file": "Tools/Code/LDPC/Update_rule/LSPA/Update_rule_LSPA.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_LSPA_simd",
+  "file": "Tools/Code/LDPC/Update_rule/LSPA/Update_rule_LSPA_simd.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_MS",
+  "file": "Tools/Code/LDPC/Update_rule/MS/Update_rule_MS.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_MS_simd",
+  "file": "Tools/Code/LDPC/Update_rule/MS/Update_rule_MS_simd.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_NMS",
+  "file": "Tools/Code/LDPC/Update_rule/NMS/Update_rule_NMS.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_NMS_simd",
+  "file": "Tools/Code/LDPC/Update_rule/NMS/Update_rule_NMS_simd.hpp",
+  "tpl": [
+   "typename R = float",
+   "int F = 0"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_OMS",
+  "file": "Tools/Code/LDPC/Update_rule/OMS/Update_rule_OMS.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_OMS_simd",
+  "file": "Tools/Code/LDPC/Update_rule/OMS/Update_rule_OMS_simd.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_SPA",
+  "file": "Tools/Code/LDPC/Update_rule/SPA/Update_rule_SPA.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Update_rule_SPA_simd",
+  "file": "Tools/Code/LDPC/Update_rule/SPA/Update_rule_SPA_simd.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar",
+  "file": "Tools/Code/Polar/API/API_polar.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_dynamic_inter",
+  "file": "Tools/Code/Polar/API/API_polar_dynamic_inter.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f_i<R> FI = f_LLR_i<R>",
+   "proto_g_i<B, R> GI = g_LLR_i<B, R>",
+   "proto_g0_i<R> G0I = g0_LLR_i<R>",
+   "proto_h_i<B, R> HI = h_LLR_i<B, R>",
+   "proto_xo_i<B> XOI = xo_STD_i<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_dynamic_inter_8bit_bitpacking",
+  "file": "Tools/Code/Polar/API/API_polar_dynamic_inter_8bit_bitpacking.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f_i<R> FI = f_LLR_i<R>",
+   "proto_g_i<B, R> GI = g_LLR_i<B, R>",
+   "proto_g0_i<R> G0I = g0_LLR_i<R>",
+   "proto_h_i<B, R> HI = h_LLR_i<B, R>",
+   "proto_xo_i<B> XOI = xo_STD_i<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_dynamic_intra",
+  "file": "Tools/Code/Polar/API/API_polar_dynamic_intra.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f<R> F = f_LLR<R>",
+   "proto_g<B, R> G = g_LLR<B, R>",
+   "proto_g0<R> G0 = g0_LLR<R>",
+   "proto_h<B, R> H = h_LLR<B, R>",
+   "proto_xo<B> XO = xo_STD<B>",
+   "proto_f_i<R> FI = f_LLR_i<R>",
+   "proto_g_i<B, R> GI = g_LLR_i<B, R>",
+   "proto_g0_i<R> G0I = g0_LLR_i<R>",
+   "proto_h_i<B, R> HI = h_LLR_i<B, R>",
+   "proto_xo_i<B> XOI = xo_STD_i<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_dynamic_seq",
+  "file": "Tools/Code/Polar/API/API_polar_dynamic_seq.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f<R> F = f_LLR<R>",
+   "proto_g<B, R> G = g_LLR<B, R>",
+   "proto_g0<R> G0 = g0_LLR<R>",
+   "proto_h<B, R> H = h_LLR<B, R>",
+   "proto_xo<B> XO = xo_STD<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_static_inter",
+  "file": "Tools/Code/Polar/API/API_polar_static_inter.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f_i<R> FI = f_LLR_i<R>",
+   "proto_g_i<B, R> GI = g_LLR_i<B, R>",
+   "proto_g0_i<R> G0I = g0_LLR_i<R>",
+   "proto_h_i<B, R> HI = h_LLR_i<B, R>",
+   "proto_xo_i<B> XOI = xo_STD_i<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_static_inter_8bit_bitpacking",
+  "file": "Tools/Code/Polar/API/API_polar_static_inter_8bit_bitpacking.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f_i<R> FI = f_LLR_i<R>",
+   "proto_g_i<B, R> GI = g_LLR_i<B, R>",
+   "proto_g0_i<R> G0I = g0_LLR_i<R>",
+   "proto_h_i<B, R> HI = h_LLR_i<B, R>",
+   "proto_xo_i<B> XOI = xo_STD_i<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_static_intra_16bit",
+  "file": "Tools/Code/Polar/API/API_polar_static_intra_16bit.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f<R> F = f_LLR<R>",
+   "proto_g<B, R> G = g_LLR<B, R>",
+   "proto_g0<R> G0 = g0_LLR<R>",
+   "proto_h<B, R> H = h_LLR<B, R>",
+   "proto_xo<B> XO = xo_STD<B>",
+   "proto_f_i<R> FI = f_LLR_i<R>",
+   "proto_g_i<B, R> GI = g_LLR_i<B, R>",
+   "proto_g0_i<R> G0I = g0_LLR_i<R>",
+   "proto_h_i<B, R> HI = h_LLR_i<B, R>",
+   "proto_xo_i<B> XOI = xo_STD_i<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_static_intra_32bit",
+  "file": "Tools/Code/Polar/API/API_polar_static_intra_32bit.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f<R> F = f_LLR<R>",
+   "proto_g<B, R> G = g_LLR<B, R>",
+   "proto_g0<R> G0 = g0_LLR<R>",
+   "proto_h<B, R> H = h_LLR<B, R>",
+   "proto_xo<B> XO = xo_STD<B>",
+   "proto_f_i<R> FI = f_LLR_i<R>",
+   "proto_g_i<B, R> GI = g_LLR_i<B, R>",
+   "proto_g0_i<R> G0I = g0_LLR_i<R>",
+   "proto_h_i<B, R> HI = h_LLR_i<B, R>",
+   "proto_xo_i<B> XOI = xo_STD_i<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_static_intra_8bit",
+  "file": "Tools/Code/Polar/API/API_polar_static_intra_8bit.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f<R> F = f_LLR<R>",
+   "proto_g<B, R> G = g_LLR<B, R>",
+   "proto_g0<R> G0 = g0_LLR<R>",
+   "proto_h<B, R> H = h_LLR<B, R>",
+   "proto_xo<B> XO = xo_STD<B>",
+   "proto_f_i<R> FI = f_LLR_i<R>",
+   "proto_g_i<B, R> GI = g_LLR_i<B, R>",
+   "proto_g0_i<R> G0I = g0_LLR_i<R>",
+   "proto_h_i<B, R> HI = h_LLR_i<B, R>",
+   "proto_xo_i<B> XOI = xo_STD_i<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "API_polar_static_seq",
+  "file": "Tools/Code/Polar/API/API_polar_static_seq.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float",
+   "proto_f<R> F = f_LLR<R>",
+   "proto_g<B, R> G = g_LLR<B, R>",
+   "proto_g0<R> G0 = g0_LLR<R>",
+   "proto_h<B, R> H = h_LLR<B, R>",
+   "proto_xo<B> XO = xo_STD<B>"
+  ],
+  "bases": [
+   "API_polar"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Frozenbits_generator",
+  "file": "Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator.hpp",
+  "tpl": [],
+  "bases": [
+   "Interface_get_set_noise",
+   "spu::tools::Interface_clone"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.tools.polar.Frozenbits_generator"
+ },
+ {
+  "kind": "Tools",
+  "name": "Frozenbits_generator_5G",
+  "file": "Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_5G.hpp",
+  "tpl": [],
+  "bases": [
+   "Frozenbits_generator_file"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.polar.Frozenbits_generator_5G"
+ },
+ {
+  "kind": "Tools",
+  "name": "Frozenbits_generator_BEC",
+  "file": "Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_BEC.hpp",
+  "tpl": [],
+  "bases": [
+   "Frozenbits_generator"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.polar.Frozenbits_generator_BEC"
+ },
+ {
+  "kind": "Tools",
+  "name": "Frozenbits_generator_GA",
+  "file": "Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA.hpp",
+  "tpl": [],
+  "bases": [
+   "Frozenbits_generator"
+  ],
+  "uses": [
+   "Polar_code"
+  ],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.polar.Frozenbits_generator_GA"
+ },
+ {
+  "kind": "Tools",
+  "name": "Frozenbits_generator_GA_Arikan",
+  "file": "Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA_Arikan.hpp",
+  "tpl": [],
+  "bases": [
+   "Frozenbits_generator"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.polar.Frozenbits_generator_GA_Arikan"
+ },
+ {
+  "kind": "Tools",
+  "name": "Frozenbits_generator_RM",
+  "file": "Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_RM.hpp",
+  "tpl": [],
+  "bases": [
+   "Frozenbits_generator"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.polar.Frozenbits_generator_RM"
+ },
+ {
+  "kind": "Tools",
+  "name": "Frozenbits_generator_TV",
+  "file": "Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_TV.hpp",
+  "tpl": [],
+  "bases": [
+   "Frozenbits_generator_file"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.polar.Frozenbits_generator_TV"
+ },
+ {
+  "kind": "Tools",
+  "name": "Frozenbits_generator_file",
+  "file": "Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_file.hpp",
+  "tpl": [],
+  "bases": [
+   "Frozenbits_generator"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.polar.Frozenbits_generator_file"
+ },
+ {
+  "kind": "Tools",
+  "name": "Nodes_parser",
+  "file": "Tools/Code/Polar/Nodes_parser.hpp",
+  "tpl": [
+   "class R0 = Pattern_polar_r0",
+   "class R0L = Pattern_polar_r0_left",
+   "class R1 = Pattern_polar_r1",
+   "class REP = Pattern_polar_rep",
+   "class REPL = Pattern_polar_rep_left",
+   "class SPC = Pattern_polar_spc",
+   "class STD = Pattern_polar_std"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pattern_polar_parser",
+  "file": "Tools/Code/Polar/Pattern_polar_parser.hpp",
+  "tpl": [],
+  "bases": [
+   "Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "Pattern_polar_i"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pattern_polar_i",
+  "file": "Tools/Code/Polar/Patterns/Pattern_polar_i.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [
+   "Binary_node"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pattern_polar_r0",
+  "file": "Tools/Code/Polar/Patterns/Pattern_polar_r0.hpp",
+  "tpl": [],
+  "bases": [
+   "Pattern_polar_i"
+  ],
+  "uses": [
+   "Binary_node"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pattern_polar_r0_left",
+  "file": "Tools/Code/Polar/Patterns/Pattern_polar_r0_left.hpp",
+  "tpl": [],
+  "bases": [
+   "Pattern_polar_i"
+  ],
+  "uses": [
+   "Binary_node"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pattern_polar_r1",
+  "file": "Tools/Code/Polar/Patterns/Pattern_polar_r1.hpp",
+  "tpl": [],
+  "bases": [
+   "Pattern_polar_i"
+  ],
+  "uses": [
+   "Binary_node"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pattern_polar_rep",
+  "file": "Tools/Code/Polar/Patterns/Pattern_polar_rep.hpp",
+  "tpl": [],
+  "bases": [
+   "Pattern_polar_i"
+  ],
+  "uses": [
+   "Binary_node"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pattern_polar_rep_left",
+  "file": "Tools/Code/Polar/Patterns/Pattern_polar_rep_left.hpp",
+  "tpl": [],
+  "bases": [
+   "Pattern_polar_i"
+  ],
+  "uses": [
+   "Binary_node"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pattern_polar_spc",
+  "file": "Tools/Code/Polar/Patterns/Pattern_polar_spc.hpp",
+  "tpl": [],
+  "bases": [
+   "Pattern_polar_i"
+  ],
+  "uses": [
+   "Binary_node"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pattern_polar_std",
+  "file": "Tools/Code/Polar/Patterns/Pattern_polar_std.hpp",
+  "tpl": [],
+  "bases": [
+   "Pattern_polar_i"
+  ],
+  "uses": [
+   "Binary_node"
+  ],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Polar_code",
+  "file": "Tools/Code/Polar/Polar_code.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.polar.Polar_code"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pretransform_generator",
+  "file": "Tools/Code/Polar/Pretransform_generator/Pretransform_generator.hpp",
+  "tpl": [],
+  "bases": [
+   "Interface_get_set_noise",
+   "spu::tools::Interface_clone"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.tools.polar.Pretransform_generator"
+ },
+ {
+  "kind": "Tools",
+  "name": "Pretransform_generator_file",
+  "file": "Tools/Code/Polar/Pretransform_generator/Pretransform_generator_file.hpp",
+  "tpl": [],
+  "bases": [
+   "Pretransform_generator"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.polar.Pretransform_generator_file"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codebook",
+  "file": "Tools/Code/SCMA/Codebook.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "CRC_checker",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/CRC/CRC_checker.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Post_processing_SISO<B, R>"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.CRC_checker"
+ },
+ {
+  "kind": "Tools",
+  "name": "CRC_checker_DB",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/CRC/CRC_checker_DB.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "CRC_checker<B, R>"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.CRC_checker_DB"
+ },
+ {
+  "kind": "Tools",
+  "name": "Flip_and_check",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Flip_and_check/Flip_and_check.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "CRC_checker<B, R>"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Flip_and_check"
+ },
+ {
+  "kind": "Tools",
+  "name": "Flip_and_check_DB",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Flip_and_check/Flip_and_check_DB.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "CRC_checker_DB<B, R>"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Flip_and_check_DB"
+ },
+ {
+  "kind": "Tools",
+  "name": "Post_processing_SISO",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Post_processing_SISO.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "spu::tools::Interface_clone",
+   "spu::tools::Interface_get_set_n_frames"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Post_processing_SISO"
+ },
+ {
+  "kind": "Tools",
+  "name": "Scaling_factor",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Scaling_factor/Scaling_factor.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Post_processing_SISO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Scaling_factor"
+ },
+ {
+  "kind": "Tools",
+  "name": "Scaling_factor_adaptive",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Scaling_factor/Scaling_factor_adaptive.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Scaling_factor<B, R>"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Scaling_factor_adaptive"
+ },
+ {
+  "kind": "Tools",
+  "name": "Scaling_factor_array",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Scaling_factor/Scaling_factor_array.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Scaling_factor<B, R>"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Scaling_factor_array"
+ },
+ {
+  "kind": "Tools",
+  "name": "Scaling_factor_constant",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Scaling_factor/Scaling_factor_constant.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Scaling_factor<B, R>"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Scaling_factor_constant"
+ },
+ {
+  "kind": "Tools",
+  "name": "Scaling_factor_seq",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Scaling_factor/Scaling_factor_seq.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Scaling_factor<B, R>"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Scaling_factor_seq"
+ },
+ {
+  "kind": "Tools",
+  "name": "Scaling_factor_vec",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Scaling_factor/Scaling_factor_vec.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Scaling_factor<B, R>"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Scaling_factor_vec"
+ },
+ {
+  "kind": "Tools",
+  "name": "Self_corrected",
+  "file": "Tools/Code/Turbo/Post_processing_SISO/Self_corrected/Self_corrected.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Post_processing_SISO<B, R>"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.turbo.Self_corrected"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_BCH",
+  "file": "Tools/Codec/BCH/Codec_BCH.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SIHO<B, Q>"
+  ],
+  "uses": [
+   "Decoder_BCH",
+   "Encoder_BCH"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_BCH"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec",
+  "file": "Tools/Codec/Codec.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Interface_get_set_noise",
+   "Interface_notify_noise_update",
+   "spu::tools::Interface_get_set_n_frames",
+   "spu::tools::Interface_clone"
+  ],
+  "uses": [],
+  "domain": "Codec",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_HIHO",
+  "file": "Tools/Codec/Codec_HIHO.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Codec",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_HIHO"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_SIHO",
+  "file": "Tools/Codec/Codec_SIHO.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_HIHO<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Codec",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_SIHO"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_SISO",
+  "file": "Tools/Codec/Codec_SISO.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SIHO<B, Q>"
+  ],
+  "uses": [],
+  "domain": "Codec",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_SISO"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_conv",
+  "file": "Tools/Codec/Conv/Codec_conv.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SIHO<B, Q>"
+  ],
+  "uses": [
+   "CRC",
+   "Decoder_conv",
+   "Encoder_conv"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_conv"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_LDPC",
+  "file": "Tools/Codec/LDPC/Codec_LDPC.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SISO<B, Q>"
+  ],
+  "uses": [
+   "Decoder_LDPC",
+   "Encoder_LDPC",
+   "Puncturer_LDPC"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_LDPC"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_polar",
+  "file": "Tools/Codec/Polar/Codec_polar.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SISO<B, Q>",
+   "Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "CRC",
+   "Decoder_polar",
+   "Encoder_polar",
+   "Frozenbits_generator",
+   "Puncturer_polar"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_polar"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_polar_MK",
+  "file": "Tools/Codec/Polar_MK/Codec_polar_MK.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SIHO<B, Q>",
+   "Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "CRC",
+   "Decoder_polar_MK",
+   "Encoder_polar_MK",
+   "Frozenbits_generator_MK",
+   "Polar_code"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_polar_MK"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_polar_PAC",
+  "file": "Tools/Codec/Polar_PAC/Codec_polar_PAC.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SISO<B, Q>",
+   "Interface_get_set_frozen_bits"
+  ],
+  "uses": [
+   "CRC",
+   "Decoder_polar_PAC",
+   "Encoder_polar_PAC",
+   "Frozenbits_generator"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_polar_PAC"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_polar_PT",
+  "file": "Tools/Codec/Polar_PT/Codec_polar_PT.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SISO<B, Q>",
+   "Interface_get_set_pretransform",
+   "Interface_get_set_frozen_bits",
+   "Interface_get_set_dynamic_frozen_bits"
+  ],
+  "uses": [
+   "CRC",
+   "Decoder_polar_PT",
+   "Encoder_polar_PT",
+   "Frozenbits_generator",
+   "Pretransform_generator"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_polar_PT"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_RA",
+  "file": "Tools/Codec/RA/Codec_RA.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SIHO<B, Q>"
+  ],
+  "uses": [
+   "Decoder_RA",
+   "Encoder_RA",
+   "Interleaver"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_RA"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_RS",
+  "file": "Tools/Codec/RS/Codec_RS.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SIHO<B, Q>"
+  ],
+  "uses": [
+   "Decoder_RS",
+   "Encoder_RS"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_RS"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_RSC",
+  "file": "Tools/Codec/RSC/Codec_RSC.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SISO<B, Q>"
+  ],
+  "uses": [
+   "CRC",
+   "Decoder_RSC",
+   "Encoder_RSC"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_RSC"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_RSC_DB",
+  "file": "Tools/Codec/RSC_DB/Codec_RSC_DB.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SISO<B, Q>"
+  ],
+  "uses": [
+   "Decoder_RSC_DB",
+   "Encoder_RSC_DB"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_RSC_DB"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_repetition",
+  "file": "Tools/Codec/Repetition/Codec_repetition.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SIHO<B, Q>"
+  ],
+  "uses": [
+   "Decoder_repetition",
+   "Encoder_repetition"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_repetition"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_turbo",
+  "file": "Tools/Codec/Turbo/Codec_turbo.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SIHO<B, Q>"
+  ],
+  "uses": [
+   "CRC",
+   "Decoder_turbo",
+   "Encoder_turbo",
+   "Interleaver",
+   "Puncturer_turbo"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_turbo"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_turbo_DB",
+  "file": "Tools/Codec/Turbo_DB/Codec_turbo_DB.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SIHO<B, Q>"
+  ],
+  "uses": [
+   "CRC",
+   "Decoder_turbo_DB",
+   "Encoder_turbo_DB",
+   "Interleaver",
+   "Puncturer_turbo_DB"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_turbo_DB"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_turbo_product",
+  "file": "Tools/Codec/Turbo_product/Codec_turbo_product.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SISO<B, Q>"
+  ],
+  "uses": [
+   "Decoder_turbo_product",
+   "Encoder_turbo_product",
+   "Interleaver"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_turbo_product"
+ },
+ {
+  "kind": "Tools",
+  "name": "Codec_uncoded",
+  "file": "Tools/Codec/Uncoded/Codec_uncoded.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename Q = float"
+  ],
+  "bases": [
+   "Codec_SISO<B, Q>"
+  ],
+  "uses": [
+   "Decoder_NO",
+   "Encoder_NO"
+  ],
+  "domain": "Codec",
+  "strategy": "factory",
+  "priority": "P1",
+  "py": "aff3ct.codec.Codec_uncoded"
+ },
+ {
+  "kind": "Tools",
+  "name": "Constellation",
+  "file": "Tools/Constellation/Constellation.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Constellation",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.tools.cst.Constellation"
+ },
+ {
+  "kind": "Tools",
+  "name": "Constellation_PAM",
+  "file": "Tools/Constellation/PAM/Constellation_PAM.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Constellation<R>"
+  ],
+  "uses": [],
+  "domain": "Constellation",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.cst.Constellation_PAM"
+ },
+ {
+  "kind": "Tools",
+  "name": "Constellation_PSK",
+  "file": "Tools/Constellation/PSK/Constellation_PSK.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Constellation<R>"
+  ],
+  "uses": [],
+  "domain": "Constellation",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.cst.Constellation_PSK"
+ },
+ {
+  "kind": "Tools",
+  "name": "Constellation_QAM",
+  "file": "Tools/Constellation/QAM/Constellation_QAM.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Constellation<R>"
+  ],
+  "uses": [],
+  "domain": "Constellation",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.cst.Constellation_QAM"
+ },
+ {
+  "kind": "Tools",
+  "name": "Constellation_user",
+  "file": "Tools/Constellation/User/Constellation_user.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Constellation<R>"
+  ],
+  "uses": [],
+  "domain": "Constellation",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.cst.Constellation_user"
+ },
+ {
+  "kind": "Tools",
+  "name": "Dumper",
+  "file": "Tools/Display/Dumper/Dumper.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Display",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.Dumper"
+ },
+ {
+  "kind": "Tools",
+  "name": "Dumper_reduction",
+  "file": "Tools/Display/Dumper/Dumper_reduction.hpp",
+  "tpl": [],
+  "bases": [
+   "Dumper"
+  ],
+  "uses": [],
+  "domain": "Display",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.Dumper_reduction"
+ },
+ {
+  "kind": "Tools",
+  "name": "Frame_trace",
+  "file": "Tools/Display/Frame_trace/Frame_trace.hpp",
+  "tpl": [
+   "typename B = int"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Display",
+  "strategy": "wrap",
+  "priority": "P3",
+  "py": "aff3ct.tools.Frame_trace"
+ },
+ {
+  "kind": "Tools",
+  "name": "Command_parser",
+  "file": "Tools/Factory/Command_parser.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [
+   "Factory"
+  ],
+  "domain": "Factory",
+  "strategy": "func",
+  "priority": "P1",
+  "py": "aff3ct.factory.Command_parser"
+ },
+ {
+  "kind": "Tools",
+  "name": "Header",
+  "file": "Tools/Factory/Header.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Factory",
+  "strategy": "func",
+  "priority": "P1",
+  "py": "aff3ct.factory.Header"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interface_get_set_dynamic_frozen_bits",
+  "file": "Tools/Interface/Interface_get_set_dynamic_frozen_bits.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Interface",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.interfaces.Interface_get_set_dynamic_frozen_bits"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interface_get_set_frozen_bits",
+  "file": "Tools/Interface/Interface_get_set_frozen_bits.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Interface",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.interfaces.Interface_get_set_frozen_bits"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interface_get_set_noise",
+  "file": "Tools/Interface/Interface_get_set_noise.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Interface",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.interfaces.Interface_get_set_noise"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interface_get_set_pretransform",
+  "file": "Tools/Interface/Interface_get_set_pretransform.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Interface",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.interfaces.Interface_get_set_pretransform"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interface_get_trellis",
+  "file": "Tools/Interface/Interface_get_trellis.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Interface",
+  "strategy": "abstract",
+  "priority": "P1",
+  "py": "aff3ct.interfaces.Interface_get_trellis"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interface_notify_noise_update",
+  "file": "Tools/Interface/Interface_notify_noise_update.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Interface",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.interfaces.Interface_notify_noise_update"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_ARP_DVB_RCS1",
+  "file": "Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS1.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.itl.Interleaver_core_ARP_DVB_RCS1"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_ARP_DVB_RCS2",
+  "file": "Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS2.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.itl.Interleaver_core_ARP_DVB_RCS2"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_CCSDS",
+  "file": "Tools/Interleaver/CCSDS/Interleaver_core_CCSDS.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.itl.Interleaver_core_CCSDS"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_column_row",
+  "file": "Tools/Interleaver/Column_row/Interleaver_core_column_row.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.itl.Interleaver_core_column_row"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_golden",
+  "file": "Tools/Interleaver/Golden/Interleaver_core_golden.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.itl.Interleaver_core_golden"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core",
+  "file": "Tools/Interleaver/Interleaver_core.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "spu::tools::Interface_set_seed",
+   "spu::tools::Interface_get_set_n_frames",
+   "spu::tools::Interface_clone"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.tools.itl.Interleaver_core"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_LTE",
+  "file": "Tools/Interleaver/LTE/Interleaver_core_LTE.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.itl.Interleaver_core_LTE"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_NO",
+  "file": "Tools/Interleaver/NO/Interleaver_core_NO.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.itl.Interleaver_core_NO"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_random",
+  "file": "Tools/Interleaver/Random/Interleaver_core_random.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.itl.Interleaver_core_random"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_random_column",
+  "file": "Tools/Interleaver/Random_column/Interleaver_core_random_column.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.itl.Interleaver_core_random_column"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_row_column",
+  "file": "Tools/Interleaver/Row_column/Interleaver_core_row_column.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.itl.Interleaver_core_row_column"
+ },
+ {
+  "kind": "Tools",
+  "name": "Interleaver_core_user",
+  "file": "Tools/Interleaver/User/Interleaver_core_user.hpp",
+  "tpl": [
+   "typename T = uint32_t"
+  ],
+  "bases": [
+   "Interleaver_core<T>"
+  ],
+  "uses": [],
+  "domain": "Interleaver",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.itl.Interleaver_core_user"
+ },
+ {
+  "kind": "Tools",
+  "name": "Distribution",
+  "file": "Tools/Math/Distribution/Distribution.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Math",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.Distribution"
+ },
+ {
+  "kind": "Tools",
+  "name": "Distributions",
+  "file": "Tools/Math/Distribution/Distributions.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Math",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.Distributions"
+ },
+ {
+  "kind": "Tools",
+  "name": "Galois",
+  "file": "Tools/Math/Galois.hpp",
+  "tpl": [
+   "typename I = int"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Math",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.tools.Galois"
+ },
+ {
+  "kind": "Tools",
+  "name": "Monitor_reduction_static",
+  "file": "Tools/Monitor/Monitor_reduction.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [],
+  "domain": "Monitor",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.tools.Monitor_reduction_static"
+ },
+ {
+  "kind": "Tools",
+  "name": "Monitor_reduction",
+  "file": "Tools/Monitor/Monitor_reduction.hpp",
+  "tpl": [
+   "class M"
+  ],
+  "bases": [
+   "Monitor_reduction_static",
+   "M"
+  ],
+  "uses": [],
+  "domain": "Monitor",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.tools.Monitor_reduction"
+ },
+ {
+  "kind": "Tools",
+  "name": "Monitor_reduction_MPI",
+  "file": "Tools/Monitor/Monitor_reduction_MPI.hpp",
+  "tpl": [
+   "class M"
+  ],
+  "bases": [
+   "Monitor_reduction<M>"
+  ],
+  "uses": [],
+  "domain": "Monitor",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Event_probability",
+  "file": "Tools/Noise/Event_probability.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Noise<R>"
+  ],
+  "uses": [],
+  "domain": "Noise",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.Event_probability"
+ },
+ {
+  "kind": "Tools",
+  "name": "Noise",
+  "file": "Tools/Noise/Noise.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Noise",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.tools.Noise"
+ },
+ {
+  "kind": "Tools",
+  "name": "Received_optical_power",
+  "file": "Tools/Noise/Received_optical_power.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Noise<R>"
+  ],
+  "uses": [],
+  "domain": "Noise",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.tools.Received_optical_power"
+ },
+ {
+  "kind": "Tools",
+  "name": "Sigma",
+  "file": "Tools/Noise/Sigma.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "Noise<R>"
+  ],
+  "uses": [],
+  "domain": "Noise",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.Sigma"
+ },
+ {
+  "kind": "Tools",
+  "name": "Reorderer",
+  "file": "Tools/Perf/Reorderer/Reorderer.hpp",
+  "tpl": [
+   "typename T"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Perf",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Reorderer_static",
+  "file": "Tools/Perf/Reorderer/Reorderer.hpp",
+  "tpl": [
+   "typename T",
+   "int N_FRAMES"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Perf",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Tools",
+  "name": "Reporter_BFER",
+  "file": "Tools/Reporter/BFER/Reporter_BFER.hpp",
+  "tpl": [
+   "typename B = int32_t"
+  ],
+  "bases": [
+   "Reporter_monitor<module::Monitor_BFER<B>>"
+  ],
+  "uses": [],
+  "domain": "Reporter",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.reporter.Reporter_BFER"
+ },
+ {
+  "kind": "Tools",
+  "name": "Reporter_EXIT",
+  "file": "Tools/Reporter/EXIT/Reporter_EXIT.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float"
+  ],
+  "bases": [
+   "Reporter_monitor<module::Monitor_EXIT<B, R>>"
+  ],
+  "uses": [
+   "Noise"
+  ],
+  "domain": "Reporter",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.reporter.Reporter_EXIT"
+ },
+ {
+  "kind": "Tools",
+  "name": "Reporter_MI",
+  "file": "Tools/Reporter/MI/Reporter_MI.hpp",
+  "tpl": [
+   "typename B = int32_t",
+   "typename R = float"
+  ],
+  "bases": [
+   "Reporter_monitor<module::Monitor_MI<B, R>>"
+  ],
+  "uses": [],
+  "domain": "Reporter",
+  "strategy": "wrap",
+  "priority": "P2",
+  "py": "aff3ct.reporter.Reporter_MI"
+ },
+ {
+  "kind": "Tools",
+  "name": "Reporter_noise",
+  "file": "Tools/Reporter/Noise/Reporter_noise.hpp",
+  "tpl": [
+   "typename R = float"
+  ],
+  "bases": [
+   "spu::tools::Reporter"
+  ],
+  "uses": [
+   "Noise"
+  ],
+  "domain": "Reporter",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.reporter.Reporter_noise"
+ },
+ {
+  "kind": "Tools",
+  "name": "Reporter_monitor",
+  "file": "Tools/Reporter/Reporter_monitor.hpp",
+  "tpl": [
+   "class M_t"
+  ],
+  "bases": [
+   "spu::tools::Reporter"
+  ],
+  "uses": [],
+  "domain": "Reporter",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.reporter.Reporter_monitor"
+ },
+ {
+  "kind": "Tools",
+  "name": "Reporter_throughput",
+  "file": "Tools/Reporter/Throughput/Reporter_throughput.hpp",
+  "tpl": [
+   "typename T = uint64_t"
+  ],
+  "bases": [
+   "spu::tools::Reporter"
+  ],
+  "uses": [
+   "Monitor_BFER",
+   "Monitor_EXIT",
+   "Monitor_MI"
+  ],
+  "domain": "Reporter",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.reporter.Reporter_throughput"
+ },
+ {
+  "kind": "Tools",
+  "name": "auto_cloned_unique_ptr",
+  "file": "Tools/auto_cloned_unique_ptr.hpp",
+  "tpl": [
+   "typename D"
+  ],
+  "bases": [],
+  "uses": [],
+  "domain": "Misc",
+  "strategy": "skip",
+  "priority": "-",
+  "py": "\u2014"
+ },
+ {
+  "kind": "Factory",
+  "name": "Factory",
+  "file": "Factory/Factory.hpp",
+  "tpl": [],
+  "bases": [
+   "spu::tools::Interface_clone"
+  ],
+  "uses": [],
+  "domain": "Factory/Base",
+  "strategy": "abstract",
+  "priority": "P0",
+  "py": "aff3ct.factory.Factory"
+ },
+ {
+  "kind": "Factory",
+  "name": "CRC",
+  "file": "Factory/Module/CRC/CRC.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/CRC",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.CRC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Channel",
+  "file": "Factory/Module/Channel/Channel.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [
+   "Distributions"
+  ],
+  "domain": "Factory/Channel",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Channel"
+ },
+ {
+  "kind": "Factory",
+  "name": "Coset",
+  "file": "Factory/Module/Coset/Coset.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Coset",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Coset"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_BCH",
+  "file": "Factory/Module/Decoder/BCH/Decoder_BCH.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "BCH_polynomial_generator",
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_BCH"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_conv",
+  "file": "Factory/Module/Decoder/Conv/Decoder_conv.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "CRC",
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_conv"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder",
+  "file": "Factory/Module/Decoder/Decoder.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_LDPC",
+  "file": "Factory/Module/Decoder/LDPC/Decoder_LDPC.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "Encoder",
+   "Sparse_matrix"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_LDPC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_NO",
+  "file": "Factory/Module/Decoder/NO/Decoder_NO.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_NO"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_polar",
+  "file": "Factory/Module/Decoder/Polar/Decoder_polar.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "CRC",
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_polar"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_polar_MK",
+  "file": "Factory/Module/Decoder/Polar_MK/Decoder_polar_MK.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "CRC",
+   "Encoder",
+   "Polar_code"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar_MK"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_polar_PAC",
+  "file": "Factory/Module/Decoder/Polar_PAC/Decoder_polar_PAC.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "CRC",
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar_PAC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_polar_PT",
+  "file": "Factory/Module/Decoder/Polar_PT/Decoder_polar_PT.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "CRC",
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_polar_PT"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_RA",
+  "file": "Factory/Module/Decoder/RA/Decoder_RA.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RA"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_RS",
+  "file": "Factory/Module/Decoder/RS/Decoder_RS.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "Encoder",
+   "RS_polynomial_generator"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_RS"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_RSC",
+  "file": "Factory/Module/Decoder/RSC/Decoder_RSC.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "CRC",
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_RSC_DB",
+  "file": "Factory/Module/Decoder/RSC_DB/Decoder_RSC_DB.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_RSC_DB"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_repetition",
+  "file": "Factory/Module/Decoder/Repetition/Decoder_repetition.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "Encoder"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Decoder_repetition"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_turbo",
+  "file": "Factory/Module/Decoder/Turbo/Decoder_turbo.hpp",
+  "tpl": [
+   "class D1 = Decoder_RSC",
+   "class D2 = D1"
+  ],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "Decoder_SISO",
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_turbo"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_turbo_common",
+  "file": "Factory/Module/Decoder/Turbo/Decoder_turbo.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [
+   "Decoder_SISO",
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_turbo_common"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_turbo_DB",
+  "file": "Factory/Module/Decoder/Turbo_DB/Decoder_turbo_DB.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "Decoder_RSC_DB_BCJR",
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_turbo_DB"
+ },
+ {
+  "kind": "Factory",
+  "name": "Decoder_turbo_product",
+  "file": "Factory/Module/Decoder/Turbo_product/Decoder_turbo_product.hpp",
+  "tpl": [],
+  "bases": [
+   "Decoder"
+  ],
+  "uses": [
+   "Decoder_chase_pyndiah",
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Factory/Decoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Decoder_turbo_product"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_BCH",
+  "file": "Factory/Module/Encoder/BCH/Encoder_BCH.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [
+   "BCH_polynomial_generator"
+  ],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Encoder_BCH"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_conv",
+  "file": "Factory/Module/Encoder/Conv/Encoder_conv.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_conv"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder",
+  "file": "Factory/Module/Encoder/Encoder.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Encoder"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_LDPC",
+  "file": "Factory/Module/Encoder/LDPC/Encoder_LDPC.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [
+   "Sparse_matrix"
+  ],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Encoder_LDPC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_NO",
+  "file": "Factory/Module/Encoder/NO/Encoder_NO.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Encoder_NO"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_polar",
+  "file": "Factory/Module/Encoder/Polar/Encoder_polar.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Encoder_polar"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_polar_MK",
+  "file": "Factory/Module/Encoder/Polar_MK/Encoder_polar_MK.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [
+   "Polar_code"
+  ],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_polar_MK"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_polar_PAC",
+  "file": "Factory/Module/Encoder/Polar_PAC/Encoder_polar_PAC.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_polar_PAC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_polar_PT",
+  "file": "Factory/Module/Encoder/Polar_PT/Encoder_polar_PT.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_polar_PT"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_RA",
+  "file": "Factory/Module/Encoder/RA/Encoder_RA.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [
+   "Interleaver"
+  ],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_RA"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_RS",
+  "file": "Factory/Module/Encoder/RS/Encoder_RS.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [
+   "RS_polynomial_generator"
+  ],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Encoder_RS"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_RSC",
+  "file": "Factory/Module/Encoder/RSC/Encoder_RSC.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_RSC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_RSC_DB",
+  "file": "Factory/Module/Encoder/RSC_DB/Encoder_RSC_DB.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_RSC_DB"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_repetition",
+  "file": "Factory/Module/Encoder/Repetition/Encoder_repetition.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Encoder_repetition"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_turbo",
+  "file": "Factory/Module/Encoder/Turbo/Encoder_turbo.hpp",
+  "tpl": [
+   "class E1 = Encoder_RSC",
+   "class E2 = E1"
+  ],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_turbo"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_turbo_common",
+  "file": "Factory/Module/Encoder/Turbo/Encoder_turbo.hpp",
+  "tpl": [],
+  "bases": [],
+  "uses": [
+   "Encoder",
+   "Interleaver"
+  ],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_turbo_common"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_turbo_DB",
+  "file": "Factory/Module/Encoder/Turbo_DB/Encoder_turbo_DB.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [
+   "Encoder_RSC_DB",
+   "Interleaver"
+  ],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_turbo_DB"
+ },
+ {
+  "kind": "Factory",
+  "name": "Encoder_turbo_product",
+  "file": "Factory/Module/Encoder/Turbo_product/Encoder_turbo_product.hpp",
+  "tpl": [],
+  "bases": [
+   "Encoder"
+  ],
+  "uses": [
+   "Encoder_BCH",
+   "Interleaver"
+  ],
+  "domain": "Factory/Encoder",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Encoder_turbo_product"
+ },
+ {
+  "kind": "Factory",
+  "name": "Interleaver",
+  "file": "Factory/Module/Interleaver/Interleaver.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Interleaver",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Interleaver"
+ },
+ {
+  "kind": "Factory",
+  "name": "Modem",
+  "file": "Factory/Module/Modem/Modem.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [
+   "Constellation",
+   "Distributions"
+  ],
+  "domain": "Factory/Modem",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Modem"
+ },
+ {
+  "kind": "Factory",
+  "name": "Monitor_BFER",
+  "file": "Factory/Module/Monitor/BFER/Monitor_BFER.hpp",
+  "tpl": [],
+  "bases": [
+   "Monitor"
+  ],
+  "uses": [],
+  "domain": "Factory/Monitor",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Monitor_BFER"
+ },
+ {
+  "kind": "Factory",
+  "name": "Monitor_EXIT",
+  "file": "Factory/Module/Monitor/EXIT/Monitor_EXIT.hpp",
+  "tpl": [],
+  "bases": [
+   "Monitor"
+  ],
+  "uses": [],
+  "domain": "Factory/Monitor",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Monitor_EXIT"
+ },
+ {
+  "kind": "Factory",
+  "name": "Monitor_MI",
+  "file": "Factory/Module/Monitor/MI/Monitor_MI.hpp",
+  "tpl": [],
+  "bases": [
+   "Monitor"
+  ],
+  "uses": [],
+  "domain": "Factory/Monitor",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Monitor_MI"
+ },
+ {
+  "kind": "Factory",
+  "name": "Monitor",
+  "file": "Factory/Module/Monitor/Monitor.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Monitor",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Monitor"
+ },
+ {
+  "kind": "Factory",
+  "name": "Puncturer_LDPC",
+  "file": "Factory/Module/Puncturer/LDPC/Puncturer_LDPC.hpp",
+  "tpl": [],
+  "bases": [
+   "Puncturer"
+  ],
+  "uses": [],
+  "domain": "Factory/Puncturer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Puncturer_LDPC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Puncturer_polar",
+  "file": "Factory/Module/Puncturer/Polar/Puncturer_polar.hpp",
+  "tpl": [],
+  "bases": [
+   "Puncturer"
+  ],
+  "uses": [
+   "Frozenbits_generator"
+  ],
+  "domain": "Factory/Puncturer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Puncturer_polar"
+ },
+ {
+  "kind": "Factory",
+  "name": "Puncturer",
+  "file": "Factory/Module/Puncturer/Puncturer.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Puncturer",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Puncturer"
+ },
+ {
+  "kind": "Factory",
+  "name": "Puncturer_turbo",
+  "file": "Factory/Module/Puncturer/Turbo/Puncturer_turbo.hpp",
+  "tpl": [],
+  "bases": [
+   "Puncturer"
+  ],
+  "uses": [],
+  "domain": "Factory/Puncturer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Puncturer_turbo"
+ },
+ {
+  "kind": "Factory",
+  "name": "Puncturer_turbo_DB",
+  "file": "Factory/Module/Puncturer/Turbo_DB/Puncturer_turbo_DB.hpp",
+  "tpl": [],
+  "bases": [
+   "Puncturer"
+  ],
+  "uses": [],
+  "domain": "Factory/Puncturer",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Puncturer_turbo_DB"
+ },
+ {
+  "kind": "Factory",
+  "name": "Quantizer",
+  "file": "Factory/Module/Quantizer/Quantizer.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Quantizer",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Quantizer"
+ },
+ {
+  "kind": "Factory",
+  "name": "Sink",
+  "file": "Factory/Module/Sink/Sink.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Sink",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Sink"
+ },
+ {
+  "kind": "Factory",
+  "name": "Source",
+  "file": "Factory/Module/Source/Source.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Source",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Source"
+ },
+ {
+  "kind": "Factory",
+  "name": "Frozenbits_generator",
+  "file": "Factory/Tools/Code/Polar/Frozenbits_generator.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Frozenbits_generator"
+ },
+ {
+  "kind": "Factory",
+  "name": "Frozenbits_generator_MK",
+  "file": "Factory/Tools/Code/Polar_MK/Frozenbits_generator_MK.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [
+   "Polar_code"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Frozenbits_generator_MK"
+ },
+ {
+  "kind": "Factory",
+  "name": "Polar_code",
+  "file": "Factory/Tools/Code/Polar_MK/Polar_code.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Polar_code"
+ },
+ {
+  "kind": "Factory",
+  "name": "Pretransform_generator",
+  "file": "Factory/Tools/Code/Polar_PT/Pretransform_generator.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Pretransform_generator"
+ },
+ {
+  "kind": "Factory",
+  "name": "Flip_and_check",
+  "file": "Factory/Tools/Code/Turbo/Flip_and_check.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Flip_and_check"
+ },
+ {
+  "kind": "Factory",
+  "name": "Flip_and_check_DB",
+  "file": "Factory/Tools/Code/Turbo/Flip_and_check_DB.hpp",
+  "tpl": [],
+  "bases": [
+   "Flip_and_check"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Flip_and_check_DB"
+ },
+ {
+  "kind": "Factory",
+  "name": "Scaling_factor",
+  "file": "Factory/Tools/Code/Turbo/Scaling_factor.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Scaling_factor"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_BCH",
+  "file": "Factory/Tools/Codec/BCH/Codec_BCH.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_BCH"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec",
+  "file": "Factory/Tools/Codec/Codec.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_HIHO",
+  "file": "Factory/Tools/Codec/Codec_HIHO.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_HIHO"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_SIHO",
+  "file": "Factory/Tools/Codec/Codec_SIHO.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_HIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_SIHO"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_SISO",
+  "file": "Factory/Tools/Codec/Codec_SISO.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_SISO"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_conv",
+  "file": "Factory/Tools/Codec/Conv/Codec_conv.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_conv"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_LDPC",
+  "file": "Factory/Tools/Codec/LDPC/Codec_LDPC.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SISO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_LDPC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_polar",
+  "file": "Factory/Tools/Codec/Polar/Codec_polar.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SISO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_polar"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_polar_MK",
+  "file": "Factory/Tools/Codec/Polar_MK/Codec_polar_MK.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_polar_MK"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_polar_PAC",
+  "file": "Factory/Tools/Codec/Polar_PAC/Codec_polar_PAC.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SISO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_polar_PAC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_polar_PT",
+  "file": "Factory/Tools/Codec/Polar_PT/Codec_polar_PT.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SISO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_polar_PT"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_RA",
+  "file": "Factory/Tools/Codec/RA/Codec_RA.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_RA"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_RS",
+  "file": "Factory/Tools/Codec/RS/Codec_RS.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_RS"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_RSC",
+  "file": "Factory/Tools/Codec/RSC/Codec_RSC.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SISO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_RSC"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_RSC_DB",
+  "file": "Factory/Tools/Codec/RSC_DB/Codec_RSC_DB.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SISO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_RSC_DB"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_repetition",
+  "file": "Factory/Tools/Codec/Repetition/Codec_repetition.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_repetition"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_turbo",
+  "file": "Factory/Tools/Codec/Turbo/Codec_turbo.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_turbo"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_turbo_DB",
+  "file": "Factory/Tools/Codec/Turbo_DB/Codec_turbo_DB.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SIHO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_turbo_DB"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_turbo_product",
+  "file": "Factory/Tools/Codec/Turbo_product/Codec_turbo_product.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SISO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_turbo_product"
+ },
+ {
+  "kind": "Factory",
+  "name": "Codec_uncoded",
+  "file": "Factory/Tools/Codec/Uncoded/Codec_uncoded.hpp",
+  "tpl": [],
+  "bases": [
+   "Codec_SISO"
+  ],
+  "uses": [
+   "CRC"
+  ],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P1",
+  "py": "aff3ct.factory.Codec_uncoded"
+ },
+ {
+  "kind": "Factory",
+  "name": "Terminal",
+  "file": "Factory/Tools/Display/Terminal/Terminal.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Terminal"
+ },
+ {
+  "kind": "Factory",
+  "name": "Interleaver_core",
+  "file": "Factory/Tools/Interleaver/Interleaver_core.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Interleaver_core"
+ },
+ {
+  "kind": "Factory",
+  "name": "Noise",
+  "file": "Factory/Tools/Noise/Noise.hpp",
+  "tpl": [],
+  "bases": [
+   "Factory"
+  ],
+  "uses": [],
+  "domain": "Factory/Tools",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.factory.Noise"
+ }
+]
