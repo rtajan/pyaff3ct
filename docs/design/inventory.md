@@ -12,18 +12,18 @@
 
 | Classe | En-tête | Template | Bases | Stratégie | Priorité | Nom Python | Statut |
 |---|---|---|---|---|---|---|---|
-| `CRC` | `Module/CRC/CRC.hpp` | `typename B = int` | spu::module::Stateful | abstract | P0 | `aff3ct.crc.CRC` | todo |
+| `CRC` | `Module/CRC/CRC.hpp` | `typename B = int` | spu::module::Stateful | abstract | P0 | `aff3ct.crc.CRC` | done |
 | `CRC_NO` | `Module/CRC/NO/CRC_NO.hpp` | `typename B = int` | CRC | wrap | P0 | `aff3ct.crc.no` | todo |
 | `CRC_polynomial` | `Module/CRC/Polynomial/CRC_polynomial.hpp` | `typename B = int` | CRC | wrap | P0 | `aff3ct.crc.polynomial` | todo |
 | `Channel_AWGN_LLR` | `Module/Channel/AWGN/Channel_AWGN_LLR.hpp` | `typename R = float` | Channel | wrap | P0 | `aff3ct.chn.awgn_llr` | todo |
-| `Channel` | `Module/Channel/Channel.hpp` | `typename R = float` | spu::module::Stateful, spu::tools::Interface_set_seed | abstract | P0 | `aff3ct.chn.Channel` | todo |
+| `Channel` | `Module/Channel/Channel.hpp` | `typename R = float` | spu::module::Stateful, spu::tools::Interface_set_seed | abstract | P0 | `aff3ct.chn.Channel` | done |
 | `Channel_NO` | `Module/Channel/NO/Channel_NO.hpp` | `typename R = float` | Channel | wrap | P0 | `aff3ct.chn.no` | todo |
-| `Coset` | `Module/Coset/Coset.hpp` | `typename B, typename D` | spu::module::Stateful | abstract | P0 | `aff3ct.cst.Coset` | todo |
+| `Coset` | `Module/Coset/Coset.hpp` | `typename B, typename D` | spu::module::Stateful | abstract | P0 | `aff3ct.cst.Coset` | done |
 | `Decoder_BCH_std` | `Module/Decoder/BCH/Standard/Decoder_BCH_std.hpp` | `typename B = int, typename R = float` | Decoder_BCH | wrap | P0 | `aff3ct.dec.bch_std` | todo |
-| `Decoder` | `Module/Decoder/Decoder.hpp` | `` | spu::module::Stateful, spu::tools::Interface_set_seed, spu::tools::Interface_reset | abstract | P0 | `aff3ct.dec.Decoder` | todo |
-| `Decoder_HIHO` | `Module/Decoder/Decoder_HIHO.hpp` | `typename B = int` | Decoder | abstract | P0 | `aff3ct.dec.Decoder_HIHO` | todo |
-| `Decoder_SIHO` | `Module/Decoder/Decoder_SIHO.hpp` | `typename B = int, typename R = float` | Decoder_HIHO | abstract | P0 | `aff3ct.dec.Decoder_SIHO` | todo |
-| `Decoder_SISO` | `Module/Decoder/Decoder_SISO.hpp` | `typename B = int, typename R = float` | Decoder_SIHO | abstract | P0 | `aff3ct.dec.Decoder_SISO` | todo |
+| `Decoder` | `Module/Decoder/Decoder.hpp` | `` | spu::module::Stateful, spu::tools::Interface_set_seed, spu::tools::Interface_reset | abstract | P0 | `aff3ct.dec.Decoder` | done |
+| `Decoder_HIHO` | `Module/Decoder/Decoder_HIHO.hpp` | `typename B = int` | Decoder | abstract | P0 | `aff3ct.dec.Decoder_HIHO` | done |
+| `Decoder_SIHO` | `Module/Decoder/Decoder_SIHO.hpp` | `typename B = int, typename R = float` | Decoder_HIHO | abstract | P0 | `aff3ct.dec.Decoder_SIHO` | done |
+| `Decoder_SISO` | `Module/Decoder/Decoder_SISO.hpp` | `typename B = int, typename R = float` | Decoder_SIHO | abstract | P0 | `aff3ct.dec.Decoder_SISO` | done |
 | `Decoder_LDPC_BP_flooding_SPA` | `Module/Decoder/LDPC/BP/Flooding/SPA/Decoder_LDPC_BP_flooding_SPA.hpp` | `typename B = int, typename R = float, class Syn…` | Decoder_LDPC_BP_flooding | factory | P0 | `aff3ct.dec.ldpc(…) [factory Decoder_LDPC]` | todo |
 | `Decoder_LDPC_BP_horizontal_layered` | `Module/Decoder/LDPC/BP/Horizontal_layered/Decoder_LDPC_BP_horizontal_layered.hpp` | `typename B = int, typename R = float, class Upd…` | Decoder_SISO, Decoder_LDPC_BP | factory | P0 | `aff3ct.dec.ldpc(…) [factory Decoder_LDPC]` | todo |
 | `Decoder_NO` | `Module/Decoder/NO/Decoder_NO.hpp` | `typename B = int, typename R = float` | Decoder_SISO | wrap | P0 | `aff3ct.dec.no` | todo |
@@ -33,7 +33,7 @@
 | `Decoder_repetition_fast` | `Module/Decoder/Repetition/Decoder_repetition_fast.hpp` | `typename B = int, typename R = float` | Decoder_repetition | wrap | P0 | `aff3ct.dec.repetition_fast` | todo |
 | `Decoder_repetition_std` | `Module/Decoder/Repetition/Decoder_repetition_std.hpp` | `typename B = int, typename R = float` | Decoder_repetition | wrap | P0 | `aff3ct.dec.repetition_std` | todo |
 | `Encoder_BCH` | `Module/Encoder/BCH/Encoder_BCH.hpp` | `typename B = int` | Encoder | wrap | P0 | `aff3ct.enc.bch` | todo |
-| `Encoder` | `Module/Encoder/Encoder.hpp` | `typename B = int` | spu::module::Stateful, spu::tools::Interface_set_seed | abstract | P0 | `aff3ct.enc.Encoder` | todo |
+| `Encoder` | `Module/Encoder/Encoder.hpp` | `typename B = int` | spu::module::Stateful, spu::tools::Interface_set_seed | abstract | P0 | `aff3ct.enc.Encoder` | done |
 | `Encoder_LDPC` | `Module/Encoder/LDPC/Encoder_LDPC.hpp` | `typename B = int` | Encoder | wrap | P0 | `aff3ct.enc.ldpc` | todo |
 | `Encoder_LDPC_from_H` | `Module/Encoder/LDPC/From_H/Encoder_LDPC_from_H.hpp` | `typename B = int` | Encoder_LDPC | wrap | P0 | `aff3ct.enc.ldpc_from_h` | todo |
 | `Encoder_NO` | `Module/Encoder/NO/Encoder_NO.hpp` | `typename B = int` | Encoder | wrap | P0 | `aff3ct.enc.no` | todo |
@@ -41,18 +41,18 @@
 | `Encoder_polar_sys` | `Module/Encoder/Polar/Encoder_polar_sys.hpp` | `typename B = int` | Encoder_polar | wrap | P0 | `aff3ct.enc.polar_sys` | todo |
 | `Encoder_RS` | `Module/Encoder/RS/Encoder_RS.hpp` | `typename B = int` | Encoder | wrap | P0 | `aff3ct.enc.rs` | todo |
 | `Encoder_repetition_sys` | `Module/Encoder/Repetition/Encoder_repetition_sys.hpp` | `typename B = int` | Encoder | wrap | P0 | `aff3ct.enc.repetition_sys` | todo |
-| `Extractor` | `Module/Extractor/Extractor.hpp` | `typename B = int, typename Q = float` | spu::module::Stateful | abstract | P0 | `aff3ct.ext.Extractor` | todo |
+| `Extractor` | `Module/Extractor/Extractor.hpp` | `typename B = int, typename Q = float` | spu::module::Stateful | abstract | P0 | `aff3ct.ext.Extractor` | done |
 | `Interleaver` | `Module/Interleaver/Interleaver.hpp` | `typename D = int32_t, typename T = uint32_t` | spu::module::Stateful | wrap | P0 | `aff3ct.itl.interleaver` | todo |
 | `Modem_BPSK` | `Module/Modem/BPSK/Modem_BPSK.hpp` | `typename B = int, typename R = float, typename …` | Modem | wrap | P0 | `aff3ct.mdm.bpsk` | todo |
 | `Modem_BPSK_fast` | `Module/Modem/BPSK/Modem_BPSK_fast.hpp` | `typename B = int, typename R = float, typename …` | Modem | wrap | P0 | `aff3ct.mdm.bpsk_fast` | todo |
-| `Modem` | `Module/Modem/Modem.hpp` | `typename B = int, typename R = float, typename …` | spu::module::Stateful | abstract | P0 | `aff3ct.mdm.Modem` | todo |
+| `Modem` | `Module/Modem/Modem.hpp` | `typename B = int, typename R = float, typename …` | spu::module::Stateful | abstract | P0 | `aff3ct.mdm.Modem` | done |
 | `Monitor_BFER` | `Module/Monitor/BFER/Monitor_BFER.hpp` | `typename B = int` | Monitor | wrap | P0 | `aff3ct.mnt.bfer` | todo |
-| `Monitor` | `Module/Monitor/Monitor.hpp` | `` | spu::module::Stateful, spu::tools::Interface_reset, spu::tools::Interface_is_done | abstract | P0 | `aff3ct.mnt.Monitor` | todo |
+| `Monitor` | `Module/Monitor/Monitor.hpp` | `` | spu::module::Stateful, spu::tools::Interface_reset, spu::tools::Interface_is_done | abstract | P0 | `aff3ct.mnt.Monitor` | done |
 | `Puncturer_NO` | `Module/Puncturer/NO/Puncturer_NO.hpp` | `typename B = int, typename Q = float` | Puncturer | wrap | P0 | `aff3ct.pct.no` | todo |
-| `Puncturer` | `Module/Puncturer/Puncturer.hpp` | `typename B = int, typename Q = float` | spu::module::Stateful | abstract | P0 | `aff3ct.pct.Puncturer` | todo |
+| `Puncturer` | `Module/Puncturer/Puncturer.hpp` | `typename B = int, typename Q = float` | spu::module::Stateful | abstract | P0 | `aff3ct.pct.Puncturer` | done |
 | `Quantizer_NO` | `Module/Quantizer/NO/Quantizer_NO.hpp` | `typename R = float, typename Q = int` | Quantizer | wrap | P0 | `aff3ct.qnt.no` | todo |
 | `Quantizer_pow2` | `Module/Quantizer/Pow2/Quantizer_pow2.hpp` | `typename R = float, typename Q = float` | Quantizer | wrap | P0 | `aff3ct.qnt.pow2` | todo |
-| `Quantizer` | `Module/Quantizer/Quantizer.hpp` | `typename R = float, typename Q = int` | spu::module::Stateful | abstract | P0 | `aff3ct.qnt.Quantizer` | todo |
+| `Quantizer` | `Module/Quantizer/Quantizer.hpp` | `typename R = float, typename Q = int` | spu::module::Stateful | abstract | P0 | `aff3ct.qnt.Quantizer` | done |
 | `Source_random_fast` | `Module/Source/Random/Source_random_fast.hpp` | `typename B = int` | spu::module::Source | wrap | P0 | `aff3ct.src.random_fast` | todo |
 | `CRC_polynomial_fast` | `Module/CRC/Polynomial/CRC_polynomial_fast.hpp` | `typename B = int` | CRC_polynomial | wrap | P1 | `aff3ct.crc.polynomial_fast` | todo |
 | `CRC_polynomial_inter` | `Module/CRC/Polynomial/CRC_polynomial_inter.hpp` | `typename B = int` | CRC_polynomial | wrap | P1 | `aff3ct.crc.polynomial_inter` | todo |
@@ -213,17 +213,17 @@
 | `Frozenbits_generator_BEC` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_BEC.hpp` | `` | Frozenbits_generator | wrap | P0 | `aff3ct.tools.polar.Frozenbits_generator_BEC` | todo |
 | `Frozenbits_generator_GA_Arikan` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA_Arikan.hpp` | `` | Frozenbits_generator | wrap | P0 | `aff3ct.tools.polar.Frozenbits_generator_GA_Arikan` | todo |
 | `Frozenbits_generator_file` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_file.hpp` | `` | Frozenbits_generator | wrap | P0 | `aff3ct.tools.polar.Frozenbits_generator_file` | todo |
-| `Interface_get_set_frozen_bits` | `Tools/Interface/Interface_get_set_frozen_bits.hpp` | `` |  | abstract | P0 | `aff3ct.interfaces.Interface_get_set_frozen_bits` | todo |
-| `Interface_get_set_noise` | `Tools/Interface/Interface_get_set_noise.hpp` | `` |  | abstract | P0 | `aff3ct.interfaces.Interface_get_set_noise` | todo |
-| `Interface_notify_noise_update` | `Tools/Interface/Interface_notify_noise_update.hpp` | `` |  | abstract | P0 | `aff3ct.interfaces.Interface_notify_noise_update` | todo |
+| `Interface_get_set_frozen_bits` | `Tools/Interface/Interface_get_set_frozen_bits.hpp` | `` |  | abstract | P0 | `aff3ct.interfaces.Interface_get_set_frozen_bits` | done |
+| `Interface_get_set_noise` | `Tools/Interface/Interface_get_set_noise.hpp` | `` |  | abstract | P0 | `aff3ct.interfaces.Interface_get_set_noise` | done |
+| `Interface_notify_noise_update` | `Tools/Interface/Interface_notify_noise_update.hpp` | `` |  | abstract | P0 | `aff3ct.interfaces.Interface_notify_noise_update` | done |
 | `Interleaver_core` | `Tools/Interleaver/Interleaver_core.hpp` | `typename T = uint32_t` | spu::tools::Interface_set_seed, spu::tools::Interface_get_set_n_frames, spu::tools::Interface_clone | abstract | P0 | `aff3ct.tools.itl.Interleaver_core` | todo |
 | `Interleaver_core_LTE` | `Tools/Interleaver/LTE/Interleaver_core_LTE.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_LTE` | todo |
 | `Interleaver_core_NO` | `Tools/Interleaver/NO/Interleaver_core_NO.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_NO` | todo |
 | `Interleaver_core_random` | `Tools/Interleaver/Random/Interleaver_core_random.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_random` | todo |
 | `Interleaver_core_user` | `Tools/Interleaver/User/Interleaver_core_user.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_user` | todo |
 | `Galois` | `Tools/Math/Galois.hpp` | `typename I = int` |  | abstract | P0 | `aff3ct.tools.Galois` | todo |
-| `Noise` | `Tools/Noise/Noise.hpp` | `typename R = float` |  | abstract | P0 | `aff3ct.tools.Noise` | todo |
-| `Sigma` | `Tools/Noise/Sigma.hpp` | `typename R = float` | Noise | wrap | P0 | `aff3ct.tools.Sigma` | todo |
+| `Noise` | `Tools/Noise/Noise.hpp` | `typename R = float` |  | abstract | P0 | `aff3ct.tools.Noise` | done |
+| `Sigma` | `Tools/Noise/Sigma.hpp` | `typename R = float` | Noise | wrap | P0 | `aff3ct.tools.Sigma` | done |
 | `Reporter_BFER` | `Tools/Reporter/BFER/Reporter_BFER.hpp` | `typename B = int32_t` | Reporter_monitor | wrap | P0 | `aff3ct.reporter.Reporter_BFER` | todo |
 | `Reporter_noise` | `Tools/Reporter/Noise/Reporter_noise.hpp` | `typename R = float` | spu::tools::Reporter | wrap | P0 | `aff3ct.reporter.Reporter_noise` | todo |
 | `Reporter_monitor` | `Tools/Reporter/Reporter_monitor.hpp` | `class M_t` | spu::tools::Reporter | abstract | P0 | `aff3ct.reporter.Reporter_monitor` | todo |
@@ -288,9 +288,9 @@
 | `Constellation_user` | `Tools/Constellation/User/Constellation_user.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_user` | todo |
 | `Command_parser` | `Tools/Factory/Command_parser.hpp` | `` |  | func | P1 | `aff3ct.factory.Command_parser` | todo |
 | `Header` | `Tools/Factory/Header.hpp` | `` |  | func | P1 | `aff3ct.factory.Header` | todo |
-| `Interface_get_set_dynamic_frozen_bits` | `Tools/Interface/Interface_get_set_dynamic_frozen_bits.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_set_dynamic_frozen_bits` | todo |
-| `Interface_get_set_pretransform` | `Tools/Interface/Interface_get_set_pretransform.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_set_pretransform` | todo |
-| `Interface_get_trellis` | `Tools/Interface/Interface_get_trellis.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_trellis` | todo |
+| `Interface_get_set_dynamic_frozen_bits` | `Tools/Interface/Interface_get_set_dynamic_frozen_bits.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_set_dynamic_frozen_bits` | done |
+| `Interface_get_set_pretransform` | `Tools/Interface/Interface_get_set_pretransform.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_set_pretransform` | done |
+| `Interface_get_trellis` | `Tools/Interface/Interface_get_trellis.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_trellis` | done |
 | `Interleaver_core_ARP_DVB_RCS1` | `Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS1.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_ARP_DVB_RCS1` | todo |
 | `Interleaver_core_ARP_DVB_RCS2` | `Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS2.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_ARP_DVB_RCS2` | todo |
 | `Interleaver_core_CCSDS` | `Tools/Interleaver/CCSDS/Interleaver_core_CCSDS.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_CCSDS` | todo |
@@ -300,8 +300,8 @@
 | `Interleaver_core_row_column` | `Tools/Interleaver/Row_column/Interleaver_core_row_column.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_row_column` | todo |
 | `Distribution` | `Tools/Math/Distribution/Distribution.hpp` | `typename R = float` |  | wrap | P1 | `aff3ct.tools.Distribution` | todo |
 | `Distributions` | `Tools/Math/Distribution/Distributions.hpp` | `typename R = float` |  | wrap | P1 | `aff3ct.tools.Distributions` | todo |
-| `Event_probability` | `Tools/Noise/Event_probability.hpp` | `typename R = float` | Noise | wrap | P1 | `aff3ct.tools.Event_probability` | todo |
-| `Received_optical_power` | `Tools/Noise/Received_optical_power.hpp` | `typename R = float` | Noise | wrap | P1 | `aff3ct.tools.Received_optical_power` | todo |
+| `Event_probability` | `Tools/Noise/Event_probability.hpp` | `typename R = float` | Noise | wrap | P1 | `aff3ct.tools.Event_probability` | done |
+| `Received_optical_power` | `Tools/Noise/Received_optical_power.hpp` | `typename R = float` | Noise | wrap | P1 | `aff3ct.tools.Received_optical_power` | done |
 | `Monitor_reduction` | `Tools/Monitor/Monitor_reduction.hpp` | `class M` | Monitor_reduction_static, M | wrap | P2 | `aff3ct.tools.Monitor_reduction` | todo |
 | `Monitor_reduction_static` | `Tools/Monitor/Monitor_reduction.hpp` | `` |  | wrap | P2 | `aff3ct.tools.Monitor_reduction_static` | todo |
 | `Reporter_EXIT` | `Tools/Reporter/EXIT/Reporter_EXIT.hpp` | `typename B = int32_t, typename R = float` | Reporter_monitor | wrap | P2 | `aff3ct.reporter.Reporter_EXIT` | todo |
@@ -321,8 +321,8 @@
 
 | Classe | En-tête | Template | Bases | Stratégie | Priorité | Nom Python | Statut |
 |---|---|---|---|---|---|---|---|
-| `Factory` | `Factory/Factory.hpp` | `` | spu::tools::Interface_clone | abstract | P0 | `(interne) aff3ct.factory.Factory` | todo |
-| `CRC` | `Factory/Module/CRC/CRC.hpp` | `` | Factory | wrap | P0 | `(interne) aff3ct.factory.CRC` | todo |
+| `Factory` | `Factory/Factory.hpp` | `` | spu::tools::Interface_clone | abstract | P0 | `(interne) aff3ct.factory.Factory` | done |
+| `CRC` | `Factory/Module/CRC/CRC.hpp` | `` | Factory | wrap | P0 | `(interne) aff3ct.factory.CRC` | done |
 | `Channel` | `Factory/Module/Channel/Channel.hpp` | `` | Factory | wrap | P0 | `(interne) aff3ct.factory.Channel` | todo |
 | `Decoder_BCH` | `Factory/Module/Decoder/BCH/Decoder_BCH.hpp` | `` | Decoder | wrap | P0 | `(interne) aff3ct.factory.Decoder_BCH` | todo |
 | `Decoder` | `Factory/Module/Decoder/Decoder.hpp` | `` | Factory | wrap | P0 | `(interne) aff3ct.factory.Decoder` | todo |

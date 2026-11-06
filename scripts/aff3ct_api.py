@@ -170,8 +170,9 @@ def parse_tasks(texts: list[str]) -> dict:
 
 
 def parse_instantiations(txt: str) -> dict[str, list[str]]:
-    m = re.search(r"#ifdef\s+AFF3CT_MULTI_PREC(.*?)#else", txt, re.S)
-    block = m.group(1) if m else ""
+    # multi-precision block when there is one, otherwise unconditional instantiations (e.g. Noise<float/double>)
+    blocks = re.findall(r"#ifdef\s+AFF3CT_MULTI_PREC(.*?)#(?:else|endif)", txt, re.S)
+    block = "\n".join(blocks) if blocks else txt
     res: dict[str, set] = {}
     for c in INST_CLASS_RE.finditer(block):
         res.setdefault(c.group(1), set()).add(ws(c.group(2)))
@@ -230,6 +231,8 @@ def fingerprint(root: Path) -> dict:
     meta = {
         "commit": git(root, "rev-parse", "HEAD"),
         "describe": git(root, "describe", "--tags", "--always"),
+        # exact tag of the commit, if any: unlike `describe`, it does not depend on the depth of the clone
+        "tag": git(root, "describe", "--tags", "--exact-match"),
         "date": git(root, "log", "-1", "--format=%cs"),
         "streampu": submodule_sha(root, "lib/streampu"),
         "cli": submodule_sha(root, "lib/cli"),

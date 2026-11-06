@@ -1,1 +1,27 @@
-{}
+{
+ "Factory::CRC": "done",
+ "Factory::Factory": "done",
+ "Module::CRC": "done",
+ "Module::Channel": "done",
+ "Module::Coset": "done",
+ "Module::Decoder": "done",
+ "Module::Decoder_HIHO": "done",
+ "Module::Decoder_SIHO": "done",
+ "Module::Decoder_SISO": "done",
+ "Module::Encoder": "done",
+ "Module::Extractor": "done",
+ "Module::Modem": "done",
+ "Module::Monitor": "done",
+ "Module::Puncturer": "done",
+ "Module::Quantizer": "done",
+ "Tools::Event_probability": "done",
+ "Tools::Interface_get_set_dynamic_frozen_bits": "done",
+ "Tools::Interface_get_set_frozen_bits": "done",
+ "Tools::Interface_get_set_noise": "done",
+ "Tools::Interface_get_set_pretransform": "done",
+ "Tools::Interface_get_trellis": "done",
+ "Tools::Interface_notify_noise_update": "done",
+ "Tools::Noise": "done",
+ "Tools::Received_optical_power": "done",
+ "Tools::Sigma": "done"
+}

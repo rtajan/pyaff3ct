@@ -1,4 +1,4 @@
-# Évolution d'AFF3CT : v4.6.0-96-g8efdebe → v4.7.2
+# Évolution d'AFF3CT : v4.6.0-32-g8efdebe56 → v4.7.2
 
 - Ancien : `8efdebe564` (2026-08-12)
 - Nouveau : `e1b52965ae` (2026-11-03)
@@ -97,12 +97,12 @@
 - nouvelle classe `Tools/Codec/Polar_PT/Codec_polar_PT.hpp` <typename B = int, typename Q = float> : Codec_SISO<B, Q>, Interface_get_set_pretransform, Interface_get_set_frozen_bits, Interface_get_set_dynamic_frozen_bits
 
 </details>
-<details><summary><code>Tools::Interface_get_set_dynamic_frozen_bits</code> [todo — abstract P1] — 1 changement(s)</summary>
+<details><summary><code>Tools::Interface_get_set_dynamic_frozen_bits</code> [done — abstract P1] — 1 changement(s)</summary>
 
 - nouvelle classe `Tools/Interface/Interface_get_set_dynamic_frozen_bits.hpp`  : —
 
 </details>
-<details><summary><code>Tools::Interface_get_set_pretransform</code> [todo — abstract P1] — 1 changement(s)</summary>
+<details><summary><code>Tools::Interface_get_set_pretransform</code> [done — abstract P1] — 1 changement(s)</summary>
 
 - nouvelle classe `Tools/Interface/Interface_get_set_pretransform.hpp`  : —
 

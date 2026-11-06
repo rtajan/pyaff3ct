@@ -66,6 +66,11 @@ def fingerprint_at(repo: Path, ref: str) -> tuple[dict, dict[str, str]]:
         return aff3ct_api.fingerprint(wt), info
 
 
+def revision_name(meta: dict) -> str:
+    """Stable name of a revision: its exact tag (v4.7.2), otherwise its short commit hash."""
+    return meta.get("tag") or meta["commit"][:8]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--repo", type=Path, required=True, help="AFF3CT git repository (e.g. lib/aff3ct)")
@@ -91,7 +96,7 @@ def main() -> int:
     status_file = DESIGN / "status.json"
     status = json.loads(status_file.read_text()) if status_file.exists() else {}
     rep = aff3ct_diff.compare(old, new, status)
-    name = f"{old['meta']['describe']}_{old['meta']['commit'][:8]}..{new['meta']['describe']}_{new['meta']['commit'][:8]}"
+    name = f"{revision_name(old['meta'])}..{revision_name(new['meta'])}"
     out = DESIGN / "changes" / f"{name}.md"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(aff3ct_diff.render(old, new, rep, info))

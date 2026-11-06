@@ -624,7 +624,11 @@
     "build_bit<B_16, B_16>",
     "build_bit<B_32, B_32>",
     "build_bit<B_64, B_64>",
-    "build_bit<B_8, B_8>"
+    "build_bit<B_8, B_8>",
+    "build_real<B_16, Q_16>",
+    "build_real<B_32, Q_32>",
+    "build_real<B_64, Q_64>",
+    "build_real<B_8, Q_8>"
    ],
    "members": [
     "int size = 0",
@@ -712,6 +716,10 @@
    ],
    "file": "Factory/Module/Decoder/LDPC/Decoder_LDPC.hpp",
    "instantiations": [
+    "build<B_16, Q_16>",
+    "build<B_32, Q_32>",
+    "build<B_64, Q_64>",
+    "build<B_8, Q_8>",
     "build_siso<B_16, Q_16>",
     "build_siso<B_32, Q_32>",
     "build_siso<B_64, Q_64>",
@@ -756,7 +764,11 @@
     "build<B_16, Q_16>",
     "build<B_32, Q_32>",
     "build<B_64, Q_64>",
-    "build<B_8, Q_8>"
+    "build<B_8, Q_8>",
+    "build_siso<B_16, Q_16>",
+    "build_siso<B_32, Q_32>",
+    "build_siso<B_64, Q_64>",
+    "build_siso<B_8, Q_8>"
    ],
    "members": [],
    "methods": [
@@ -841,6 +853,10 @@
    ],
    "file": "Factory/Module/Decoder/RSC/Decoder_RSC.hpp",
    "instantiations": [
+    "build<B_16, Q_16>",
+    "build<B_32, Q_32>",
+    "build<B_64, Q_64>",
+    "build<B_8, Q_8>",
     "build_siso<B_16, Q_16>",
     "build_siso<B_32, Q_32>",
     "build_siso<B_64, Q_64>",
@@ -877,6 +893,10 @@
    ],
    "file": "Factory/Module/Decoder/RSC_DB/Decoder_RSC_DB.hpp",
    "instantiations": [
+    "build<B_16, Q_16>",
+    "build<B_32, Q_32>",
+    "build<B_64, Q_64>",
+    "build<B_8, Q_8>",
     "build_siso<B_16, Q_16>",
     "build_siso<B_32, Q_32>",
     "build_siso<B_64, Q_64>",
@@ -938,6 +958,10 @@
    ],
    "file": "Factory/Module/Decoder/Polar/Decoder_polar.hpp",
    "instantiations": [
+    "build<B_16, Q_16>",
+    "build<B_32, Q_32>",
+    "build<B_64, Q_64>",
+    "build<B_8, Q_8>",
     "build_gen<B_16, Q_16>",
     "build_gen<B_32, Q_32>",
     "build_gen<B_64, Q_64>",
@@ -1189,7 +1213,11 @@
     "build<B_16, Q_16>",
     "build<B_32, Q_32>",
     "build<B_64, Q_64>",
-    "build<B_8, Q_8>"
+    "build<B_8, Q_8>",
+    "build_siso<B_16, Q_16>",
+    "build_siso<B_32, Q_32>",
+    "build_siso<B_64, Q_64>",
+    "build_siso<B_8, Q_8>"
    ],
    "members": [
     "int n_competitors = 0",
@@ -1892,7 +1920,14 @@
     ]
    ],
    "file": "Factory/Module/Interleaver/Interleaver.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "build<double>",
+    "build<float>",
+    "build<int16_t>",
+    "build<int32_t>",
+    "build<int64_t>",
+    "build<int8_t>"
+   ],
    "members": [
     "tools::auto_cloned_unique_ptr<factory::Interleaver_core>core"
    ],
@@ -1915,7 +1950,9 @@
     ]
    ],
    "file": "Factory/Tools/Interleaver/Interleaver_core.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "build<uint32_t>"
+   ],
    "members": [
     "bool uniform = false",
     "int n_cols = 4",
@@ -2115,7 +2152,10 @@
     ]
    ],
    "file": "Factory/Tools/Noise/Noise.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "build<double>",
+    "build<float>"
+   ],
    "members": [
     "std::string pdf_path = \"\"",
     "std::string type = \"EBN0\"",
@@ -2281,7 +2321,12 @@
     ]
    ],
    "file": "Factory/Module/Puncturer/Turbo/Puncturer_turbo.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "build<B_16, Q_16>",
+    "build<B_32, Q_32>",
+    "build<B_64, Q_64>",
+    "build<B_8, Q_8>"
+   ],
    "members": [
     "bool buffered = true",
     "int tail_length = 0",
@@ -9451,7 +9496,12 @@
     ]
    ],
    "file": "Tools/Code/BCH/BCH_polynomial_generator.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "B_16",
+    "B_32",
+    "B_64",
+    "B_8"
+   ],
    "members": [],
    "methods": [
     "const std::vector<I>& get_g()const",
@@ -10784,7 +10834,10 @@
     []
    ],
    "file": "Tools/Noise/Event_probability.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "double",
+    "float"
+   ],
    "members": [],
    "methods": [
     "Noise_type get_type()const",
@@ -11065,7 +11118,12 @@
     ]
    ],
    "file": "Tools/Algo/Matrix/Full_matrix/Full_matrix.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "int16_t",
+    "int32_t",
+    "int64_t",
+    "int8_t"
+   ],
    "members": [],
    "methods": [
     "Full_matrix resize(const size_t n_rows, const size_t n_cols, Origin o)const",
@@ -11097,7 +11155,12 @@
     ]
    ],
    "file": "Tools/Math/Galois.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "B_16",
+    "B_32",
+    "B_64",
+    "B_8"
+   ],
    "members": [],
    "methods": [
     "const std::vector<I>& get_alpha_to()const",
@@ -11482,7 +11545,12 @@
     ]
    ],
    "file": "Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS1.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t",
+    "uint8_t"
+   ],
    "members": [],
    "methods": [
     "Interleaver_core_ARP_DVB_RCS1<T>* clone()const"
@@ -11501,7 +11569,12 @@
     ]
    ],
    "file": "Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS2.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t",
+    "uint8_t"
+   ],
    "members": [],
    "methods": [
     "Interleaver_core_ARP_DVB_RCS2<T>* clone()const"
@@ -11520,7 +11593,11 @@
     ]
    ],
    "file": "Tools/Interleaver/CCSDS/Interleaver_core_CCSDS.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t"
+   ],
    "members": [],
    "methods": [
     "Interleaver_core_CCSDS<T>* clone()const"
@@ -11539,7 +11616,11 @@
     ]
    ],
    "file": "Tools/Interleaver/LTE/Interleaver_core_LTE.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t"
+   ],
    "members": [],
    "methods": [
     "Interleaver_core_LTE<T>* clone()const"
@@ -11558,7 +11639,12 @@
     ]
    ],
    "file": "Tools/Interleaver/NO/Interleaver_core_NO.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t",
+    "uint8_t"
+   ],
    "members": [],
    "methods": [
     "Interleaver_core_NO<T>* clone()const"
@@ -11584,7 +11670,12 @@
     ]
    ],
    "file": "Tools/Interleaver/Column_row/Interleaver_core_column_row.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t",
+    "uint8_t"
+   ],
    "members": [
     "enum class READ_ORDER : int8_t"
    ],
@@ -11607,7 +11698,12 @@
     ]
    ],
    "file": "Tools/Interleaver/Golden/Interleaver_core_golden.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t",
+    "uint8_t"
+   ],
    "members": [],
    "methods": [
     "Interleaver_core_golden<T>* clone()const",
@@ -11630,7 +11726,12 @@
     ]
    ],
    "file": "Tools/Interleaver/Random/Interleaver_core_random.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t",
+    "uint8_t"
+   ],
    "members": [],
    "methods": [
     "Interleaver_core_random<T>* clone()const",
@@ -11654,7 +11755,12 @@
     ]
    ],
    "file": "Tools/Interleaver/Random_column/Interleaver_core_random_column.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t",
+    "uint8_t"
+   ],
    "members": [],
    "methods": [
     "Interleaver_core_random_column<T>* clone()const",
@@ -11682,7 +11788,12 @@
     ]
    ],
    "file": "Tools/Interleaver/Row_column/Interleaver_core_row_column.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t",
+    "uint8_t"
+   ],
    "members": [
     "enum class READ_ORDER : int8_t"
    ],
@@ -11704,7 +11815,12 @@
     ]
    ],
    "file": "Tools/Interleaver/User/Interleaver_core_user.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "uint16_t",
+    "uint32_t",
+    "uint64_t",
+    "uint8_t"
+   ],
    "members": [],
    "methods": [
     "Interleaver_core_user<T>* clone()const",
@@ -11951,7 +12067,10 @@
     []
    ],
    "file": "Tools/Noise/Noise.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "double",
+    "float"
+   ],
    "members": [],
    "methods": [
     "Noise_type get_type()const = 0",
@@ -12421,7 +12540,10 @@
     []
    ],
    "file": "Tools/Noise/Received_optical_power.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "double",
+    "float"
+   ],
    "members": [],
    "methods": [
     "Noise_type get_type()const",
@@ -12803,7 +12925,10 @@
     []
    ],
    "file": "Tools/Noise/Sigma.hpp",
-   "instantiations": [],
+   "instantiations": [
+    "double",
+    "float"
+   ],
    "members": [],
    "methods": [
     "Noise_type get_type()const",
@@ -13772,6 +13897,7 @@
   "commit": "e1b52965ae0c5d9a4386c2ba5c75a84e80709524",
   "date": "2026-11-03",
   "describe": "v4.7.2",
-  "streampu": "85ed022da3ad714dea7ae9c147cde1b5efa89d6d"
+  "streampu": "85ed022da3ad714dea7ae9c147cde1b5efa89d6d",
+  "tag": "v4.7.2"
  }
 }
