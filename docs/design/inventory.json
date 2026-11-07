@@ -1586,6 +1586,25 @@
  },
  {
   "kind": "Module",
+  "name": "Decoder_RS_std",
+  "file": "Module/Decoder/RS/Standard/Decoder_RS_std.hpp",
+  "tpl": [
+   "typename B = int",
+   "typename R = float"
+  ],
+  "bases": [
+   "Decoder_RS<B, R>"
+  ],
+  "uses": [
+   "RS_polynomial_generator"
+  ],
+  "domain": "Decoder",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.dec.rs_std"
+ },
+ {
+  "kind": "Module",
   "name": "Decoder_RSC_BCJR",
   "file": "Module/Decoder/RSC/BCJR/Decoder_RSC_BCJR.hpp",
   "tpl": [
@@ -5298,6 +5317,20 @@
   "strategy": "wrap",
   "priority": "P1",
   "py": "aff3ct.tools.polar.Pretransform_generator_file"
+ },
+ {
+  "kind": "Tools",
+  "name": "RS_polynomial_generator",
+  "file": "Tools/Code/RS/RS_polynomial_generator.hpp",
+  "tpl": [],
+  "bases": [
+   "Galois<int>"
+  ],
+  "uses": [],
+  "domain": "Code",
+  "strategy": "wrap",
+  "priority": "P0",
+  "py": "aff3ct.tools.RS_polynomial_generator"
  },
  {
   "kind": "Tools",

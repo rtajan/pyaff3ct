@@ -4,8 +4,8 @@
 
 | Espace | abstract | wrap | factory | func | skip |
 |---|---|---|---|---|---|
-| Module | 13 | 129 | 47 | 0 | 0 |
-| Tools | 23 | 66 | 16 | 5 | 88 |
+| Module | 13 | 130 | 47 | 0 | 0 |
+| Tools | 23 | 67 | 16 | 5 | 88 |
 | Factory | 1 | 83 | 0 | 0 | 0 |
 
 ## Modules
@@ -30,6 +30,7 @@
 | `Decoder_polar_SC_fast_sys` | `Module/Decoder/Polar/SC/Decoder_polar_SC_fast_sys.hpp` | `typename B = int, typename R = float, class API…` | Decoder_SIHO, tools::Interface_get_set_frozen_bits | factory | P0 | `aff3ct.dec.polar(…) [factory Decoder_polar]` | todo |
 | `Decoder_polar_SC_naive` | `Module/Decoder/Polar/SC/Decoder_polar_SC_naive.hpp` | `typename B = int, typename R = float, tools::pr…` | Decoder_SIHO, tools::Interface_get_set_frozen_bits | factory | P0 | `aff3ct.dec.polar(…) [factory Decoder_polar]` | todo |
 | `Decoder_polar_SC_naive_sys` | `Module/Decoder/Polar/SC/Decoder_polar_SC_naive_sys.hpp` | `typename B = int, typename R = float, tools::pr…` | Decoder_polar_SC_naive | factory | P0 | `aff3ct.dec.polar(…) [factory Decoder_polar]` | todo |
+| `Decoder_RS_std` | `Module/Decoder/RS/Standard/Decoder_RS_std.hpp` | `typename B = int, typename R = float` | Decoder_RS | wrap | P0 | `aff3ct.dec.rs_std` | todo |
 | `Decoder_repetition_fast` | `Module/Decoder/Repetition/Decoder_repetition_fast.hpp` | `typename B = int, typename R = float` | Decoder_repetition | wrap | P0 | `aff3ct.dec.repetition_fast` | todo |
 | `Decoder_repetition_std` | `Module/Decoder/Repetition/Decoder_repetition_std.hpp` | `typename B = int, typename R = float` | Decoder_repetition | wrap | P0 | `aff3ct.dec.repetition_std` | todo |
 | `Encoder_BCH` | `Module/Encoder/BCH/Encoder_BCH.hpp` | `typename B = int` | Encoder | wrap | P0 | `aff3ct.enc.bch` | todo |
@@ -42,11 +43,11 @@
 | `Encoder_RS` | `Module/Encoder/RS/Encoder_RS.hpp` | `typename B = int` | Encoder | wrap | P0 | `aff3ct.enc.rs` | todo |
 | `Encoder_repetition_sys` | `Module/Encoder/Repetition/Encoder_repetition_sys.hpp` | `typename B = int` | Encoder | wrap | P0 | `aff3ct.enc.repetition_sys` | todo |
 | `Extractor` | `Module/Extractor/Extractor.hpp` | `typename B = int, typename Q = float` | spu::module::Stateful | abstract | P0 | `aff3ct.ext.Extractor` | done |
-| `Interleaver` | `Module/Interleaver/Interleaver.hpp` | `typename D = int32_t, typename T = uint32_t` | spu::module::Stateful | wrap | P0 | `aff3ct.itl.interleaver` | todo |
+| `Interleaver` | `Module/Interleaver/Interleaver.hpp` | `typename D = int32_t, typename T = uint32_t` | spu::module::Stateful | wrap | P0 | `aff3ct.itl.interleaver` | done |
 | `Modem_BPSK` | `Module/Modem/BPSK/Modem_BPSK.hpp` | `typename B = int, typename R = float, typename …` | Modem | wrap | P0 | `aff3ct.mdm.bpsk` | todo |
 | `Modem_BPSK_fast` | `Module/Modem/BPSK/Modem_BPSK_fast.hpp` | `typename B = int, typename R = float, typename …` | Modem | wrap | P0 | `aff3ct.mdm.bpsk_fast` | todo |
 | `Modem` | `Module/Modem/Modem.hpp` | `typename B = int, typename R = float, typename …` | spu::module::Stateful | abstract | P0 | `aff3ct.mdm.Modem` | done |
-| `Monitor_BFER` | `Module/Monitor/BFER/Monitor_BFER.hpp` | `typename B = int` | Monitor | wrap | P0 | `aff3ct.mnt.bfer` | todo |
+| `Monitor_BFER` | `Module/Monitor/BFER/Monitor_BFER.hpp` | `typename B = int` | Monitor | wrap | P0 | `aff3ct.mnt.bfer` | done |
 | `Monitor` | `Module/Monitor/Monitor.hpp` | `` | spu::module::Stateful, spu::tools::Interface_reset, spu::tools::Interface_is_done | abstract | P0 | `aff3ct.mnt.Monitor` | done |
 | `Puncturer_NO` | `Module/Puncturer/NO/Puncturer_NO.hpp` | `typename B = int, typename Q = float` | Puncturer | wrap | P0 | `aff3ct.pct.no` | todo |
 | `Puncturer` | `Module/Puncturer/Puncturer.hpp` | `typename B = int, typename Q = float` | spu::module::Stateful | abstract | P0 | `aff3ct.pct.Puncturer` | done |
@@ -206,28 +207,29 @@
 
 | Classe | En-tête | Template | Bases | Stratégie | Priorité | Nom Python | Statut |
 |---|---|---|---|---|---|---|---|
-| `Matrix` | `Tools/Algo/Matrix/Matrix.hpp` | `` |  | abstract | P0 | `aff3ct.tools.Matrix` | todo |
-| `Sparse_matrix` | `Tools/Algo/Matrix/Sparse_matrix/Sparse_matrix.hpp` | `` | Matrix | wrap | P0 | `aff3ct.tools.Sparse_matrix` | todo |
-| `BCH_polynomial_generator` | `Tools/Code/BCH/BCH_polynomial_generator.hpp` | `typename I = int` | Galois | wrap | P0 | `aff3ct.tools.BCH_polynomial_generator` | todo |
-| `Frozenbits_generator` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator.hpp` | `` | Interface_get_set_noise, spu::tools::Interface_clone | abstract | P0 | `aff3ct.tools.polar.Frozenbits_generator` | todo |
-| `Frozenbits_generator_BEC` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_BEC.hpp` | `` | Frozenbits_generator | wrap | P0 | `aff3ct.tools.polar.Frozenbits_generator_BEC` | todo |
-| `Frozenbits_generator_GA_Arikan` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA_Arikan.hpp` | `` | Frozenbits_generator | wrap | P0 | `aff3ct.tools.polar.Frozenbits_generator_GA_Arikan` | todo |
-| `Frozenbits_generator_file` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_file.hpp` | `` | Frozenbits_generator | wrap | P0 | `aff3ct.tools.polar.Frozenbits_generator_file` | todo |
+| `Matrix` | `Tools/Algo/Matrix/Matrix.hpp` | `` |  | abstract | P0 | `aff3ct.tools.Matrix` | done |
+| `Sparse_matrix` | `Tools/Algo/Matrix/Sparse_matrix/Sparse_matrix.hpp` | `` | Matrix | wrap | P0 | `aff3ct.tools.Sparse_matrix` | done |
+| `BCH_polynomial_generator` | `Tools/Code/BCH/BCH_polynomial_generator.hpp` | `typename I = int` | Galois | wrap | P0 | `aff3ct.tools.BCH_polynomial_generator` | done |
+| `Frozenbits_generator` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator.hpp` | `` | Interface_get_set_noise, spu::tools::Interface_clone | abstract | P0 | `aff3ct.tools.polar.Frozenbits_generator` | done |
+| `Frozenbits_generator_BEC` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_BEC.hpp` | `` | Frozenbits_generator | wrap | P0 | `aff3ct.tools.polar.Frozenbits_generator_BEC` | done |
+| `Frozenbits_generator_GA_Arikan` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA_Arikan.hpp` | `` | Frozenbits_generator | wrap | P0 | `aff3ct.tools.polar.Frozenbits_generator_GA_Arikan` | done |
+| `Frozenbits_generator_file` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_file.hpp` | `` | Frozenbits_generator | wrap | P0 | `aff3ct.tools.polar.Frozenbits_generator_file` | done |
+| `RS_polynomial_generator` | `Tools/Code/RS/RS_polynomial_generator.hpp` | `` | Galois | wrap | P0 | `aff3ct.tools.RS_polynomial_generator` | done |
 | `Interface_get_set_frozen_bits` | `Tools/Interface/Interface_get_set_frozen_bits.hpp` | `` |  | abstract | P0 | `aff3ct.interfaces.Interface_get_set_frozen_bits` | done |
 | `Interface_get_set_noise` | `Tools/Interface/Interface_get_set_noise.hpp` | `` |  | abstract | P0 | `aff3ct.interfaces.Interface_get_set_noise` | done |
 | `Interface_notify_noise_update` | `Tools/Interface/Interface_notify_noise_update.hpp` | `` |  | abstract | P0 | `aff3ct.interfaces.Interface_notify_noise_update` | done |
-| `Interleaver_core` | `Tools/Interleaver/Interleaver_core.hpp` | `typename T = uint32_t` | spu::tools::Interface_set_seed, spu::tools::Interface_get_set_n_frames, spu::tools::Interface_clone | abstract | P0 | `aff3ct.tools.itl.Interleaver_core` | todo |
-| `Interleaver_core_LTE` | `Tools/Interleaver/LTE/Interleaver_core_LTE.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_LTE` | todo |
-| `Interleaver_core_NO` | `Tools/Interleaver/NO/Interleaver_core_NO.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_NO` | todo |
-| `Interleaver_core_random` | `Tools/Interleaver/Random/Interleaver_core_random.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_random` | todo |
-| `Interleaver_core_user` | `Tools/Interleaver/User/Interleaver_core_user.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_user` | todo |
-| `Galois` | `Tools/Math/Galois.hpp` | `typename I = int` |  | abstract | P0 | `aff3ct.tools.Galois` | todo |
+| `Interleaver_core` | `Tools/Interleaver/Interleaver_core.hpp` | `typename T = uint32_t` | spu::tools::Interface_set_seed, spu::tools::Interface_get_set_n_frames, spu::tools::Interface_clone | abstract | P0 | `aff3ct.tools.itl.Interleaver_core` | done |
+| `Interleaver_core_LTE` | `Tools/Interleaver/LTE/Interleaver_core_LTE.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_LTE` | done |
+| `Interleaver_core_NO` | `Tools/Interleaver/NO/Interleaver_core_NO.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_NO` | done |
+| `Interleaver_core_random` | `Tools/Interleaver/Random/Interleaver_core_random.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_random` | done |
+| `Interleaver_core_user` | `Tools/Interleaver/User/Interleaver_core_user.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P0 | `aff3ct.tools.itl.Interleaver_core_user` | done |
+| `Galois` | `Tools/Math/Galois.hpp` | `typename I = int` |  | abstract | P0 | `aff3ct.tools.Galois` | done |
 | `Noise` | `Tools/Noise/Noise.hpp` | `typename R = float` |  | abstract | P0 | `aff3ct.tools.Noise` | done |
 | `Sigma` | `Tools/Noise/Sigma.hpp` | `typename R = float` | Noise | wrap | P0 | `aff3ct.tools.Sigma` | done |
-| `Reporter_BFER` | `Tools/Reporter/BFER/Reporter_BFER.hpp` | `typename B = int32_t` | Reporter_monitor | wrap | P0 | `aff3ct.reporter.Reporter_BFER` | todo |
-| `Reporter_noise` | `Tools/Reporter/Noise/Reporter_noise.hpp` | `typename R = float` | spu::tools::Reporter | wrap | P0 | `aff3ct.reporter.Reporter_noise` | todo |
+| `Reporter_BFER` | `Tools/Reporter/BFER/Reporter_BFER.hpp` | `typename B = int32_t` | Reporter_monitor | wrap | P0 | `aff3ct.reporter.Reporter_BFER` | done |
+| `Reporter_noise` | `Tools/Reporter/Noise/Reporter_noise.hpp` | `typename R = float` | spu::tools::Reporter | wrap | P0 | `aff3ct.reporter.Reporter_noise` | done |
 | `Reporter_monitor` | `Tools/Reporter/Reporter_monitor.hpp` | `class M_t` | spu::tools::Reporter | abstract | P0 | `aff3ct.reporter.Reporter_monitor` | todo |
-| `Reporter_throughput` | `Tools/Reporter/Throughput/Reporter_throughput.hpp` | `typename T = uint64_t` | spu::tools::Reporter | wrap | P0 | `aff3ct.reporter.Reporter_throughput` | todo |
+| `Reporter_throughput` | `Tools/Reporter/Throughput/Reporter_throughput.hpp` | `typename T = uint64_t` | spu::tools::Reporter | wrap | P0 | `aff3ct.reporter.Reporter_throughput` | done |
 | `Draw_generator` | `Tools/Algo/Draw_generator/Draw_generator.hpp` | `typename R = float` | spu::tools::Interface_set_seed, spu::tools::Interface_clone | abstract | P1 | `aff3ct.tools.gen.Draw_generator` | todo |
 | `Event_generator` | `Tools/Algo/Draw_generator/Event_generator/Event_generator.hpp` | `typename R = float, typename E = typename tools…` | Draw_generator | abstract | P1 | `aff3ct.tools.gen.Event_generator` | todo |
 | `Event_generator_fast` | `Tools/Algo/Draw_generator/Event_generator/Fast/Event_generator_fast.hpp` | `typename R = float, typename E = typename tools…` | Event_generator | wrap | P1 | `aff3ct.tools.gen.Event_generator_fast` | todo |
@@ -239,9 +241,9 @@
 | `User_pdf_noise_generator_std` | `Tools/Algo/Draw_generator/User_pdf_noise_generator/Standard/User_pdf_noise_generator_std.hpp` | `typename R = float` | User_pdf_noise_generator | wrap | P1 | `aff3ct.tools.gen.User_pdf_noise_generator_std` | todo |
 | `User_pdf_noise_generator` | `Tools/Algo/Draw_generator/User_pdf_noise_generator/User_pdf_noise_generator.hpp` | `typename R = float` | Draw_generator | abstract | P1 | `aff3ct.tools.gen.User_pdf_noise_generator` | todo |
 | `Full_matrix` | `Tools/Algo/Matrix/Full_matrix/Full_matrix.hpp` | `typename T = int32_t` | Matrix, std::vector | wrap | P1 | `aff3ct.tools.Full_matrix` | todo |
-| `AList` | `Tools/Code/LDPC/AList/AList.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.AList` | todo |
-| `LDPC_matrix_handler` | `Tools/Code/LDPC/Matrix_handler/LDPC_matrix_handler.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.LDPC_matrix_handler` | todo |
-| `QC` | `Tools/Code/LDPC/QC/QC.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.QC` | todo |
+| `AList` | `Tools/Code/LDPC/AList/AList.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.AList` | done |
+| `LDPC_matrix_handler` | `Tools/Code/LDPC/Matrix_handler/LDPC_matrix_handler.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.LDPC_matrix_handler` | done |
+| `QC` | `Tools/Code/LDPC/QC/QC.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.QC` | done |
 | `Frozenbits_generator_5G` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_5G.hpp` | `` | Frozenbits_generator_file | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_5G` | todo |
 | `Frozenbits_generator_GA` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_GA` | todo |
 | `Frozenbits_generator_RM` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_RM.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_RM` | todo |
@@ -291,13 +293,13 @@
 | `Interface_get_set_dynamic_frozen_bits` | `Tools/Interface/Interface_get_set_dynamic_frozen_bits.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_set_dynamic_frozen_bits` | done |
 | `Interface_get_set_pretransform` | `Tools/Interface/Interface_get_set_pretransform.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_set_pretransform` | done |
 | `Interface_get_trellis` | `Tools/Interface/Interface_get_trellis.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_trellis` | done |
-| `Interleaver_core_ARP_DVB_RCS1` | `Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS1.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_ARP_DVB_RCS1` | todo |
-| `Interleaver_core_ARP_DVB_RCS2` | `Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS2.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_ARP_DVB_RCS2` | todo |
-| `Interleaver_core_CCSDS` | `Tools/Interleaver/CCSDS/Interleaver_core_CCSDS.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_CCSDS` | todo |
-| `Interleaver_core_column_row` | `Tools/Interleaver/Column_row/Interleaver_core_column_row.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_column_row` | todo |
-| `Interleaver_core_golden` | `Tools/Interleaver/Golden/Interleaver_core_golden.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_golden` | todo |
-| `Interleaver_core_random_column` | `Tools/Interleaver/Random_column/Interleaver_core_random_column.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_random_column` | todo |
-| `Interleaver_core_row_column` | `Tools/Interleaver/Row_column/Interleaver_core_row_column.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_row_column` | todo |
+| `Interleaver_core_ARP_DVB_RCS1` | `Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS1.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_ARP_DVB_RCS1` | done |
+| `Interleaver_core_ARP_DVB_RCS2` | `Tools/Interleaver/ARP/Interleaver_core_ARP_DVB_RCS2.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_ARP_DVB_RCS2` | done |
+| `Interleaver_core_CCSDS` | `Tools/Interleaver/CCSDS/Interleaver_core_CCSDS.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_CCSDS` | done |
+| `Interleaver_core_column_row` | `Tools/Interleaver/Column_row/Interleaver_core_column_row.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_column_row` | done |
+| `Interleaver_core_golden` | `Tools/Interleaver/Golden/Interleaver_core_golden.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_golden` | done |
+| `Interleaver_core_random_column` | `Tools/Interleaver/Random_column/Interleaver_core_random_column.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_random_column` | done |
+| `Interleaver_core_row_column` | `Tools/Interleaver/Row_column/Interleaver_core_row_column.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_row_column` | done |
 | `Distribution` | `Tools/Math/Distribution/Distribution.hpp` | `typename R = float` |  | wrap | P1 | `aff3ct.tools.Distribution` | todo |
 | `Distributions` | `Tools/Math/Distribution/Distributions.hpp` | `typename R = float` |  | wrap | P1 | `aff3ct.tools.Distributions` | todo |
 | `Event_probability` | `Tools/Noise/Event_probability.hpp` | `typename R = float` | Noise | wrap | P1 | `aff3ct.tools.Event_probability` | done |

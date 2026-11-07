@@ -520,11 +520,17 @@ graph LR
     classDef skip fill:#fff,stroke:#9ca3af,color:#6b7280,stroke-dasharray: 4 3;
     M_Decoder_RS["Decoder_RS&lt;B,R&gt;"]:::wrap
     M_Decoder_RS_genius["Decoder_RS_genius&lt;B,R&gt;"]:::wrap
+    M_Decoder_RS_std["Decoder_RS_std&lt;B,R&gt;"]:::wrap
     M_Decoder_SIHO --> M_Decoder_RS
+    M_Decoder_RS -.uses.-> T_RS_polynomial_generator
     M_Decoder_RS --> M_Decoder_RS_genius
     M_Decoder_RS_genius -.uses.-> M_Encoder
+    M_Decoder_RS_genius -.uses.-> T_RS_polynomial_generator
+    M_Decoder_RS --> M_Decoder_RS_std
+    M_Decoder_RS_std -.uses.-> T_RS_polynomial_generator
     M_Decoder_SIHO["Decoder_SIHO&lt;B,R&gt;"]:::abstract
     M_Encoder["Encoder&lt;B&gt;"]:::abstract
+    T_RS_polynomial_generator["RS_polynomial_generator"]:::wrap
 ```
 
 ### Decoder — RSC
@@ -771,6 +777,7 @@ graph LR
     M_Encoder --> M_Encoder_RA
     M_Encoder_RA -.uses.-> M_Interleaver
     M_Encoder --> M_Encoder_RS
+    M_Encoder_RS -.uses.-> T_RS_polynomial_generator
     M_Encoder_RSC_sys --> M_Encoder_RSC3_CPE_sys
     M_Encoder_RSC_generic_sys --> M_Encoder_RSC_generic_json_sys
     M_Encoder_RSC_sys --> M_Encoder_RSC_generic_sys
@@ -797,6 +804,7 @@ graph LR
     T_Interface_get_set_pretransform["Interface_get_set_pretransform"]:::abstract
     T_Interface_get_trellis["Interface_get_trellis"]:::abstract
     T_Polar_code["Polar_code"]:::wrap
+    T_RS_polynomial_generator["RS_polynomial_generator"]:::wrap
     T_Sparse_matrix["Sparse_matrix"]:::wrap
 ```
 
@@ -1067,6 +1075,7 @@ graph LR
     T_Polar_code["Polar_code"]:::wrap
     T_Pretransform_generator["Pretransform_generator"]:::abstract
     T_Pretransform_generator_file["Pretransform_generator_file"]:::wrap
+    T_RS_polynomial_generator["RS_polynomial_generator"]:::wrap
     T_CRC_checker["CRC_checker&lt;B,R&gt;"]:::wrap
     T_CRC_checker_DB["CRC_checker_DB&lt;B,R&gt;"]:::wrap
     T_Flip_and_check["Flip_and_check&lt;B,R&gt;"]:::wrap
@@ -1093,6 +1102,7 @@ graph LR
     T_Interface_get_set_noise --> T_Pretransform_generator
     S_Interface_clone --> T_Pretransform_generator
     T_Pretransform_generator --> T_Pretransform_generator_file
+    T_Galois --> T_RS_polynomial_generator
     T_Post_processing_SISO --> T_CRC_checker
     T_CRC_checker -.uses.-> M_CRC
     T_CRC_checker --> T_CRC_checker_DB
@@ -1576,6 +1586,7 @@ graph LR
     F_Decoder_RA -.uses.-> M_Interleaver
     F_Decoder --> F_Decoder_RS
     F_Decoder_RS -.uses.-> M_Encoder
+    F_Decoder_RS -.uses.-> T_RS_polynomial_generator
     F_Decoder --> F_Decoder_RSC
     F_Decoder_RSC -.uses.-> M_CRC
     F_Decoder_RSC -.uses.-> M_Encoder
@@ -1607,6 +1618,7 @@ graph LR
     M_Interleaver["Interleaver&lt;D,T&gt;"]:::wrap
     T_BCH_polynomial_generator["BCH_polynomial_generator&lt;I&gt;"]:::wrap
     T_Polar_code["Polar_code"]:::wrap
+    T_RS_polynomial_generator["RS_polynomial_generator"]:::wrap
     T_Sparse_matrix["Sparse_matrix"]:::wrap
 ```
 
@@ -1653,6 +1665,7 @@ graph LR
     F_Encoder --> F_Encoder_RA
     F_Encoder_RA -.uses.-> M_Interleaver
     F_Encoder --> F_Encoder_RS
+    F_Encoder_RS -.uses.-> T_RS_polynomial_generator
     F_Encoder --> F_Encoder_RSC
     F_Encoder --> F_Encoder_RSC_DB
     F_Encoder --> F_Encoder_repetition
@@ -1674,6 +1687,7 @@ graph LR
     M_Interleaver["Interleaver&lt;D,T&gt;"]:::wrap
     T_BCH_polynomial_generator["BCH_polynomial_generator&lt;I&gt;"]:::wrap
     T_Polar_code["Polar_code"]:::wrap
+    T_RS_polynomial_generator["RS_polynomial_generator"]:::wrap
     T_Sparse_matrix["Sparse_matrix"]:::wrap
 ```
 

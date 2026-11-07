@@ -2,17 +2,25 @@
  * \file
  * \brief Entry point of the compiled extension `aff3ct._ext`.
  *
- * Python sub-modules = AFF3CT factory prefixes (crc, chn, cst, dec, enc, ext, mdm, mnt, pct, qnt...), plus
+ * Python sub-modules = AFF3CT factory prefixes (crc, chn, cst, dec, enc, ext, itl, mdm, mnt, pct, qnt...), plus
  * `interfaces`, `tools` and `factory`.
  */
 #include "internal/internal.hpp"
 
-#include "internal/Wrapper/Factory/Factory.hpp"
 #include "internal/Generated/factories.hpp"
+#include "internal/Wrapper/Factory/Factory.hpp"
 #include "internal/Wrapper/Module/Bases.hpp"
+#include "internal/Wrapper/Module/Interleaver/Interleaver.hpp"
 #include "internal/Wrapper/Testing/Testing.hpp"
+#include "internal/Wrapper/Tools/Algo/Sparse_matrix.hpp"
+#include "internal/Wrapper/Tools/Code/Frozenbits_generator.hpp"
+#include "internal/Wrapper/Tools/Code/Galois.hpp"
+#include "internal/Wrapper/Tools/Code/LDPC.hpp"
 #include "internal/Wrapper/Tools/Interface/Interfaces.hpp"
+#include "internal/Wrapper/Tools/Interleaver/Interleaver_core.hpp"
+#include "internal/Wrapper/Tools/Math/Conversions.hpp"
 #include "internal/Wrapper/Tools/Noise/Noise.hpp"
+#include "internal/Wrapper/Tools/Reporter/Reporters.hpp"
 
 #include "Tools/version.h"
 
@@ -34,6 +42,12 @@ PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())
     auto tools = m.def_submodule("tools", "AFF3CT tools.");
     wrap_noise(tools);
     wrap_interfaces(itf);
+    wrap_conversions(tools);
+    wrap_frozenbits_generator(tools); // after the interfaces (Interface_get_set_noise)
+    wrap_interleaver_core(tools);
+    wrap_sparse_matrix(tools);
+    wrap_ldpc_tools(tools);
+    wrap_galois(tools);
 
     wrap_crc(m.def_submodule("crc", "CRCs."));
     wrap_channel(m.def_submodule("chn", "Channels."));
@@ -41,10 +55,12 @@ PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())
     wrap_decoder(m.def_submodule("dec", "Decoders."));
     wrap_encoder(m.def_submodule("enc", "Encoders."));
     wrap_extractor(m.def_submodule("ext", "Extractors."));
+    wrap_interleaver(m.def_submodule("itl", "Interleavers."));
     wrap_modem(m.def_submodule("mdm", "Modems."));
     wrap_monitor(m.def_submodule("mnt", "Monitors."));
     wrap_puncturer(m.def_submodule("pct", "Puncturers."));
     wrap_quantizer(m.def_submodule("qnt", "Quantizers."));
+    wrap_reporters(tools); // after the monitors (Reporter_BFER(Monitor_BFER))
 
     auto fac = m.def_submodule("factory", "AFF3CT factories (advanced use: command-line parity, parameters).");
     wrap_factory(fac);

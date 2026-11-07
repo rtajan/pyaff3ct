@@ -108,7 +108,8 @@ LITERAL_DEFAULT = re.compile(r'^(nullptr|true|false|-?[0-9.]+[fuUlL]*|"[^"]*")$'
 
 def parse_builder(sig: str) -> dict | None:
     """'template<typename B = int>module::Encoder<B>* build(const std::vector<bool>& fb)const' -> parts."""
-    m = re.match(r"^(?:template<(?P<tpl>.*?)>)?(?P<ret>.*?)\b(?P<name>build\w*)\s*\((?P<args>.*)\)\s*const$", sig)
+    m = re.match(r"^(?:template<(?P<tpl>.*?)>)?(?:static\s+)?(?P<ret>.*?)\b(?P<name>build\w*)\s*"
+                 r"\((?P<args>.*)\)\s*(?:const)?$", sig)
     if not m:
         return None
     tpl = [re.sub(r"^(typename|class)\s+", "", split_default(p)[0]) for p in split_top(m.group("tpl") or "")]

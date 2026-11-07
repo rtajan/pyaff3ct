@@ -17,4 +17,16 @@ pyaf::generated::wrap_factory_Interleaver(py::handle scope)
       [](const F& f) { return f.core.get(); },
       py::return_value_policy::reference_internal,
       "aff3ct.factory.Interleaver_core: sub-factory ``core`` (None if not used).");
+    def_builders<gen::Factory_Interleaver__build>(
+      cls,
+      "build",
+      [](auto c)
+      {
+          using D = typename decltype(c)::template at<0>;
+          return [](const F& f, aff3ct::tools::Interleaver_core<>& itl_core) -> spu::module::Module*
+          { return f.template build<D>(itl_core); };
+      },
+          py::arg("itl_core"),
+          py::keep_alive<0, 2>());
+
 }

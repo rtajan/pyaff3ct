@@ -35,8 +35,8 @@ CTOR_TYPES_RE = re.compile(r"\b(?:(?:spu::)?(?:tools|module)::)?([A-Z]\w+)\s*(?:
 
 
 def strip(txt: str) -> str:
-    txt = re.sub(r"//[^\n]*", "", txt)
-    txt = re.sub(r"/\*.*?\*/", "", txt, flags=re.S)
+    # one pass: a "//" inside a block comment (/* http://... */) must not hide its end, and conversely
+    txt = re.sub(r"/\*.*?\*/|//[^\n]*", "", txt, flags=re.S)
     return MSVC_RE.sub(r"\1", txt)
 
 

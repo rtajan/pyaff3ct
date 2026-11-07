@@ -8,8 +8,8 @@ template parameters (``B=``, ``R=``, ``Q=``) or with ``dtype=`` when there is a 
 
 Sub-modules (same prefixes as the AFF3CT command line):
 
-* ``crc``, ``chn``, ``cst``, ``dec``, ``enc``, ``ext``, ``mdm``, ``mnt``, ``pct``, ``qnt``, ``src``, ``snk``: modules
-  and the functions that build them (``aff3ct.enc.polar(K, N_cw, frozen_bits)``, the factory being hidden);
+* ``crc``, ``chn``, ``cst``, ``dec``, ``enc``, ``ext``, ``itl``, ``mdm``, ``mnt``, ``pct``, ``qnt``, ``src``, ``snk``:
+  modules and the functions that build them (``aff3ct.enc.polar(K, N_cw, frozen_bits)``, the factory being hidden);
 * ``interfaces``, ``tools``: AFF3CT tools (noise, frozen bits...);
 * ``factory``: AFF3CT factories, for the advanced uses (command-line parity, parameters).
 """
@@ -20,7 +20,7 @@ import streampu as _spu  # noqa: F401  isort:skip
 from aff3ct import _ext  # isort:skip
 from aff3ct import _factory  # noqa: F401  (Pythonic factories)  isort:skip
 
-from aff3ct import chn, crc, cst, dec, enc, ext, factory, interfaces, mdm, mnt, pct, qnt, snk, src, tools
+from aff3ct import chn, crc, cst, dec, enc, ext, factory, interfaces, itl, mdm, mnt, pct, qnt, snk, src, tools
 
 try:
     from aff3ct._version import version as __version__
@@ -41,6 +41,7 @@ __all__ = [
     "ext",
     "factory",
     "interfaces",
+    "itl",
     "mdm",
     "mnt",
     "pct",

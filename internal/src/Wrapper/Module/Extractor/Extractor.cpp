@@ -1,5 +1,6 @@
 #include "Module/Extractor/Extractor.hpp"
 
+#include "internal/Common/Tools/interfaces.hpp"
 #include "internal/Wrapper/Module/Extractor/Extractor.hpp"
 
 namespace pyaf
@@ -11,12 +12,14 @@ static void
 wrap_extractor_internal(py::handle scope)
 {
     using X = aff3ct::module::Extractor<B, Q>;
-    py::class_<X, spu::module::Stateful>(scope,
-                                         class_name<B, Q>("Extractor").c_str(),
-                                         R"pbdoc(Base class of the extractors (systematic/parity LLRs, used by turbo schemes).
+    auto cls = py::class_<X, spu::module::Stateful>(
+      scope,
+      class_name<B, Q>("Extractor").c_str(),
+      R"pbdoc(Base class of the extractors (systematic/parity LLRs, used by turbo schemes).
 
 Tasks: ``get_sys_llr``, ``get_sys_bit``, ``get_sys_and_par_llr``, ``add_sys_and_ext_llr``.
 )pbdoc");
+    def_frozen_bits_accessors(cls);
     add_module_class<X>();
 }
 } // namespace wrapper

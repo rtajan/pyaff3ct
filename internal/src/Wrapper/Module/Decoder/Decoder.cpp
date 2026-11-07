@@ -3,6 +3,7 @@
 #include "Module/Decoder/Decoder_SIHO.hpp"
 #include "Module/Decoder/Decoder_SISO.hpp"
 
+#include "internal/Common/Tools/interfaces.hpp"
 #include "internal/Wrapper/Module/Decoder/Decoder.hpp"
 
 namespace pyaf
@@ -58,15 +59,18 @@ void
 pyaf::wrapper::wrap_decoder(py::handle scope)
 {
     using aff3ct::module::Decoder;
-    py::class_<Decoder, spu::module::Stateful, spu::tools::Interface_set_seed, spu::tools::Interface_reset>(
-      scope, "Decoder", "Base class of the decoders.")
-      .def_property_readonly("K", &Decoder::get_K, "int: number of information bits.")
+    auto cls = py::class_<Decoder, spu::module::Stateful, spu::tools::Interface_set_seed, spu::tools::Interface_reset>(
+      scope, "Decoder", "Base class of the decoders.");
+    cls.def_property_readonly("K", &Decoder::get_K, "int: number of information bits.")
       .def_property_readonly("N", &Decoder::get_N, "int: codeword size.")
       .def("is_auto_reset", &Decoder::is_auto_reset, "Return True if the decoder state is reset before each frame.")
       .def("set_auto_reset",
            &Decoder::set_auto_reset,
            "auto_reset"_a,
            "Reset (or not) the decoder state before each frame (default True).");
+    def_frozen_bits_accessors(cls);
+    def_dynamic_frozen_bits_accessors(cls);
+    def_pretransform_accessors(cls);
     add_module_class<Decoder>();
 
     for_each_combo<gen::Module_Decoder_HIHO>(
