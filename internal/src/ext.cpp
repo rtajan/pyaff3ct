@@ -14,6 +14,7 @@
 #include "internal/Wrapper/Testing/Testing.hpp"
 #include "internal/Wrapper/Tools/Algo/Sparse_matrix.hpp"
 #include "internal/Wrapper/Tools/Code/Frozenbits_generator.hpp"
+#include "internal/Wrapper/Tools/Codec/Codec.hpp"
 #include "internal/Wrapper/Tools/Code/Galois.hpp"
 #include "internal/Wrapper/Tools/Code/LDPC.hpp"
 #include "internal/Wrapper/Tools/Interface/Interfaces.hpp"
@@ -61,6 +62,7 @@ PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())
     wrap_puncturer(m.def_submodule("pct", "Puncturers."));
     wrap_quantizer(m.def_submodule("qnt", "Quantizers."));
     wrap_reporters(tools); // after the monitors (Reporter_BFER(Monitor_BFER))
+    wrap_codecs(m.def_submodule("codec", "Codecs.")); // after the modules and tools they own
 
     auto fac = m.def_submodule("factory", "AFF3CT factories (advanced use: command-line parity, parameters).");
     wrap_factory(fac);

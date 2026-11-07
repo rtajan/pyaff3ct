@@ -10,6 +10,8 @@ Sub-modules (same prefixes as the AFF3CT command line):
 
 * ``crc``, ``chn``, ``cst``, ``dec``, ``enc``, ``ext``, ``itl``, ``mdm``, ``mnt``, ``pct``, ``qnt``, ``src``, ``snk``:
   modules and the functions that build them (``aff3ct.enc.polar(K, N_cw, frozen_bits)``, the factory being hidden);
+* ``codec``: codecs (``aff3ct.codec.polar(K, N_cw, dec_type="SCL")``: encoder, decoders, puncturer... built and
+  connected together);
 * ``interfaces``, ``tools``: AFF3CT tools (noise, frozen bits...);
 * ``factory``: AFF3CT factories, for the advanced uses (command-line parity, parameters).
 """
@@ -20,7 +22,7 @@ import streampu as _spu  # noqa: F401  isort:skip
 from aff3ct import _ext  # isort:skip
 from aff3ct import _factory  # noqa: F401  (Pythonic factories)  isort:skip
 
-from aff3ct import chn, crc, cst, dec, enc, ext, factory, interfaces, itl, mdm, mnt, pct, qnt, snk, src, tools
+from aff3ct import chn, codec, crc, cst, dec, enc, ext, factory, interfaces, itl, mdm, mnt, pct, qnt, snk, src, tools
 
 try:
     from aff3ct._version import version as __version__
@@ -34,6 +36,7 @@ AFF3CT_GIT_HASH: str = _ext.AFF3CT_GIT_HASH
 
 __all__ = [
     "chn",
+    "codec",
     "crc",
     "cst",
     "dec",

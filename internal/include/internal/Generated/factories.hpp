@@ -83,6 +83,8 @@ wrap_factory_Decoder_polar_PT(py::handle scope);
 void
 wrap_factory_Decoder_repetition(py::handle scope);
 void
+wrap_factory_Decoder_turbo(py::handle scope);
+void
 wrap_factory_Decoder_turbo_DB(py::handle scope);
 void
 wrap_factory_Decoder_turbo_product(py::handle scope);
@@ -114,6 +116,8 @@ void
 wrap_factory_Encoder_polar_PT(py::handle scope);
 void
 wrap_factory_Encoder_repetition(py::handle scope);
+void
+wrap_factory_Encoder_turbo(py::handle scope);
 void
 wrap_factory_Encoder_turbo_DB(py::handle scope);
 void

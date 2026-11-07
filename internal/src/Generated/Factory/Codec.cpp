@@ -36,4 +36,5 @@ pyaf::generated::wrap_factory_Codec(py::handle scope)
     def_param(cls, "N", &F::N, "int: AFF3CT parameter ``N`` (``int``).");
     def_param(cls, "N_cw", &F::N_cw, "int: AFF3CT parameter ``N_cw`` (``int``).");
     def_param(cls, "tail_length", &F::tail_length, "int: AFF3CT parameter ``tail_length`` (``int``).");
+    cls.def("enable_puncturer", &F::enable_puncturer, "Add the puncturer sub-factory ``pct`` (codecs).");
 }

@@ -12,6 +12,7 @@ pyaf::generated::wrap_factory_Codec_turbo_DB(py::handle scope)
     using F = aff3ct::factory::Codec_turbo_DB;
     py::class_<F, aff3ct::factory::Codec_SIHO> cls(scope, "Codec_turbo_DB", "AFF3CT factory ``aff3ct::factory::Codec_turbo_DB`` (parameters by keyword, ``from_cli``, builders by dtype).");
     cls.def(py::init<const std::string&>(), "prefix"_a = aff3ct::factory::Codec_turbo_DB_prefix);
+    cls.def("enable_puncturer", &F::enable_puncturer, "Add the puncturer sub-factory ``pct`` (codecs).");
     def_builders<gen::Factory_Codec_turbo_DB__build>(
       cls,
       "build",

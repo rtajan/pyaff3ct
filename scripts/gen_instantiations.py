@@ -139,6 +139,22 @@ def compute(api: dict) -> dict[str, dict]:
                         combos[bkey].add(bc)
                         changed = True
 
+    # factory class templates (Decoder_turbo<>): their builders are implemented in headers, without explicit
+    # instantiation; they get the combinations of the module class they return (module::Decoder_turbo<B, Q>)
+    for key, v in classes.items():
+        if not key.startswith("Factory::") or not v["tpl"]:
+            continue
+        for meth in v.get("methods", []):
+            mm = re.match(r"template<(.*?)>\s*(?:const\s+)?(?:aff3ct::)?module::(\w+)<(.*?)>\*\s*(build\w*)\(", meth)
+            if not mm or builders.get(key, {}).get(mm.group(4)):
+                continue
+            bnames = [p for p, _ in type_params(split_top(mm.group(1)))]
+            mkey = f"Module::{mm.group(2)}"
+            margs = [a.strip() for a in split_top(mm.group(3))]
+            if margs != bnames or len(params.get(mkey, [])) < len(bnames):  # Decoder_turbo<B, Q> -> module<B, R>
+                continue
+            for c in combos.get(mkey, ()):
+                builders[key][mm.group(4)].add(tuple(c[: len(bnames)]))
     for key in classes:
         if params[key] and combos[key]:
             res[key] = {

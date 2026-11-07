@@ -41,6 +41,7 @@ pyaf::generated::wrap_factories(py::handle scope)
     wrap_factory_Decoder_polar_PAC(scope);
     wrap_factory_Decoder_polar_PT(scope);
     wrap_factory_Decoder_repetition(scope);
+    wrap_factory_Decoder_turbo(scope);
     wrap_factory_Decoder_turbo_DB(scope);
     wrap_factory_Decoder_turbo_product(scope);
     wrap_factory_Encoder(scope);
@@ -57,6 +58,7 @@ pyaf::generated::wrap_factories(py::handle scope)
     wrap_factory_Encoder_polar_PAC(scope);
     wrap_factory_Encoder_polar_PT(scope);
     wrap_factory_Encoder_repetition(scope);
+    wrap_factory_Encoder_turbo(scope);
     wrap_factory_Encoder_turbo_DB(scope);
     wrap_factory_Encoder_turbo_product(scope);
     wrap_factory_Flip_and_check(scope);

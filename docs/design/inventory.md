@@ -263,26 +263,26 @@
 | `Scaling_factor_seq` | `Tools/Code/Turbo/Post_processing_SISO/Scaling_factor/Scaling_factor_seq.hpp` | `typename B = int, typename R = float` | Scaling_factor | wrap | P1 | `aff3ct.tools.turbo.Scaling_factor_seq` | todo |
 | `Scaling_factor_vec` | `Tools/Code/Turbo/Post_processing_SISO/Scaling_factor/Scaling_factor_vec.hpp` | `typename B = int, typename R = float` | Scaling_factor | wrap | P1 | `aff3ct.tools.turbo.Scaling_factor_vec` | todo |
 | `Self_corrected` | `Tools/Code/Turbo/Post_processing_SISO/Self_corrected/Self_corrected.hpp` | `typename B = int, typename R = float` | Post_processing_SISO | wrap | P1 | `aff3ct.tools.turbo.Self_corrected` | todo |
-| `Codec_BCH` | `Tools/Codec/BCH/Codec_BCH.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_BCH` | todo |
-| `Codec` | `Tools/Codec/Codec.hpp` | `typename B = int, typename Q = float` | Interface_get_set_noise, Interface_notify_noise_update, spu::tools::Interface_get_set_n_frames, spu::tools::Interface_clone | abstract | P1 | `aff3ct.codec.Codec` | todo |
-| `Codec_HIHO` | `Tools/Codec/Codec_HIHO.hpp` | `typename B = int, typename Q = float` | Codec | abstract | P1 | `aff3ct.codec.Codec_HIHO` | todo |
-| `Codec_SIHO` | `Tools/Codec/Codec_SIHO.hpp` | `typename B = int, typename Q = float` | Codec_HIHO | abstract | P1 | `aff3ct.codec.Codec_SIHO` | todo |
-| `Codec_SISO` | `Tools/Codec/Codec_SISO.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | abstract | P1 | `aff3ct.codec.Codec_SISO` | todo |
-| `Codec_conv` | `Tools/Codec/Conv/Codec_conv.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_conv` | todo |
-| `Codec_LDPC` | `Tools/Codec/LDPC/Codec_LDPC.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_LDPC` | todo |
-| `Codec_polar` | `Tools/Codec/Polar/Codec_polar.hpp` | `typename B = int, typename Q = float` | Codec_SISO, Interface_get_set_frozen_bits | factory | P1 | `aff3ct.codec.Codec_polar` | todo |
-| `Codec_polar_MK` | `Tools/Codec/Polar_MK/Codec_polar_MK.hpp` | `typename B = int, typename Q = float` | Codec_SIHO, Interface_get_set_frozen_bits | factory | P1 | `aff3ct.codec.Codec_polar_MK` | todo |
-| `Codec_polar_PAC` | `Tools/Codec/Polar_PAC/Codec_polar_PAC.hpp` | `typename B = int, typename Q = float` | Codec_SISO, Interface_get_set_frozen_bits | factory | P1 | `aff3ct.codec.Codec_polar_PAC` | todo |
-| `Codec_polar_PT` | `Tools/Codec/Polar_PT/Codec_polar_PT.hpp` | `typename B = int, typename Q = float` | Codec_SISO, Interface_get_set_pretransform, Interface_get_set_frozen_bits, Interface_get_set_dynamic_frozen_bits | factory | P1 | `aff3ct.codec.Codec_polar_PT` | todo |
-| `Codec_RA` | `Tools/Codec/RA/Codec_RA.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_RA` | todo |
-| `Codec_RS` | `Tools/Codec/RS/Codec_RS.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_RS` | todo |
-| `Codec_RSC` | `Tools/Codec/RSC/Codec_RSC.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_RSC` | todo |
-| `Codec_RSC_DB` | `Tools/Codec/RSC_DB/Codec_RSC_DB.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_RSC_DB` | todo |
-| `Codec_repetition` | `Tools/Codec/Repetition/Codec_repetition.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_repetition` | todo |
-| `Codec_turbo` | `Tools/Codec/Turbo/Codec_turbo.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_turbo` | todo |
-| `Codec_turbo_DB` | `Tools/Codec/Turbo_DB/Codec_turbo_DB.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_turbo_DB` | todo |
-| `Codec_turbo_product` | `Tools/Codec/Turbo_product/Codec_turbo_product.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_turbo_product` | todo |
-| `Codec_uncoded` | `Tools/Codec/Uncoded/Codec_uncoded.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_uncoded` | todo |
+| `Codec_BCH` | `Tools/Codec/BCH/Codec_BCH.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_BCH` | done |
+| `Codec` | `Tools/Codec/Codec.hpp` | `typename B = int, typename Q = float` | Interface_get_set_noise, Interface_notify_noise_update, spu::tools::Interface_get_set_n_frames, spu::tools::Interface_clone | abstract | P1 | `aff3ct.codec.Codec` | done |
+| `Codec_HIHO` | `Tools/Codec/Codec_HIHO.hpp` | `typename B = int, typename Q = float` | Codec | abstract | P1 | `aff3ct.codec.Codec_HIHO` | done |
+| `Codec_SIHO` | `Tools/Codec/Codec_SIHO.hpp` | `typename B = int, typename Q = float` | Codec_HIHO | abstract | P1 | `aff3ct.codec.Codec_SIHO` | done |
+| `Codec_SISO` | `Tools/Codec/Codec_SISO.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | abstract | P1 | `aff3ct.codec.Codec_SISO` | done |
+| `Codec_conv` | `Tools/Codec/Conv/Codec_conv.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_conv` | done |
+| `Codec_LDPC` | `Tools/Codec/LDPC/Codec_LDPC.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_LDPC` | done |
+| `Codec_polar` | `Tools/Codec/Polar/Codec_polar.hpp` | `typename B = int, typename Q = float` | Codec_SISO, Interface_get_set_frozen_bits | factory | P1 | `aff3ct.codec.Codec_polar` | done |
+| `Codec_polar_MK` | `Tools/Codec/Polar_MK/Codec_polar_MK.hpp` | `typename B = int, typename Q = float` | Codec_SIHO, Interface_get_set_frozen_bits | factory | P1 | `aff3ct.codec.Codec_polar_MK` | done |
+| `Codec_polar_PAC` | `Tools/Codec/Polar_PAC/Codec_polar_PAC.hpp` | `typename B = int, typename Q = float` | Codec_SISO, Interface_get_set_frozen_bits | factory | P1 | `aff3ct.codec.Codec_polar_PAC` | done |
+| `Codec_polar_PT` | `Tools/Codec/Polar_PT/Codec_polar_PT.hpp` | `typename B = int, typename Q = float` | Codec_SISO, Interface_get_set_pretransform, Interface_get_set_frozen_bits, Interface_get_set_dynamic_frozen_bits | factory | P1 | `aff3ct.codec.Codec_polar_PT` | done |
+| `Codec_RA` | `Tools/Codec/RA/Codec_RA.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_RA` | done |
+| `Codec_RS` | `Tools/Codec/RS/Codec_RS.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_RS` | done |
+| `Codec_RSC` | `Tools/Codec/RSC/Codec_RSC.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_RSC` | done |
+| `Codec_RSC_DB` | `Tools/Codec/RSC_DB/Codec_RSC_DB.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_RSC_DB` | done |
+| `Codec_repetition` | `Tools/Codec/Repetition/Codec_repetition.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_repetition` | done |
+| `Codec_turbo` | `Tools/Codec/Turbo/Codec_turbo.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_turbo` | done |
+| `Codec_turbo_DB` | `Tools/Codec/Turbo_DB/Codec_turbo_DB.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_turbo_DB` | done |
+| `Codec_turbo_product` | `Tools/Codec/Turbo_product/Codec_turbo_product.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_turbo_product` | done |
+| `Codec_uncoded` | `Tools/Codec/Uncoded/Codec_uncoded.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_uncoded` | done |
 | `Constellation` | `Tools/Constellation/Constellation.hpp` | `typename R = float` |  | abstract | P1 | `aff3ct.tools.cst.Constellation` | todo |
 | `Constellation_PAM` | `Tools/Constellation/PAM/Constellation_PAM.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PAM` | todo |
 | `Constellation_PSK` | `Tools/Constellation/PSK/Constellation_PSK.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PSK` | todo |
@@ -360,7 +360,7 @@
 | `Decoder_RA` | `Factory/Module/Decoder/RA/Decoder_RA.hpp` | `` | Decoder | wrap | P1 | `(interne) aff3ct.factory.Decoder_RA` | done |
 | `Decoder_RSC` | `Factory/Module/Decoder/RSC/Decoder_RSC.hpp` | `` | Decoder | wrap | P1 | `(interne) aff3ct.factory.Decoder_RSC` | done |
 | `Decoder_RSC_DB` | `Factory/Module/Decoder/RSC_DB/Decoder_RSC_DB.hpp` | `` | Decoder | wrap | P1 | `(interne) aff3ct.factory.Decoder_RSC_DB` | done |
-| `Decoder_turbo` | `Factory/Module/Decoder/Turbo/Decoder_turbo.hpp` | `class D1 = Decoder_RSC, class D2 = D1` | Decoder | wrap | P1 | `(interne) aff3ct.factory.Decoder_turbo` | todo |
+| `Decoder_turbo` | `Factory/Module/Decoder/Turbo/Decoder_turbo.hpp` | `class D1 = Decoder_RSC, class D2 = D1` | Decoder | wrap | P1 | `(interne) aff3ct.factory.Decoder_turbo` | done |
 | `Decoder_turbo_common` | `Factory/Module/Decoder/Turbo/Decoder_turbo.hpp` | `` |  | wrap | P1 | `(interne) aff3ct.factory.Decoder_turbo_common` | todo |
 | `Decoder_turbo_DB` | `Factory/Module/Decoder/Turbo_DB/Decoder_turbo_DB.hpp` | `` | Decoder | wrap | P1 | `(interne) aff3ct.factory.Decoder_turbo_DB` | done |
 | `Decoder_turbo_product` | `Factory/Module/Decoder/Turbo_product/Decoder_turbo_product.hpp` | `` | Decoder | wrap | P1 | `(interne) aff3ct.factory.Decoder_turbo_product` | done |
@@ -371,7 +371,7 @@
 | `Encoder_RA` | `Factory/Module/Encoder/RA/Encoder_RA.hpp` | `` | Encoder | wrap | P1 | `(interne) aff3ct.factory.Encoder_RA` | done |
 | `Encoder_RSC` | `Factory/Module/Encoder/RSC/Encoder_RSC.hpp` | `` | Encoder | wrap | P1 | `(interne) aff3ct.factory.Encoder_RSC` | done |
 | `Encoder_RSC_DB` | `Factory/Module/Encoder/RSC_DB/Encoder_RSC_DB.hpp` | `` | Encoder | wrap | P1 | `(interne) aff3ct.factory.Encoder_RSC_DB` | done |
-| `Encoder_turbo` | `Factory/Module/Encoder/Turbo/Encoder_turbo.hpp` | `class E1 = Encoder_RSC, class E2 = E1` | Encoder | wrap | P1 | `(interne) aff3ct.factory.Encoder_turbo` | todo |
+| `Encoder_turbo` | `Factory/Module/Encoder/Turbo/Encoder_turbo.hpp` | `class E1 = Encoder_RSC, class E2 = E1` | Encoder | wrap | P1 | `(interne) aff3ct.factory.Encoder_turbo` | done |
 | `Encoder_turbo_common` | `Factory/Module/Encoder/Turbo/Encoder_turbo.hpp` | `` |  | wrap | P1 | `(interne) aff3ct.factory.Encoder_turbo_common` | todo |
 | `Encoder_turbo_DB` | `Factory/Module/Encoder/Turbo_DB/Encoder_turbo_DB.hpp` | `` | Encoder | wrap | P1 | `(interne) aff3ct.factory.Encoder_turbo_DB` | done |
 | `Encoder_turbo_product` | `Factory/Module/Encoder/Turbo_product/Encoder_turbo_product.hpp` | `` | Encoder | wrap | P1 | `(interne) aff3ct.factory.Encoder_turbo_product` | done |
