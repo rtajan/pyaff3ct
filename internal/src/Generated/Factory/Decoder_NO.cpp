@@ -30,7 +30,7 @@ pyaf::generated::wrap_factory_Decoder_NO(py::handle scope)
           return [](const F& f, aff3ct::module::Encoder<B>* encoder) -> spu::module::Module*
           { return f.template build_siso<B, Q>(encoder); };
       },
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>());
 
     def_builders<gen::Factory_Decoder_NO__build>(
@@ -51,7 +51,7 @@ pyaf::generated::wrap_factory_Decoder_NO(py::handle scope)
           return [](const F& f, aff3ct::module::Encoder<B>* encoder) -> spu::module::Module*
           { return f.template build<B, Q>(encoder); };
       },
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>());
 
 }

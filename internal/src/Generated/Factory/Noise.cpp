@@ -45,7 +45,7 @@ pyaf::generated::wrap_factory_Noise(py::handle scope)
           { return f.template build<R>(noise_val, bit_rate); };
       },
           py::arg("noise_val"),
-          py::arg("bit_rate"));
+          py::arg("bit_rate") = 1.);
     def_builders<gen::Factory_Noise__build>(
       cls,
       "build",
@@ -56,8 +56,8 @@ pyaf::generated::wrap_factory_Noise(py::handle scope)
           { return f.template build<R>(noise_val, bit_rate, bps); };
       },
           py::arg("noise_val"),
-          py::arg("bit_rate"),
-          py::arg("bps"));
+          py::arg("bit_rate") = 1.,
+          py::arg("bps") = 1);
     def_builders<gen::Factory_Noise__build>(
       cls,
       "build",
@@ -68,8 +68,8 @@ pyaf::generated::wrap_factory_Noise(py::handle scope)
           { return f.template build<R>(noise_val, bit_rate, bps, upf); };
       },
           py::arg("noise_val"),
-          py::arg("bit_rate"),
-          py::arg("bps"),
-          py::arg("upf"));
+          py::arg("bit_rate") = 1.,
+          py::arg("bps") = 1,
+          py::arg("upf") = 1);
 
 }

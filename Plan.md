@@ -360,8 +360,18 @@ inventaire mis à jour (`done`), docstrings présentes.
     `Frozenbits_generator`, `Interleaver_core`, `Constellation`…) et apparaîtront en wrappant ces outils.
   - `Codec` et `Decoder` (bases de famille) sont liées sans constructeur ; `Terminal.build` est écarté
     (`vector<unique_ptr<Reporter>>`, utiliser `streampu.Terminal_std`).
-  - Convention AFF3CT à connaître : un bit vaut 0 ou « non nul » (les décodeurs FAST rendent le bit de signe,
-    `-2147483648` en `int32`) ; les moniteurs comparent en booléens.
+  - Convention AFF3CT à connaître : un bit vaut 0 ou « non nul » ; les moniteurs comparent en booléens.
+    `aff3ct.tools.hard(x)` (socket ou tableau) en donne la vue 0 / 1. Mesuré par `scripts/probe_bit_convention.py`
+    → `docs/design/bit_convention.md` (à relancer à chaque évolution d'AFF3CT) : sur 100 combinaisons
+    (fonction × type × implem × dtypes), les encodeurs rendent toujours 0 / 1, et seuls les décodeurs polaires
+    **FAST** (SC, SCL, SCL_MEM, ASCL, ASCL_MEM) et **SCAN** rendent le bit de signe pour un 1 (`-128` en `int8`,
+    `-2147483648` en `int32`), sur `V_K` comme sur `V_N` ; tous décodent correctement.
+  - Défaut des surcharges tronquées corrigé : un argument suivant peut être donné sans les précédents
+    (`encoder=` sans `crc=`), les défauts littéraux étant gardés.
+  - **Manque identifié** : un module construit par une factory est typé d'après sa base wrappée la plus dérivée
+    (`Encoder_int32`) ; les interfaces de la classe concrète (`trellis` d'un encodeur RSC, `frozen_bits`…) ne sont
+    donc accessibles que si la classe concrète est enregistrée → à faire dans cette phase pour les classes
+    concrètes « wrap » (inventaire), en commençant par celles qui portent une interface.
   - Vérifié : chaîne source → `enc.polar` → BPSK → AWGN → `dec.polar` (SC NAIVE/FAST, `int8`/`int16`/`int32`) →
     `mnt.bfer`, CA-SCL avec un CRC gardé en vie par le décodeur, SISO SCAN.
 - Modules : `Source_random_fast`, `CRC_polynomial/NO`, `Encoder_{NO,polar,polar_sys,LDPC,LDPC_from_H,BCH,RS,repetition_sys}`,

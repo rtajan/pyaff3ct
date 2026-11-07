@@ -61,7 +61,7 @@ pyaf::generated::wrap_factory_Decoder_turbo_DB(py::handle scope)
           py::arg("siso_n"),
           py::arg("siso_i"),
           py::arg("itl"),
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>(),
           py::keep_alive<0, 3>(),
           py::keep_alive<0, 4>(),
@@ -85,7 +85,7 @@ pyaf::generated::wrap_factory_Decoder_turbo_DB(py::handle scope)
           return [](const F& f, aff3ct::module::Encoder<B>* encoder) -> spu::module::Module*
           { return f.template build<B, Q>(encoder); };
       },
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>());
 
 }

@@ -48,7 +48,7 @@ pyaf::generated::wrap_factory_Decoder_LDPC(py::handle scope)
       },
           py::arg("H"),
           py::arg("info_bits_pos"),
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>(),
           py::keep_alive<0, 4>());
 
@@ -75,7 +75,7 @@ pyaf::generated::wrap_factory_Decoder_LDPC(py::handle scope)
       },
           py::arg("H"),
           py::arg("info_bits_pos"),
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>(),
           py::keep_alive<0, 4>());
 

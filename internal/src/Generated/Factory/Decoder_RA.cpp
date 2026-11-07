@@ -39,7 +39,7 @@ pyaf::generated::wrap_factory_Decoder_RA(py::handle scope)
           { return f.template build<B, Q>(itl, encoder); };
       },
           py::arg("itl"),
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>(),
           py::keep_alive<0, 3>());
 

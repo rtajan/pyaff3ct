@@ -52,7 +52,7 @@ pyaf::generated::wrap_factory_Modem(py::handle scope)
           return [](const F& f, const aff3ct::tools::Constellation<R>* cstl) -> spu::module::Module*
           { return f.template build<B, R, Q>(cstl); };
       },
-          py::arg("cstl"),
+          py::arg("cstl") = nullptr,
           py::keep_alive<0, 2>());
 
     def_builders<gen::Factory_Modem__build>(

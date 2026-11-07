@@ -30,7 +30,7 @@ pyaf::generated::wrap_factory_Codec_uncoded(py::handle scope)
           return [](const F& f, const aff3ct::module::CRC<B>* crc) -> aff3ct::tools::Codec_uncoded<B, Q>*
           { return f.template build<B, Q>(crc); };
       },
-          py::arg("crc"),
+          py::arg("crc") = nullptr,
           py::keep_alive<0, 2>());
 
 }

@@ -31,7 +31,7 @@ pyaf::generated::wrap_factory_Decoder_repetition(py::handle scope)
           return [](const F& f, aff3ct::module::Encoder<B>* encoder) -> spu::module::Module*
           { return f.template build<B, Q>(encoder); };
       },
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>());
 
 }

@@ -37,7 +37,7 @@ pyaf::generated::wrap_factory_Decoder_polar_MK(py::handle scope)
       },
           py::arg("code"),
           py::arg("frozen_bits"),
-          py::arg("crc"),
+          py::arg("crc") = nullptr,
           py::keep_alive<0, 2>(),
           py::keep_alive<0, 4>());
     def_builders<gen::Factory_Decoder_polar_MK__build>(
@@ -51,8 +51,8 @@ pyaf::generated::wrap_factory_Decoder_polar_MK(py::handle scope)
       },
           py::arg("code"),
           py::arg("frozen_bits"),
-          py::arg("crc"),
-          py::arg("encoder"),
+          py::arg("crc") = nullptr,
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>(),
           py::keep_alive<0, 4>(),
           py::keep_alive<0, 5>());

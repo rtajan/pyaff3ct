@@ -163,3 +163,15 @@ def test_bpsk_awgn_polar_chain():
     v = dec["decode_siho::V_K"]
     mnt.check_errors(u, v)
     np.testing.assert_array_equal(v.numpy, u.numpy)
+
+
+def test_later_builder_argument_without_the_previous_ones():
+    # build(frozen_bits, crc = nullptr, encoder = nullptr): encoder= alone (regression: no overload matched)
+    K, N = 8, 16
+    fb = frozen_bits(K, N)
+    enc = af.enc.polar(K, N, fb)
+    dec = af.dec.polar(K, N, fb, encoder=enc, type="ML", implem="STD")
+    u = bits(K)
+    x = enc.encode(u)
+    dec.decode_siho(spu.array((1.0 - 2.0 * x.numpy[0]).astype(np.float32).tolist(), dtype=spu.float32))
+    np.testing.assert_array_equal(decoded(dec["decode_siho::V_K"]), u.numpy)

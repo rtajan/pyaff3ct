@@ -34,7 +34,7 @@ pyaf::generated::wrap_factory_Decoder_conv(py::handle scope)
           { return f.template build<B, Q>(trellis, crc); };
       },
           py::arg("trellis"),
-          py::arg("crc"),
+          py::arg("crc") = nullptr,
           py::keep_alive<0, 3>());
     def_builders<gen::Factory_Decoder_conv__build>(
       cls,
@@ -46,8 +46,8 @@ pyaf::generated::wrap_factory_Decoder_conv(py::handle scope)
           { return f.template build<B, Q>(trellis, crc, encoder); };
       },
           py::arg("trellis"),
-          py::arg("crc"),
-          py::arg("encoder"),
+          py::arg("crc") = nullptr,
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 3>(),
           py::keep_alive<0, 4>());
 

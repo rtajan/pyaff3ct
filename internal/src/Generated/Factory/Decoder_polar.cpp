@@ -38,7 +38,7 @@ pyaf::generated::wrap_factory_Decoder_polar(py::handle scope)
           { return f.template build_siso<B, Q>(frozen_bits, encoder); };
       },
           py::arg("frozen_bits"),
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 3>());
 
     def_builders<gen::Factory_Decoder_polar__build>(
@@ -61,7 +61,7 @@ pyaf::generated::wrap_factory_Decoder_polar(py::handle scope)
           { return f.template build<B, Q>(frozen_bits, crc); };
       },
           py::arg("frozen_bits"),
-          py::arg("crc"),
+          py::arg("crc") = nullptr,
           py::keep_alive<0, 3>());
     def_builders<gen::Factory_Decoder_polar__build>(
       cls,
@@ -73,8 +73,8 @@ pyaf::generated::wrap_factory_Decoder_polar(py::handle scope)
           { return f.template build<B, Q>(frozen_bits, crc, encoder); };
       },
           py::arg("frozen_bits"),
-          py::arg("crc"),
-          py::arg("encoder"),
+          py::arg("crc") = nullptr,
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 3>(),
           py::keep_alive<0, 4>());
 
@@ -96,7 +96,7 @@ pyaf::generated::wrap_factory_Decoder_polar(py::handle scope)
           return [](const F& f, const aff3ct::module::CRC<B>* crc) -> spu::module::Module*
           { return f.template build_gen<B, Q>(crc); };
       },
-          py::arg("crc"),
+          py::arg("crc") = nullptr,
           py::keep_alive<0, 2>());
     def_builders<gen::Factory_Decoder_polar__build_gen>(
       cls,
@@ -107,8 +107,8 @@ pyaf::generated::wrap_factory_Decoder_polar(py::handle scope)
           return [](const F& f, const aff3ct::module::CRC<B>* crc, aff3ct::module::Encoder<B>* encoder) -> spu::module::Module*
           { return f.template build_gen<B, Q>(crc, encoder); };
       },
-          py::arg("crc"),
-          py::arg("encoder"),
+          py::arg("crc") = nullptr,
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>(),
           py::keep_alive<0, 3>());
 

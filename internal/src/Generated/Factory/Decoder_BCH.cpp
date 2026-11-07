@@ -35,7 +35,7 @@ pyaf::generated::wrap_factory_Decoder_BCH(py::handle scope)
           { return f.template build<B, Q>(GF, encoder); };
       },
           py::arg("GF"),
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 2>(),
           py::keep_alive<0, 3>());
 

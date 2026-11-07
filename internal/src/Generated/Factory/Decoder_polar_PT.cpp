@@ -43,7 +43,7 @@ pyaf::generated::wrap_factory_Decoder_polar_PT(py::handle scope)
           py::arg("frozen_bits"),
           py::arg("dynamic_frozen_bits"),
           py::arg("pretransform"),
-          py::arg("crc"),
+          py::arg("crc") = nullptr,
           py::keep_alive<0, 5>());
     def_builders<gen::Factory_Decoder_polar_PT__build>(
       cls,
@@ -57,8 +57,8 @@ pyaf::generated::wrap_factory_Decoder_polar_PT(py::handle scope)
           py::arg("frozen_bits"),
           py::arg("dynamic_frozen_bits"),
           py::arg("pretransform"),
-          py::arg("crc"),
-          py::arg("encoder"),
+          py::arg("crc") = nullptr,
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 5>(),
           py::keep_alive<0, 6>());
 

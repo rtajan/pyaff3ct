@@ -34,7 +34,7 @@ pyaf::generated::wrap_factory_Decoder_RSC_DB(py::handle scope)
           { return f.template build_siso<B, Q>(trellis, encoder); };
       },
           py::arg("trellis"),
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 3>());
 
     def_builders<gen::Factory_Decoder_RSC_DB__build>(
@@ -57,7 +57,7 @@ pyaf::generated::wrap_factory_Decoder_RSC_DB(py::handle scope)
           { return f.template build<B, Q>(trellis, encoder); };
       },
           py::arg("trellis"),
-          py::arg("encoder"),
+          py::arg("encoder") = nullptr,
           py::keep_alive<0, 3>());
 
 }

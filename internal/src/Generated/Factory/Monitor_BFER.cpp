@@ -36,6 +36,6 @@ pyaf::generated::wrap_factory_Monitor_BFER(py::handle scope)
           return [](const F& f, bool count_unknown_values) -> spu::module::Module*
           { return f.template build<B>(count_unknown_values); };
       },
-          py::arg("count_unknown_values"));
+          py::arg("count_unknown_values") = false);
 
 }

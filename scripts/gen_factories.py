@@ -252,8 +252,12 @@ def cpp_builder_overload(name: str, b: dict, combos: dict | None) -> str:
     params = ", ".join(f"{a['qtype']} {a['name']}" for a in args)
     names = ", ".join(a["name"] for a in args)
     extras = []
-    for a in args:  # no default here: the shorter overloads stand for the omitted arguments
-        extras.append(f'py::arg("{a["name"]}")')
+    for a in args:
+        # literal defaults (nullptr, false, 0...) are kept: they let a later argument be given without the previous
+        # ones (encoder= without crc=); the shorter overloads cover the pointers to unregistered types, which pybind11
+        # cannot load from None
+        d = a["default"]
+        extras.append(f'py::arg("{a["name"]}")' + (f" = {qualify(d)}" if d is not None else ""))
     for i, a in enumerate(args):
         t = a["qtype"].replace("const ", "").strip()
         if ("*" in t or "&" in t) and not t.startswith("std::"):
