@@ -95,6 +95,28 @@ def compute(api: dict) -> dict[str, dict]:
                 if d:
                     combos[key].add(d)
 
+    # header-only class templates (module::Interleaver<D, T>) have no explicit instantiation: they get the
+    # combinations of the factory builders that return them (template<typename D> module::Interleaver<D>* build)
+    for key, v in classes.items():
+        for meth in v.get("methods", []):
+            mm = re.match(r"template<(.*?)>\s*(?:static\s+)?(?:const\s+)?(?:aff3ct::)?(module|tools)::(\w+)<(.*?)>\*\s*"
+                          r"(build\w*)\(", meth)
+            if not mm or mm.group(5) not in builders.get(key, {}):
+                continue
+            ckey = f"{'Module' if mm.group(2) == 'module' else 'Tools'}::{mm.group(3)}"
+            if ckey not in classes or combos[ckey] or not params[ckey]:
+                continue
+            bnames = [p for p, _ in type_params(split_top(mm.group(1)))]
+            rargs = split_top(mm.group(4))
+            cparams = params[ckey]
+            for bc in builders[key][mm.group(5)]:
+                env = dict(zip(bnames, bc))
+                c = []
+                for i, (p, d) in enumerate(cparams):
+                    a = rargs[i] if i < len(rargs) else d  # template argument, else the class default
+                    c.append(env.get(a) or TOKEN2DTYPE.get(a or ""))
+                if None not in c:
+                    combos[ckey].add(tuple(c))
     # propagate combinations to the bases, following the template arguments of the inheritance
     changed = True
     while changed:

@@ -4,7 +4,8 @@ Python bindings (pybind11) for [AFF3CT](https://github.com/aff3ct/aff3ct), built
 [pystreampu](https://github.com/aff3ct/pystreampu): every AFF3CT module is a `streampu.Module`,
 its tasks are callable from Python and its sockets are exposed as NumPy arrays.
 
-Status: phase 1 (infrastructure: dtype dispatch, abstract module bases, factories, conversions) — see `Plan.md`.
+Status: phase 2 in progress (generated module-level functions for every factory, P0 tools, BER/FER validated against
+the AFF3CT references) — see `Plan.md`.
 
 ## Development build
 
@@ -16,6 +17,8 @@ git submodule update --init lib/aff3ct
 git -C lib/aff3ct submodule update --init --recursive lib/cli lib/MIPP lib/date
 PYTHON=path/to/python scripts/dev_build.sh       # build/dev, links aff3ct/_ext*.so into the source tree
 path/to/python -m pytest
+# optional: BER/FER references (tests/test_references.py, skipped without them)
+git -C lib/aff3ct submodule update --init refs
 ```
 
 The first build compiles AFF3CT in multi-precision (about 15 minutes on 2 cores). `ARCH_FLAGS=-march=native`
@@ -25,9 +28,23 @@ tunes it for the host (default on x86-64: `-msse4.2`).
 import streampu as spu
 import aff3ct as af
 
-crc = af.factory.CRC.from_cli("--crc-type 32-GZIP", K=64).build(B=spu.int16)
-x = crc.build(spu.array([0, 1] * 32, dtype=spu.int16))   # AFF3CT task executed by pystreampu
+K, N = 96, 128
+fb = af.tools.Frozenbits_generator_GA_Arikan(K, N).generate(af.tools.sigma_from_ebn0(2.0, K / N))
+src, enc = af.src.source(K, type="RAND"), af.enc.polar(K, N, fb)
+mdm, chn = af.mdm.modem(N, type="BPSK"), af.chn.channel(N, type="AWGN")
+dec, mnt = af.dec.polar(K, N, fb, type="SC", implem="NAIVE"), af.mnt.bfer(K, n_frame_errors=100)
+
+sigma = spu.array([0.7], dtype=spu.float32)
+u = src.generate()[0]                                     # AFF3CT tasks executed (and bound) by pystreampu
+dec.decode_siho(mdm.demodulate(sigma, chn.add_noise(sigma, mdm.modulate(enc.encode(u)))))
+mnt.check_errors(u, dec["decode_siho::V_K"])
+spu.Sequence(mnt["check_errors::status"]).exec()          # until 100 frame errors
+print(mnt.fer, mnt.ber)
 ```
+
+With several threads, each thread runs clones of the modules: use `af.mnt.Monitor_BFER_AR(K, max_fe)`, whose clones
+share their counters (the sequence stops on the total, and `mnt` shows it). See `examples/polar_bfer.py` for an SNR
+loop with a `streampu.Terminal_std`.
 
 ## Design documents
 

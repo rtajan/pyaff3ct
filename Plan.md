@@ -368,21 +368,53 @@ inventaire mis à jour (`done`), docstrings présentes.
     `-2147483648` en `int32`), sur `V_K` comme sur `V_N` ; tous décodent correctement.
   - Défaut des surcharges tronquées corrigé : un argument suivant peut être donné sans les précédents
     (`encoder=` sans `crc=`), les défauts littéraux étant gardés.
-  - **Manque identifié** : un module construit par une factory est typé d'après sa base wrappée la plus dérivée
-    (`Encoder_int32`) ; les interfaces de la classe concrète (`trellis` d'un encodeur RSC, `frozen_bits`…) ne sont
-    donc accessibles que si la classe concrète est enregistrée → à faire dans cette phase pour les classes
-    concrètes « wrap » (inventaire), en commençant par celles qui portent une interface.
+  - **Interfaces des classes concrètes** ✅ : un module construit par une factory est typé d'après sa base wrappée la
+    plus dérivée (`Decoder_SIHO_int32_float32`) ; plutôt que d'enregistrer chaque classe concrète (les factories les
+    instancient avec des paramètres de template non exposés : `Decoder_polar_SC_fast_sys<B, Q, API_polar>`…), les
+    accesseurs d'une interface sont liés sur les bases dont des enfants l'implémentent (d'après l'empreinte :
+    `Encoder` → `frozen_bits`, `dynamic_frozen_bits`, `pretransform`, `trellis` ; `Decoder` → les trois premiers ;
+    `Extractor` → `frozen_bits`) et atteignent l'interface par `dynamic_cast`
+    (`internal/Common/Tools/interfaces.hpp`). Sur un module qui ne l'implémente pas, ils lèvent `AttributeError` :
+    `hasattr(dec, "frozen_bits")` dit si le décodeur utilise des bits gelés.
+  - **Templates appelables** ✅ : `af.tools.Sigma(0.5)`, `af.itl.Interleaver(core, D=spu.float32)` ; les mots-clés
+    nommés comme les paramètres de template (ou `dtype=`) choisissent l'instance, les autres vont au constructeur.
+  - **Modules header-only** (`module::Interleaver<D, T>`) : leurs combinaisons de dtypes viennent des builders qui les
+    renvoient (`gen_instantiations.py`) ; builders `static` non `const` reconnus (`Interleaver::build`).
   - Vérifié : chaîne source → `enc.polar` → BPSK → AWGN → `dec.polar` (SC NAIVE/FAST, `int8`/`int16`/`int32`) →
     `mnt.bfer`, CA-SCL avec un CRC gardé en vie par le décodeur, SISO SCAN.
-- Modules : `Source_random_fast`, `CRC_polynomial/NO`, `Encoder_{NO,polar,polar_sys,LDPC,LDPC_from_H,BCH,RS,repetition_sys}`,
+- Modules (via les fonctions générées ; vérifiés : polaire, LDPC, BCH, RS, répétition, RSC, BPSK, AWGN, BFER) :
+  `Source_random_fast`, `CRC_polynomial/NO`, `Encoder_{NO,polar,polar_sys,LDPC,LDPC_from_H,BCH,RS,repetition_sys}`,
   `Modem_BPSK(_fast)`, `Channel_{AWGN_LLR,NO}`, `Quantizer_{NO,pow2}`, `Decoder_{NO,repetition,BCH_std,RS_std}` +
   polaire SC et LDPC BP via factory, `Interleaver`, `Puncturer_NO`, `Monitor_BFER`.
-- Tools : `Sparse_matrix` + lecture AList, `BCH/RS_polynomial_generator` (+ `Galois`), `Frozenbits_generator_{GA_Arikan,BEC,file}`,
-  `Interleaver_core_{NO,random,LTE,user}`, `Sigma`, `Reporter_{BFER,noise,throughput}` (avec `spu.Terminal_std`).
-- Factories P0 correspondantes.
-- **Validation numérique** : courbes BER/FER comparées aux références `lib/aff3ct/refs` (polaire SC, LDPC BP, BCH)
-  à tolérance statistique près.
-- Exemples `examples/polar_bfer.py`, `examples/ldpc_bfer.py`, et notebook.
+- Tools ✅ : `Sparse_matrix` (depuis/vers NumPy, `__array__`, `to_scipy` / `from_scipy`, `T`, `turn`…), `AList`, `QC`,
+  `LDPC_matrix_handler` (`read` → `(H, info_bits_pos, pct_pattern)`, `transform_H_to_G`), `Galois`,
+  `BCH_polynomial_generator`, `RS_polynomial_generator`, `Frozenbits_generator_{GA_Arikan,BEC,file}`
+  (`gen.generate(noise)` → tableau de booléens), `Interleaver_core_*` (les 12 cœurs, tous les `T`) + module
+  `aff3ct.itl.Interleaver`, `Sigma` + conversions (`ebn0_to_esn0`, `esn0_to_sigma`…, `sigma_from_ebn0`),
+  `Reporter_{BFER,noise,throughput}` (avec `spu.Terminal_std`), module `Monitor_BFER` (compteurs `n_fe`, `ber`, `fer`…,
+  `collect`, callbacks).
+  Notes : dans AFF3CT, `sigma_to_esn0` n'est pas l'inverse de `esn0_to_sigma` (écart de 3,01 dB, facteur 2) ;
+  `H` est stocké verticalement (N lignes, comme les fichiers AList), l'encodeur `type="LDPC_H"` calcule G lui-même
+  et donne `info_bits_pos` au décodeur ; les tailles de `enc.rs` / `dec.rs` sont en symboles.
+- Empreinte : `strip` des commentaires corrigé (un `//` dans un `/* … */`, ici une URL, masquait sa fin) : deux
+  classes manquaient (`RS_polynomial_generator`, `Decoder_RS_std`).
+- **Validation numérique** ✅ (`tests/test_references.py`, < 2 s) : polaire SC (128, 96) GA, BCH (127, 106) t = 3 et
+  LDPC CCSDS (128, 64) BP SPA à 50 itérations, comparés aux références `lib/aff3ct/refs` (FER à 4 écarts-types
+  binomiaux) ; la CI récupère `refs` et, de `conf`, la seule matrice utilisée.
+- Exemple ✅ `examples/polar_bfer.py` (`streampu.Sequence` multi-thread, `Terminal_std`, bits gelés adaptés au bruit
+  par `set_frozen_bits` sur les clones). Restent `examples/ldpc_bfer.py` et un notebook.
+- Constaté côté pystreampu (à remonter) : `Terminal_std(reporters)` ne garde pas ses reporters en vie (à garder par
+  l'appelant) ; `stop_temp_report` est lié à `start_temp_report` ; `Sequence(task)` prend la tâche pour la
+  **première** (le passer par une socket de fin : `Sequence(mnt["check_errors::status"])`).
+- **Réduction multi-thread** ✅ : avec `Monitor_BFER`, chaque thread a son clone et la séquence s'arrête dès qu'**un**
+  clone atteint `max_fe` (FER réduit biaisé vers le haut ; l'original n'est même pas utilisé par les threads).
+  Classe propre à pyaff3ct, temporaire, d'après `Monitor_BFER_AR` de py_aff3ct :
+  `internal/include/internal/Module/Monitor/BFER_AR/Monitor_BFER_AR.hpp` → `af.mnt.Monitor_BFER_AR(K, max_fe)`.
+  Elle dérive de `Monitor_BFER<B>` (les reporters et accesseurs restent valables) ; ses clones partagent des totaux
+  (mutex) recopiés dans le clone et dans l'original à chaque trame, `is_done()` relit les totaux, `reset()` les
+  remet à zéro. Les classes de pyaff3ct sont déclarées dans `PYAFF3CT_TEMPLATES` (`_dispatch.py`) pour le
+  regroupement par dtype. Vérifié : 4 threads → FE total = `max_fe` (+ trames en vol), FER conforme à la référence
+  polaire. À retirer si AFF3CT / pystreampu offrent l'équivalent (`Monitor_reduction`).
 
 ### Phase 3 — Couverture cœur (priorité **P1**, 229 entrées)
 - Toutes les familles restantes « mainstream » : Turbo/RSC (+ `Post_processing_SISO`, `Flip_and_check`, `Scaling_factor`),

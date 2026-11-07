@@ -1326,6 +1326,90 @@ def _enc__turbo_product(K: int, N_cw: int, enc_r: Any, enc_c: Any, itl: Any, *, 
 
 
 
+def _tools__frozenbits_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
+    """Build tools::Frozenbits_generator with the AFF3CT factory ``Frozenbits_generator`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Frozenbits_generator(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Frozenbits_generator().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        type (str): factory parameter (``std::string``).
+        path_fb (str): factory parameter (``std::string``).
+        path_pb (str): factory parameter (``std::string``).
+        dump_channels_path (str): factory parameter (``std::string``).
+        noise (float): factory parameter (``float``).
+
+    Returns:
+        tools::Frozenbits_generator*: the built object (owned by Python).
+    """
+    return _make("Frozenbits_generator", "build", {"K": K, "N_cw": N_cw, "type": type, "path_fb": path_fb, "path_pb": path_pb, "dump_channels_path": dump_channels_path, "noise": noise}, {}, {})
+
+
+
+def _tools__frozenbits_generator_mk(K: int, N_cw: int, pc: Any, *, type: str | None = None, path_fb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
+    """Build tools::Frozenbits_generator with the AFF3CT factory ``Frozenbits_generator_MK`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Frozenbits_generator_MK(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Frozenbits_generator_MK().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        pc (const aff3ct::tools::Polar_code&): builder argument.
+        type (str): factory parameter (``std::string``).
+        path_fb (str): factory parameter (``std::string``).
+        dump_channels_path (str): factory parameter (``std::string``).
+        noise (float): factory parameter (``float``).
+
+    Returns:
+        tools::Frozenbits_generator*: the built object (owned by Python).
+    """
+    return _make("Frozenbits_generator_MK", "build", {"K": K, "N_cw": N_cw, "type": type, "path_fb": path_fb, "dump_channels_path": dump_channels_path, "noise": noise}, {"pc": pc}, {})
+
+
+
+def _itl__interleaver(itl_core: Any, *, D: Any = None) -> Any:
+    """Build module::Interleaver<D> with the AFF3CT factory ``Interleaver`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Interleaver(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver().parameters``).
+
+    Args:
+        itl_core (aff3ct::tools::Interleaver_core<>&): builder argument.
+        D (streampu.dtype): template parameter ``D``.
+
+    Compiled dtype combinations (D): (int8); (int16); (int32); (int64); (float32); (float64).
+
+    Returns:
+        module::Interleaver<D>*: the built object (owned by Python).
+    """
+    return _make("Interleaver", "build", {}, {"itl_core": itl_core}, {"D": D})
+
+
+
+def _tools__interleaver_core(*, size: int | None = None, type: str | None = None, path: str | None = None, read_order: str | None = None, n_cols: int | None = None, seed: int | None = None, uniform: bool | None = None, T: Any = None) -> Any:
+    """Build tools::Interleaver_core<T> with the AFF3CT factory ``Interleaver_core`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Interleaver_core(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver_core().parameters``).
+
+    Args:
+        size (int): factory parameter (``int``).
+        type (str): factory parameter (``std::string``).
+        path (str): factory parameter (``std::string``).
+        read_order (str): factory parameter (``std::string``).
+        n_cols (int): factory parameter (``int``).
+        seed (int): factory parameter (``int``).
+        uniform (bool): factory parameter (``bool``).
+        T (streampu.dtype): template parameter ``T``.
+
+    Compiled dtype combinations (T): (uint32).
+
+    Returns:
+        tools::Interleaver_core<T>*: the built object (owned by Python).
+    """
+    return _make("Interleaver_core", "build", {"size": size, "type": type, "path": path, "read_order": read_order, "n_cols": n_cols, "seed": seed, "uniform": uniform}, {}, {"T": T})
+
+
+
 def _mdm__modem(N: int, cstl: Any = None, dist: Any = None, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, B: Any = None, R: Any = None, Q: Any = None) -> Any:
     """Build module::Modem<B, R, Q> with the AFF3CT factory ``Modem`` (builder ``build``).
 
@@ -1651,13 +1735,14 @@ FUNCTIONS = {
     "cst": {"coset_bit": _cst__coset_bit, "coset_real": _cst__coset_real},
     "dec": {"bch": _dec__bch, "ldpc": _dec__ldpc, "ldpc_siso": _dec__ldpc_siso, "no_siso": _dec__no_siso, "no": _dec__no, "ra": _dec__ra, "rs": _dec__rs, "rsc": _dec__rsc, "rsc_siso": _dec__rsc_siso, "rsc_db_siso": _dec__rsc_db_siso, "rsc_db": _dec__rsc_db, "conv": _dec__conv, "polar_siso": _dec__polar_siso, "polar": _dec__polar, "polar_gen": _dec__polar_gen, "polar_mk": _dec__polar_mk, "polar_pac": _dec__polar_pac, "polar_pt": _dec__polar_pt, "repetition": _dec__repetition, "turbo_db": _dec__turbo_db, "turbo_product": _dec__turbo_product, "turbo_product_siso": _dec__turbo_product_siso},
     "enc": {"encoder": _enc__encoder, "bch": _enc__bch, "ldpc": _enc__ldpc, "no": _enc__no, "ra": _enc__ra, "rs": _enc__rs, "rsc": _enc__rsc, "rsc_db": _enc__rsc_db, "conv": _enc__conv, "polar": _enc__polar, "polar_mk": _enc__polar_mk, "polar_pac": _enc__polar_pac, "polar_pt": _enc__polar_pt, "repetition": _enc__repetition, "turbo_db": _enc__turbo_db, "turbo_product": _enc__turbo_product},
+    "itl": {"interleaver": _itl__interleaver},
     "mdm": {"modem": _mdm__modem},
     "mnt": {"bfer": _mnt__bfer, "exit": _mnt__exit, "mi": _mnt__mi},
     "pct": {"puncturer": _pct__puncturer, "ldpc": _pct__ldpc, "polar": _pct__polar, "turbo": _pct__turbo, "turbo_db": _pct__turbo_db},
     "qnt": {"quantizer": _qnt__quantizer},
     "snk": {"sink": _snk__sink},
     "src": {"source": _src__source},
-    "tools": {"noise": _tools__noise},
+    "tools": {"frozenbits_generator": _tools__frozenbits_generator, "frozenbits_generator_mk": _tools__frozenbits_generator_mk, "interleaver_core": _tools__interleaver_core, "noise": _tools__noise},
 }
 
 
@@ -1684,9 +1769,6 @@ SKIPPED = [
     "Codec_uncoded.build -> tools::Codec_uncoded<B, Q>*",
     "Flip_and_check.build -> tools::Flip_and_check<B, Q>*",
     "Flip_and_check_DB.build -> tools::Flip_and_check_DB<B, Q>*",
-    "Frozenbits_generator.build -> tools::Frozenbits_generator*",
-    "Frozenbits_generator_MK.build -> tools::Frozenbits_generator*",
-    "Interleaver_core.build -> tools::Interleaver_core<T>*",
     "Modem.build_constellation -> tools::Constellation<R>*",
     "Polar_code.build -> tools::Polar_code*",
     "Pretransform_generator.build -> tools::Pretransform_generator*",

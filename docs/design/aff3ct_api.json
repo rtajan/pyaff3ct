@@ -4763,6 +4763,34 @@
     "typename R = float"
    ]
   },
+  "Module::Decoder_RS_std": {
+   "bases": [
+    "Decoder_RS<B, R>"
+   ],
+   "ctors": [
+    [
+     "const int& K",
+     "const int& N",
+     "const tools::RS_polynomial_generator& GF"
+    ]
+   ],
+   "file": "Module/Decoder/RS/Standard/Decoder_RS_std.hpp",
+   "instantiations": [
+    "B_16, Q_16",
+    "B_32, Q_32",
+    "B_64, Q_64",
+    "B_8, Q_8"
+   ],
+   "members": [],
+   "methods": [
+    "Decoder_RS_std<B, R>* clone()const"
+   ],
+   "tasks": {},
+   "tpl": [
+    "typename B = int",
+    "typename R = float"
+   ]
+  },
   "Module::Decoder_SIHO": {
    "bases": [
     "Decoder_HIHO<B>"
@@ -12526,6 +12554,28 @@
     "std::vector<bool>read_pct_pattern(std::istream& stream, int N_red = -1)",
     "void write(const Sparse_matrix& matrix, std::ostream& stream)",
     "void read_matrix_size(std::istream& stream, int& H, int& N)"
+   ],
+   "tpl": []
+  },
+  "Tools::RS_polynomial_generator": {
+   "bases": [
+    "Galois<int>"
+   ],
+   "ctors": [
+    [
+     "const int& N",
+     "const int& t"
+    ]
+   ],
+   "file": "Tools/Code/RS/RS_polynomial_generator.hpp",
+   "instantiations": [],
+   "members": [],
+   "methods": [
+    "int get_d()const",
+    "int get_t()const",
+    "int get_n_rdncy()const",
+    "const std::vector<int>& get_g()const",
+    "const std::vector<int>& get_mt()const"
    ],
    "tpl": []
   },

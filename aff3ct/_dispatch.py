@@ -9,6 +9,7 @@ instantiations (``aff3ct/_generated/instantiations.py``).
 
 from __future__ import annotations
 
+import inspect
 import re
 from typing import Any, Iterable, Mapping
 
@@ -81,10 +82,18 @@ def resolve_combo(entry: Mapping[str, Any], dtypes: Mapping[str, Any], what: str
     return tuple(chosen[p] for p in params)
 
 
+# class templates of pyaff3ct itself (internal/include/internal/Module): same dtype combinations as an AFF3CT class
+PYAFF3CT_TEMPLATES = {"Module::Monitor_BFER_AR": "Module::Monitor_BFER"}
+
+
+def _known(key: str) -> bool:
+    return key in INSTANTIATIONS or key in PYAFF3CT_TEMPLATES
+
+
 def class_entry(key: str) -> dict:
     """Generated entry of a class template (``"Module::Encoder"``)."""
     try:
-        entry = INSTANTIATIONS[key]
+        entry = INSTANTIATIONS[PYAFF3CT_TEMPLATES.get(key, key)]
     except KeyError:
         raise KeyError(f"no dtype combination known for {key!r}") from None
     if "combos" not in entry:
@@ -140,6 +149,17 @@ class Template:
             raise TypeError(f"{self.__name__} has {len(params)} template parameter(s): {params}.")
         return self.resolve(**dict(zip(params, dtypes)))
 
+    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        """Build an instance: the keywords named after the template parameters (or ``dtype``) select the dtypes.
+
+        >>> af.tools.Sigma(0.5)                       # R = float32 (default)
+        >>> af.tools.Sigma(0.5, R=spu.float64)
+        >>> af.itl.Interleaver(core, D=spu.float32)
+        """
+        names = set(self.params) | {"dtype"}
+        dtypes = {k: kwargs.pop(k) for k in list(kwargs) if k in names}
+        return self.resolve(**dtypes)(*args, **kwargs)
+
     def __instancecheck__(self, obj: Any) -> bool:
         return any(isinstance(obj, cls) for cls in self.instances.values())
 
@@ -158,8 +178,8 @@ def export(scope: Any, namespace: dict, kinds: Iterable[str] = ("Module", "Tools
     """Export the classes of a sub-module of ``aff3ct._ext`` into a Python module namespace.
 
     The instances of a class template (``Encoder_int8`` ... ``Encoder_int64``) are grouped into one
-    :class:`Template` (``Encoder``); the other classes and enums are exported as is. The instances stay reachable
-    in ``aff3ct._ext`` only, which keeps the public namespace small.
+    :class:`Template` (``Encoder``); the other classes, enums and functions are exported as is. The instances stay
+    reachable in ``aff3ct._ext`` only, which keeps the public namespace small.
 
     Returns:
         out (list[str]): exported names (for ``__all__``).
@@ -172,11 +192,11 @@ def export(scope: Any, namespace: dict, kinds: Iterable[str] = ("Module", "Tools
         m = _INSTANCE_RE.match(name)
         if m:
             groups.setdefault(m.group("base"), []).append(name)
-        elif isinstance(getattr(scope, name), type):
+        elif isinstance(getattr(scope, name), type) or inspect.isbuiltin(getattr(scope, name)):
             namespace[name] = getattr(scope, name)
             names.append(name)
     for base in groups:
-        key = next((f"{k}::{base}" for k in kinds if f"{k}::{base}" in INSTANTIATIONS), None)
+        key = next((f"{k}::{base}" for k in kinds if _known(f"{k}::{base}")), None)
         if key is None:  # not a template known by the generator: keep the instances
             for name in groups[base]:
                 namespace[name] = getattr(scope, name)
