@@ -407,7 +407,8 @@ inventaire mis à jour (`done`), docstrings présentes.
   l'appelant) ; `stop_temp_report` est lié à `start_temp_report` ; `Sequence(task)` prend la tâche pour la
   **première** (le passer par une socket de fin : `Sequence(mnt["check_errors::status"])`).
 - **Réduction multi-thread** ✅ : avec `Monitor_BFER`, chaque thread a son clone et la séquence s'arrête dès qu'**un**
-  clone atteint `max_fe` (FER réduit biaisé vers le haut ; l'original n'est même pas utilisé par les threads).
+  clone atteint `max_fe` (FER réduit biaisé vers le haut ; l'original ne compte au mieux que les trames du premier
+  thread).
   Classe propre à pyaff3ct, temporaire, d'après `Monitor_BFER_AR` de py_aff3ct :
   `internal/include/internal/Module/Monitor/BFER_AR/Monitor_BFER_AR.hpp` → `af.mnt.Monitor_BFER_AR(K, max_fe)`.
   Elle dérive de `Monitor_BFER<B>` (les reporters et accesseurs restent valables) ; ses clones partagent des totaux

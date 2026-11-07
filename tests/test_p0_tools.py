@@ -319,12 +319,14 @@ def test_monitor_bfer_ar_stops_on_the_total(n_threads):
 
 
 def test_monitor_bfer_with_threads_stops_on_one_clone():
-    # the reason of Monitor_BFER_AR: with Monitor_BFER, the original is not even the monitor of a thread
+    # the reason of Monitor_BFER_AR: with Monitor_BFER, each thread counts alone (the original monitor is the one of
+    # the first thread at most) and the sequence stops when one of them reaches max_fe. How much the other threads did
+    # depends on the scheduling (on a loaded machine one thread may do all the work): not checked.
     mnt = _chain_with(af.mnt.Monitor_BFER(32, 50))
     seq = spu.Sequence(mnt["check_errors::status"], n_threads=4)
     seq.exec()
     clones = seq.get_cloned_modules(mnt)
-    assert max(c.n_fe for c in clones) == 50 and sum(c.n_fe for c in clones) > 50
+    assert max(c.n_fe for c in clones) == 50
 
 
 def test_monitor_bfer_ar_callbacks_prevent_cloning():
