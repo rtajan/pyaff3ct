@@ -146,9 +146,10 @@ def parse_members(name: str, body: str, is_struct: bool) -> dict:
             res["methods"].append(re.sub(r"\s*(override|final)\b", "", st_n))
         else:
             res["members"].append(st_n)
+    # declaration order is kept (it is the order of the parameters and of the positional sizes in Python); the
+    # duplicates (e.g. #if/#else branches) are dropped
     for k in res:
-        res[k] = sorted(set(map(json.dumps, res[k])))
-        res[k] = [json.loads(x) for x in res[k]]
+        res[k] = [json.loads(x) for x in dict.fromkeys(map(json.dumps, res[k]))]
     return res
 
 

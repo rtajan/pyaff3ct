@@ -187,4 +187,21 @@ def export(scope: Any, namespace: dict, kinds: Iterable[str] = ("Module", "Tools
     return sorted(names)
 
 
-__all__ = ["Template", "resolve_combo", "class_entry", "builder_entry", "export"]
+def export_functions(namespace: dict, module: str) -> list[str]:
+    """Export the generated module-level functions of a sub-module (``aff3ct._generated.functions``).
+
+    Returns:
+        out (list[str]): exported names (for ``__all__``).
+    """
+    from aff3ct._generated.functions import FUNCTIONS
+
+    names = []
+    for name, func in FUNCTIONS.get(module, {}).items():
+        func.__name__ = func.__qualname__ = name
+        func.__module__ = f"aff3ct.{module}"
+        namespace[name] = func
+        names.append(name)
+    return sorted(names)
+
+
+__all__ = ["Template", "resolve_combo", "class_entry", "builder_entry", "export", "export_functions"]
