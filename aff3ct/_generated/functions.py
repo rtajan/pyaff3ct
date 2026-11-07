@@ -1519,6 +1519,45 @@ def _mdm__modem(N: int, cstl: Any = None, dist: Any = None, *, type: str | None 
 
 
 
+def _mdm__modem_constellation(N: int, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, R: Any = None) -> Any:
+    """Build tools::Constellation<R> with the AFF3CT factory ``Modem`` (builder ``build_constellation``).
+
+    Equivalent to ``aff3ct.factory.Modem(**parameters).build_constellation(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Modem().parameters``).
+
+    Args:
+        N (int): size (factory parameter).
+        type (str): factory parameter (``std::string``).
+        implem (str): factory parameter (``std::string``).
+        const_path (str): factory parameter (``std::string``).
+        codebook_path (str): factory parameter (``std::string``).
+        complex (bool): factory parameter (``bool``).
+        bps (int): factory parameter (``int``).
+        cpm_std (str): factory parameter (``std::string``).
+        cpm_mapping (str): factory parameter (``std::string``).
+        cpm_wave_shape (str): factory parameter (``std::string``).
+        cpm_L (int): factory parameter (``int``).
+        cpm_k (int): factory parameter (``int``).
+        cpm_p (int): factory parameter (``int``).
+        cpm_upf (int): factory parameter (``int``).
+        N_mod (int): factory parameter (``int``).
+        max (str): factory parameter (``std::string``).
+        psi (str): factory parameter (``std::string``).
+        no_sig2 (bool): factory parameter (``bool``).
+        n_ite (int): factory parameter (``int``).
+        N_fil (int): factory parameter (``int``).
+        rop_est_bits (int): factory parameter (``int``).
+        channel_type (str): factory parameter (``std::string``).
+        R (streampu.dtype): template parameter ``R``.
+
+    Compiled dtype combinations (R): (float32); (float64).
+
+    Returns:
+        tools::Constellation<R>*: the built object (owned by Python).
+    """
+    return _make("Modem", "build_constellation", {"N": N, "type": type, "implem": implem, "const_path": const_path, "codebook_path": codebook_path, "complex": complex, "bps": bps, "cpm_std": cpm_std, "cpm_mapping": cpm_mapping, "cpm_wave_shape": cpm_wave_shape, "cpm_L": cpm_L, "cpm_k": cpm_k, "cpm_p": cpm_p, "cpm_upf": cpm_upf, "N_mod": N_mod, "max": max, "psi": psi, "no_sig2": no_sig2, "n_ite": n_ite, "N_fil": N_fil, "rop_est_bits": rop_est_bits, "channel_type": channel_type}, {}, {"R": R})
+
+
+
 def _mnt__bfer(K: int, count_unknown_values: Any = None, *, type: str | None = None, err_hist_path: str | None = None, err_hist: int | None = None, n_frame_errors: int | None = None, max_frame: int | None = None, B: Any = None) -> Any:
     """Build module::Monitor_BFER<B> with the AFF3CT factory ``Monitor_BFER`` (builder ``build``).
 
@@ -1802,7 +1841,7 @@ FUNCTIONS = {
     "dec": {"bch": _dec__bch, "ldpc": _dec__ldpc, "ldpc_siso": _dec__ldpc_siso, "no_siso": _dec__no_siso, "no": _dec__no, "ra": _dec__ra, "rs": _dec__rs, "rsc": _dec__rsc, "rsc_siso": _dec__rsc_siso, "rsc_db_siso": _dec__rsc_db_siso, "rsc_db": _dec__rsc_db, "conv": _dec__conv, "polar_siso": _dec__polar_siso, "polar": _dec__polar, "polar_gen": _dec__polar_gen, "polar_mk": _dec__polar_mk, "polar_pac": _dec__polar_pac, "polar_pt": _dec__polar_pt, "repetition": _dec__repetition, "turbo": _dec__turbo, "turbo_db": _dec__turbo_db, "turbo_product": _dec__turbo_product, "turbo_product_siso": _dec__turbo_product_siso},
     "enc": {"encoder": _enc__encoder, "bch": _enc__bch, "ldpc": _enc__ldpc, "no": _enc__no, "ra": _enc__ra, "rs": _enc__rs, "rsc": _enc__rsc, "rsc_db": _enc__rsc_db, "conv": _enc__conv, "polar": _enc__polar, "polar_mk": _enc__polar_mk, "polar_pac": _enc__polar_pac, "polar_pt": _enc__polar_pt, "repetition": _enc__repetition, "turbo": _enc__turbo, "turbo_db": _enc__turbo_db, "turbo_product": _enc__turbo_product},
     "itl": {"interleaver": _itl__interleaver},
-    "mdm": {"modem": _mdm__modem},
+    "mdm": {"modem": _mdm__modem, "modem_constellation": _mdm__modem_constellation},
     "mnt": {"bfer": _mnt__bfer, "exit": _mnt__exit, "mi": _mnt__mi},
     "pct": {"puncturer": _pct__puncturer, "ldpc": _pct__ldpc, "polar": _pct__polar, "turbo": _pct__turbo, "turbo_db": _pct__turbo_db},
     "qnt": {"quantizer": _qnt__quantizer},
@@ -1851,7 +1890,6 @@ CODECS = {'Codec_BCH': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': '
 SKIPPED = [
     "Flip_and_check.build -> tools::Flip_and_check<B, Q>*",
     "Flip_and_check_DB.build -> tools::Flip_and_check_DB<B, Q>*",
-    "Modem.build_constellation -> tools::Constellation<R>*",
     "Polar_code.build -> tools::Polar_code*",
     "Pretransform_generator.build -> tools::Pretransform_generator*",
     "Scaling_factor.build -> tools::Scaling_factor<B, Q>*",

@@ -283,11 +283,11 @@
 | `Codec_turbo_DB` | `Tools/Codec/Turbo_DB/Codec_turbo_DB.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_turbo_DB` | done |
 | `Codec_turbo_product` | `Tools/Codec/Turbo_product/Codec_turbo_product.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_turbo_product` | done |
 | `Codec_uncoded` | `Tools/Codec/Uncoded/Codec_uncoded.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_uncoded` | done |
-| `Constellation` | `Tools/Constellation/Constellation.hpp` | `typename R = float` |  | abstract | P1 | `aff3ct.tools.cst.Constellation` | todo |
-| `Constellation_PAM` | `Tools/Constellation/PAM/Constellation_PAM.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PAM` | todo |
-| `Constellation_PSK` | `Tools/Constellation/PSK/Constellation_PSK.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PSK` | todo |
-| `Constellation_QAM` | `Tools/Constellation/QAM/Constellation_QAM.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_QAM` | todo |
-| `Constellation_user` | `Tools/Constellation/User/Constellation_user.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_user` | todo |
+| `Constellation` | `Tools/Constellation/Constellation.hpp` | `typename R = float` |  | abstract | P1 | `aff3ct.tools.cst.Constellation` | done |
+| `Constellation_PAM` | `Tools/Constellation/PAM/Constellation_PAM.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PAM` | done |
+| `Constellation_PSK` | `Tools/Constellation/PSK/Constellation_PSK.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PSK` | done |
+| `Constellation_QAM` | `Tools/Constellation/QAM/Constellation_QAM.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_QAM` | done |
+| `Constellation_user` | `Tools/Constellation/User/Constellation_user.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_user` | done |
 | `Command_parser` | `Tools/Factory/Command_parser.hpp` | `` |  | func | P1 | `aff3ct.factory.Command_parser` | todo |
 | `Header` | `Tools/Factory/Header.hpp` | `` |  | func | P1 | `aff3ct.factory.Header` | todo |
 | `Interface_get_set_dynamic_frozen_bits` | `Tools/Interface/Interface_get_set_dynamic_frozen_bits.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_set_dynamic_frozen_bits` | done |

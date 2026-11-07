@@ -166,3 +166,81 @@ def test_turbo_lte_codec_with_crc_and_puncturer_matches_the_reference():
     assert isinstance(cdc, af.codec.Codec_turbo) and (cdc.puncturer.N, cdc.encoder.N) == (4108, 3 * K + 12)
     ebn0s = [0.9, 1.0]
     check(run_codec(cdc, ebn0s, max_fe=100, crc=crc, n_threads=4), ref, ebn0s)
+
+
+# ----------------------------------------------------------------------------------------------- modems and channels
+def read_ref_cols(path: Path, noise_col: int, fra_col: int, ber_col: int) -> dict[float, tuple[int, float]]:
+    """{noise: (FRA, BER)} of a reference file (columns of the noise, of FRA and of BER)."""
+    pts = {}
+    for line in path.read_text().splitlines():
+        if line.startswith("#"):
+            continue
+        cols = [c.strip() for c in re.split(r"\|\|?", line)]
+        try:
+            pts[round(float(cols[noise_col]), 4)] = (int(cols[fra_col]), float(cols[ber_col]))
+        except (ValueError, IndexError):
+            continue
+    return pts
+
+
+def check_ber(measured, ref, K):
+    for noise, ber, fra in measured:
+        r_fra, r_ber = ref[round(noise, 4)]
+        sd = math.sqrt(r_ber * (1 - r_ber) / (r_fra * K) + ber * (1 - ber) / (fra * K))
+        assert abs(ber - r_ber) <= 5 * sd + 1e-4, (noise, ber, r_ber, sd)
+
+
+def run_uncoded(K, mdm, chn, noises, to_cp, n_frames, with_gains=False, event_probability=False):
+    """Uncoded chain src -> modulate -> channel -> demodulate -> hard decision -> monitor; [(noise, BER, FRA)]."""
+    src = af.src.source(K, type="RAND", seed=0)
+    # as the simulator: with an event probability noise (BEC, BSC), the erased bits count as errors
+    mnt = af.mnt.Monitor_BFER_AR(K, max_fe=10**9, max_n_frames=n_frames, count_unknown_values=event_probability)
+    cp = spu.array([1.0], dtype=spu.float32)
+    u = src.generate()[0]
+    if with_gains:
+        chn.add_noise_wg(cp, mdm.modulate(u))
+        llr = mdm.demodulate_wg(cp, chn["add_noise_wg::H_N"], chn["add_noise_wg::Y_N"])
+    else:
+        llr = mdm.demodulate(cp, chn.add_noise(cp, mdm.modulate(u)))
+    cdc = af.codec.uncoded(K, K)  # as the simulator for UNCODED: hard decision
+    dec = cdc.decoder_siho
+    dec.decode_siho(llr)
+    mnt.check_errors(u, dec["decode_siho::V_K"])
+    seq = spu.Sequence(mnt["check_errors::status"], n_threads=4)
+    out = []
+    for n in noises:
+        cp.numpy[...] = to_cp(n)
+        mnt.reset()
+        seq.exec()
+        out.append((n, mnt.ber, mnt.n_analyzed_frames))
+    return out
+
+
+def test_qam16_awgn_matches_the_reference():
+    ref = read_ref_cols(REFS / "UNCODED/AWGN/QAM/Uncoded_K4003_QAM_max_bps4.txt", 1, 2, 5)
+    K = 4003
+    mdm = af.mdm.modem(K, type="QAM", bps=4, max="MAX")
+    assert isinstance(mdm.N_mod, int) and mdm.N_mod == 2 * math.ceil(K / 4)  # complex symbols: 2 reals
+    chn = af.chn.channel(mdm.N_mod, type="AWGN", implem="FAST", seed=1)
+    run = run_uncoded(K, mdm, chn, [0.0, 4.0, 8.0], lambda e: af.tools.sigma_from_ebn0(e, 1.0, bps=4).sigma, 200)
+    check_ber(run, ref, K)
+
+
+def test_psk4_rayleigh_matches_the_reference():
+    ref = read_ref_cols(REFS / "UNCODED/RAYLEIGH/PSK/Uncoded_K4003_PSK_max_bps2.txt", 1, 2, 5)
+    K = 4003
+    mdm = af.mdm.modem(K, type="PSK", bps=2)
+    chn = af.chn.channel(mdm.N_mod, type="RAYLEIGH", implem="FAST", complex=True, seed=1)
+    run = run_uncoded(K, mdm, chn, [0.0, 6.0, 12.0], lambda e: af.tools.sigma_from_ebn0(e, 1.0, bps=2).sigma, 200,
+                      with_gains=True)
+    check_ber(run, ref, K)
+
+
+@pytest.mark.parametrize("channel", ["BEC", "BSC"])
+def test_ook_erasure_and_symmetric_channels_match_the_reference(channel):
+    ref = read_ref_cols(REFS / f"UNCODED/{channel}/OOK/Uncoded_K128_OOK.txt", 0, 1, 4)
+    K = 128
+    mdm = af.mdm.modem(K, type="OOK", channel_type=channel)
+    chn = af.chn.channel(K, type=channel, seed=1)
+    run = run_uncoded(K, mdm, chn, [0.1, 0.3], lambda p: p, 2000, event_probability=True)
+    check_ber(run, ref, K)
