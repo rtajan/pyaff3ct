@@ -12,6 +12,7 @@ pyaf::generated::wrap_factory_Codec_LDPC(py::handle scope)
     using F = aff3ct::factory::Codec_LDPC;
     py::class_<F, aff3ct::factory::Codec_SISO> cls(scope, "Codec_LDPC", "AFF3CT factory ``aff3ct::factory::Codec_LDPC`` (parameters by keyword, ``from_cli``, builders by dtype).");
     cls.def(py::init<const std::string&>(), "prefix"_a = aff3ct::factory::Codec_LDPC_prefix);
+    cls.def("enable_puncturer", &F::enable_puncturer, "Add the puncturer sub-factory ``pct`` (codecs).");
     def_builders<gen::Factory_Codec_LDPC__build>(
       cls,
       "build",

@@ -26,6 +26,7 @@ Outputs:
 from __future__ import annotations
 
 import json
+import pprint
 import keyword
 import re
 from pathlib import Path
@@ -164,7 +165,10 @@ def load() -> tuple[dict, dict, dict]:
 
 
 def factory_classes(api: dict) -> dict[str, dict]:
-    """Non-template factories deriving from aff3ct::factory::Factory (Factory itself excluded: bound by hand)."""
+    """Factories deriving from aff3ct::factory::Factory (Factory itself excluded: bound by hand).
+
+    Class templates (Decoder_turbo<D1 = Decoder_RSC, D2 = D1>) are bound for their default arguments only.
+    """
     fac = {k.split("::")[1]: v for k, v in api.items() if k.startswith("Factory::")}
 
     def derives(name: str, seen=()) -> bool:
@@ -173,7 +177,24 @@ def factory_classes(api: dict) -> dict[str, dict]:
         return any(derives(re.sub(r"<.*", "", b).split("::")[-1], seen + (name,))
                    for b in fac.get(name, {}).get("bases", []) if b not in seen)
 
-    return {n: v for n, v in fac.items() if n != "Factory" and not v["tpl"] and derives(n)}
+    def defaults_only(v: dict) -> bool:
+        return all(split_default(p)[1] is not None for p in v["tpl"])
+
+    return {n: v for n, v in fac.items() if n != "Factory" and defaults_only(v) and derives(n)}
+
+
+def tpl_defaults(v: dict) -> dict[str, str]:
+    """{"D1": "Decoder_RSC", "D2": "Decoder_RSC"} for template<class D1 = Decoder_RSC, class D2 = D1>."""
+    res: dict[str, str] = {}
+    for p in v["tpl"]:
+        decl, default = split_default(p)
+        name = decl.split()[-1]
+        res[name] = res.get(default, default)
+    return res
+
+
+def cpp_name(name: str, v: dict) -> str:
+    return f"aff3ct::factory::{name}" + ("<>" if v["tpl"] else "")
 
 
 def base_of(v: dict) -> str:
@@ -287,7 +308,7 @@ def cpp_factory(name: str, v: dict, facs: dict, inst: dict) -> tuple[str, list[d
              '#include "internal/Wrapper/Factory/Factory.hpp"\n',
              f"void\npyaf::generated::wrap_factory_{name}(py::handle scope)\n{{",
              "    using namespace pyaf::wrapper;",
-             f"    using F = aff3ct::factory::{name};",
+             f"    using F = {cpp_name(name, v)};",
              f'    py::class_<F, aff3ct::factory::{base}> cls(scope, "{name}", '
              f'"AFF3CT factory ``aff3ct::factory::{name}`` (parameters by keyword, ``from_cli``, builders by dtype).");']
     ctor = v["ctors"][0] if v["ctors"] else []
@@ -303,7 +324,10 @@ def cpp_factory(name: str, v: dict, facs: dict, inst: dict) -> tuple[str, list[d
     else:
         lines.append("    cls.def(py::init<>());")
     bound = []
+    tdef = tpl_defaults(v)
     for m in v["members"]:
+        # sub-factories typed by a template parameter (auto_cloned_unique_ptr<D1>): their default factory
+        m = re.sub(r"auto_cloned_unique_ptr<(\w+)>", lambda x: f"auto_cloned_unique_ptr<{tdef.get(x.group(1), x.group(1))}>", m)
         info = member_info(m, set(facs) | {"Interleaver_core"})
         if info is None:
             continue
@@ -316,6 +340,8 @@ def cpp_factory(name: str, v: dict, facs: dict, inst: dict) -> tuple[str, list[d
                          f'      py::return_value_policy::reference_internal,\n'
                          f'      "aff3ct.factory.{info["factory"]}: sub-factory ``{info["name"]}`` (None if not used).");')
         bound.append(info)
+    if "void enable_puncturer()" in v["methods"]:
+        lines.append('    cls.def("enable_puncturer", &F::enable_puncturer, "Add the puncturer sub-factory ``pct`` (codecs).");')
     builders = []
     raw = False
     for sig in v["methods"]:
@@ -390,9 +416,19 @@ def main() -> None:
         "from aff3ct._factory import make as _make\n",
     ]
     skipped = []
+    codecs: dict[str, dict] = {}
     for name in order:
         v = facs[name]
         parts = Path(v["file"]).parts  # Factory/Module/<Domain>/... or Factory/Tools/...
+        if parts[1:3] == ("Tools", "Codec"):
+            # codecs: their parameters are those of their sub-factories (enc_type, dec_L...), whose dynamic types are
+            # only known at run time: aff3ct/codec.py builds their functions at import (see CODECS)
+            for b in builders_of[name]:
+                if b["name"] == "build" and len(parts) > 4:  # Factory/Tools/Codec/<Family>/Codec_x.hpp
+                    codecs[name] = {"function": py_name(name, "Codec", "build"),
+                                    "args": [{"name": a["name"], "type": qualify(a["type"]),
+                                              "default": a["default"]} for a in b["args"]]}
+            continue
         domain = parts[2] if parts[1] == "Module" else ""
         module = DOMAIN_MODULE.get(domain, "tools") if domain else "tools"
         # positional sizes: those of the highest factory of the family that declares some (factory::Decoder: K, N_cw;
@@ -474,6 +510,8 @@ def main() -> None:
     code.append("\n\n# functions exported by each sub-module of aff3ct: {sub-module: {public name: function}}\nFUNCTIONS = {\n"
                 + "".join(f'    "{m}": {{' + ", ".join(f'"{f}": {i}' for f, i in fs) + "},\n"
                           for m, fs in sorted(funcs.items())) + "}\n")
+    code.append("\n# codec factories: {factory: {function: public name, args: builder arguments}} (functions: aff3ct/codec.py)\n"
+                f"CODECS = {pprint.pformat(codecs, width=116, sort_dicts=True)}\n")
     code.append("\n# builders without function (the class they return is not wrapped yet)\nSKIPPED = [\n"
                 + "".join(f'    "{s}",\n' for s in skipped) + "]\n")
     write(PY_GEN / "functions.py", "\n".join(code))

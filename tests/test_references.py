@@ -110,3 +110,59 @@ def test_polar_sc_multithreaded_matches_the_reference():
     ebn0s = [1.0, 2.0, 3.0]
     res = simulate(96, 128, ebn0s, max_fe=300, n_threads=4, quiet=True)
     check(res, ref, ebn0s)
+
+
+def run_codec(cdc, ebn0s, max_fe, crc=None, n_threads=1):
+    """BFER chain around a codec: src -> [crc] -> enc -> pct -> BPSK -> AWGN -> depct -> dec -> [crc] -> monitor."""
+    enc, pct, dec = cdc.encoder, cdc.puncturer, cdc.decoder_siho
+    K_info = enc.K - (crc.size if crc is not None else 0)
+    N = pct.N if pct is not None else enc.N
+    src = af.src.source(K_info, type="RAND", seed=0)
+    mdm, chn = af.mdm.modem(N, type="BPSK"), af.chn.channel(N, type="AWGN", seed=1)
+    mnt = af.mnt.Monitor_BFER_AR(K_info, max_fe)
+    sigma = spu.array([1.0], dtype=spu.float32)
+    u = src.generate()[0]
+    x = enc.encode(crc.build(u) if crc is not None else u)
+    if pct is not None:
+        x = pct.puncture(x)
+    y = mdm.demodulate(sigma, chn.add_noise(sigma, mdm.modulate(x)))
+    if pct is not None:
+        y = pct.depuncture(y)
+    dec.decode_siho(y)
+    v = dec["decode_siho::V_K"]
+    mnt.check_errors(u, crc.extract(v) if crc is not None else v)
+    seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
+    out = []
+    for ebn0 in ebn0s:
+        s = af.tools.sigma_from_ebn0(ebn0, K_info / N)
+        sigma.numpy[...] = s.sigma
+        cdc.set_noise(s)  # modules of the codec only (not their clones): enough for these codes
+        mnt.reset()
+        seq.exec()
+        out.append((ebn0, mnt.ber, mnt.fer, mnt.n_analyzed_frames))
+    return out
+
+
+def test_ra_codec_matches_the_reference():
+    ref = read_ref(REFS / "RA/AWGN/BPSK/RA_N4096_K1024_MS_i10.txt")
+    cdc = af.codec.ra(1024, 4096, itl_core_type="RANDOM", itl_core_seed=0, dec_n_ite=10)
+    assert isinstance(cdc, af.codec.Codec_RA) and cdc.interleaver is not None
+    ebn0s = [1.3, 1.5]
+    check(run_codec(cdc, ebn0s, max_fe=150, n_threads=4), ref, ebn0s)
+
+
+def test_turbo_lte_codec_with_crc_and_puncturer_matches_the_reference():
+    # aff3ct -C TURBO -K 2048 --enc-sub-std LTE -i 8 --dec-sf-type LTE_VEC --dec-sub-implem FAST --dec-sub-max MAX
+    #        --pct-pattern "11,10,01" --crc-implem FAST --crc-poly 24-LTEA
+    ref = read_ref(REFS / "TURBO/AWGN/BPSK/RSC_RSC/BCJR/LTE/Turbo_N4096_K2048_BCJR_i8_ref_LTE.txt")
+    K = 2048
+    crc = af.crc.crc(K - 24, type="24-LTEA", implem="FAST")
+    cdc = af.codec.turbo(K, 3 * K + 12, crc, N=4108, enc_sub_standard="LTE", dec_n_ite=8,
+                         dec_sf_enable=True, dec_sf_type="LTE_VEC",  # --dec-sf-type also enables it on the command line
+                         dec_sub_implem="FAST", dec_sub_max="MAX",
+                         pct_pattern=[[True, True], [True, False], [False, True]])  # "11,10,01"
+    assert af.codec.turbo.factory(K, 3 * K + 12, N=4108, pct_pattern=[[1, 1], [1, 0], [0, 1]]).headers()["pct"][
+        "Pattern"] == "{11,10,01}"
+    assert isinstance(cdc, af.codec.Codec_turbo) and (cdc.puncturer.N, cdc.encoder.N) == (4108, 3 * K + 12)
+    ebn0s = [0.9, 1.0]
+    check(run_codec(cdc, ebn0s, max_fe=100, crc=crc, n_threads=4), ref, ebn0s)

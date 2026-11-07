@@ -17,6 +17,7 @@ pyaf::generated::wrap_factory_Codec_polar(py::handle scope)
       [](const F& f) { return f.fbg.get(); },
       py::return_value_policy::reference_internal,
       "aff3ct.factory.Frozenbits_generator: sub-factory ``fbg`` (None if not used).");
+    cls.def("enable_puncturer", &F::enable_puncturer, "Add the puncturer sub-factory ``pct`` (codecs).");
     def_builders<gen::Factory_Codec_polar__build>(
       cls,
       "build",

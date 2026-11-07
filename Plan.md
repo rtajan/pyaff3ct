@@ -422,6 +422,28 @@ inventaire mis à jour (`done`), docstrings présentes.
   RA, Repetition, Conv/Viterbi, Polar SCL/ASCL/SCF/SCAN, LDPC (toutes les règles via factory), Modem générique
   (`Constellation_*`), OOK, Rayleigh, BEC/BSC, `Extractor_*`, `Puncturer_*`, `Quantizer_custom`, générateurs de bruit.
 - `Codec_*` (via factories) : propriétés `encoder`, `decoder_siso`, `decoder_siho`, `extractor`, `puncturer`.
+- **Codecs** ✅ (en cours de phase 3) : sous-module `aff3ct.codec`, une fonction par famille (`polar`, `ldpc`, `turbo`,
+  `turbo_db`, `turbo_product`, `bch`, `rs`, `rsc`, `rsc_db`, `conv`, `ra`, `repetition`, `uncoded`, `polar_mk`,
+  `polar_pac`, `polar_pt`) ; classes `Codec_*` (bases `Codec`, `Codec_HIHO/SIHO/SISO`) avec les modules en propriétés
+  (`encoder`, `decoder_siho`, `decoder_siso`, `puncturer`, `extractor`, `interleaver` ; `None` si absent), qui gardent
+  le codec en vie, et les accesseurs propres (`frozen_bits`, `trellis`, `H`, `GF`…).
+  - Signature : `K`, `N_cw` et les arguments du builder (`crc`) positionnels ; `N` (taille de trame : une autre valeur
+    que `N_cw` ajoute le poinçonneur) ; les paramètres des sous-factories **préfixés** par le nom de la
+    sous-factory, comme les options de la ligne de commande (`dec_type`, `dec_L`, `enc_systematic`, `fbg_noise`,
+    `pct_pattern`, `itl_core_type`…) ; les sous-factories sœurs de même préfixe CLI sont réglées ensemble
+    (`enc_sub_standard` → `enc.sub1` et `enc.sub2`, comme `--enc-sub-std`) ; dtypes `B=`, `Q=`.
+  - Les types dynamiques des sous-factories n'étant connus qu'à l'exécution, les fonctions sont construites à
+    l'import (`aff3ct/codec.py`, depuis `CODECS` généré) : `inspect.signature` et `help()` les listent toutes.
+    `af.codec.turbo.factory(...)` (mêmes arguments) rend la factory configurée (`headers()` comme le simulateur).
+  - Les paramètres sont ceux des factories : une option CLI qui en règle plusieurs doit être traduite
+    (`--dec-sf-type` → `dec_sf_enable=True, dec_sf_type=...`) ; `from_cli` reste disponible.
+  - `cdc.set_noise(noise)` agit sur les modules du codec, pas sur leurs clones d'une `Sequence` multi-thread
+    (bits gelés adaptatifs : `set_frozen_bits` sur les clones, comme `examples/polar_bfer.py`).
+  - Générateur : factories templates à arguments par défaut liées (`Decoder_turbo<>`, `Encoder_turbo<>` : `dec_n_ite`,
+    `dec_sub_*`, `dec_sf_*`…), leurs builders prenant les combinaisons du module renvoyé ; `enable_puncturer` lié.
+  - Validé contre `refs` : RA (4096, 1024) MS 10 itérations et turbo LTE (K = 2048, CRC 24-LTEA, poinçonnage
+    `11,10,01`, 8 itérations, facteur d'échelle LTE_VEC), à 4 threads ; `examples/ldpc_bfer.py` (codec LDPC).
+
 - DoD : un test de construction et d'exécution par classe, et un test de parité CLI par factory.
 
 ### Phase 4 — Avancé (priorité **P2**, 51 entrées)

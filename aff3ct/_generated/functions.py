@@ -758,6 +758,42 @@ def _dec__repetition(K: int, N_cw: int, encoder: Any = None, *, type: str | None
 
 
 
+def _dec__turbo(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, itl: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, self_corrected: bool | None = None, enable_json: bool | None = None, n_ite: int | None = None, crc_start_ite: int | None = None, B: Any = None, Q: Any = None) -> Any:
+    """Build module::Decoder_turbo<B, Q> with the AFF3CT factory ``Decoder_turbo`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Decoder_turbo(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_turbo().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        siso_n (const aff3ct::module::Decoder_SISO<B, Q>&): builder argument, only for one of the overloads.
+        siso_i (const aff3ct::module::Decoder_SISO<B, Q>&): builder argument, only for one of the overloads.
+        itl (const aff3ct::module::Interleaver<Q>&): builder argument, only for one of the overloads.
+        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        type (str): factory parameter (``std::string``).
+        implem (str): factory parameter (``std::string``).
+        systematic (bool): factory parameter (``bool``).
+        hamming (bool): factory parameter (``bool``).
+        tail_length (int): factory parameter (``int``).
+        flips (int): factory parameter (``int``).
+        seed (int): factory parameter (``int``).
+        R (float): factory parameter (``float``).
+        self_corrected (bool): factory parameter (``bool``).
+        enable_json (bool): factory parameter (``bool``).
+        n_ite (int): factory parameter (``int``).
+        crc_start_ite (int): factory parameter (``int``).
+        B (streampu.dtype): template parameter ``B``.
+        Q (streampu.dtype): template parameter ``Q``.
+
+    Compiled dtype combinations (B, Q): (int8, int8); (int16, int16); (int32, float32); (int64, float64).
+
+    Returns:
+        module::Decoder_turbo<B, Q>*: the built object (owned by Python).
+    """
+    return _make("Decoder_turbo", "build", {"K": K, "N_cw": N_cw, "type": type, "implem": implem, "systematic": systematic, "hamming": hamming, "tail_length": tail_length, "flips": flips, "seed": seed, "R": R, "self_corrected": self_corrected, "enable_json": enable_json, "n_ite": n_ite, "crc_start_ite": crc_start_ite}, {"siso_n": siso_n, "siso_i": siso_i, "itl": itl, "encoder": encoder}, {"B": B, "Q": Q})
+
+
+
 def _dec__turbo_db(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, itl: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, n_ite: int | None = None, crc_start_ite: int | None = None, B: Any = None, Q: Any = None) -> Any:
     """Build module::Decoder_turbo_DB<B, Q> with the AFF3CT factory ``Decoder_turbo_DB`` (builder ``build``).
 
@@ -1268,6 +1304,36 @@ def _enc__repetition(K: int, N_cw: int, *, type: str | None = None, path: str | 
 
 
 
+def _enc__turbo(K: int, N_cw: int, enc_n: Any, enc_i: Any, itl: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, json_path: str | None = None, B: Any = None) -> Any:
+    """Build module::Encoder_turbo<B> with the AFF3CT factory ``Encoder_turbo`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Encoder_turbo(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_turbo().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        enc_n (const aff3ct::module::Encoder<B>&): builder argument.
+        enc_i (const aff3ct::module::Encoder<B>&): builder argument.
+        itl (const aff3ct::module::Interleaver<B>&): builder argument.
+        type (str): factory parameter (``std::string``).
+        path (str): factory parameter (``std::string``).
+        systematic (bool): factory parameter (``bool``).
+        seed (int): factory parameter (``int``).
+        tail_length (int): factory parameter (``int``).
+        start_idx (int): factory parameter (``int``).
+        R (float): factory parameter (``float``).
+        json_path (str): factory parameter (``std::string``).
+        B (streampu.dtype): template parameter ``B``.
+
+    Compiled dtype combinations (B): (int8); (int16); (int32); (int64).
+
+    Returns:
+        module::Encoder_turbo<B>*: the built object (owned by Python).
+    """
+    return _make("Encoder_turbo", "build", {"K": K, "N_cw": N_cw, "type": type, "path": path, "systematic": systematic, "seed": seed, "tail_length": tail_length, "start_idx": start_idx, "R": R, "json_path": json_path}, {"enc_n": enc_n, "enc_i": enc_i, "itl": itl}, {"B": B})
+
+
+
 def _enc__turbo_db(K: int, N_cw: int, sub_enc: Any, itl: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> Any:
     """Build module::Encoder_turbo_DB<B> with the AFF3CT factory ``Encoder_turbo_DB`` (builder ``build``).
 
@@ -1733,8 +1799,8 @@ FUNCTIONS = {
     "chn": {"channel": _chn__channel},
     "crc": {"crc": _crc__crc},
     "cst": {"coset_bit": _cst__coset_bit, "coset_real": _cst__coset_real},
-    "dec": {"bch": _dec__bch, "ldpc": _dec__ldpc, "ldpc_siso": _dec__ldpc_siso, "no_siso": _dec__no_siso, "no": _dec__no, "ra": _dec__ra, "rs": _dec__rs, "rsc": _dec__rsc, "rsc_siso": _dec__rsc_siso, "rsc_db_siso": _dec__rsc_db_siso, "rsc_db": _dec__rsc_db, "conv": _dec__conv, "polar_siso": _dec__polar_siso, "polar": _dec__polar, "polar_gen": _dec__polar_gen, "polar_mk": _dec__polar_mk, "polar_pac": _dec__polar_pac, "polar_pt": _dec__polar_pt, "repetition": _dec__repetition, "turbo_db": _dec__turbo_db, "turbo_product": _dec__turbo_product, "turbo_product_siso": _dec__turbo_product_siso},
-    "enc": {"encoder": _enc__encoder, "bch": _enc__bch, "ldpc": _enc__ldpc, "no": _enc__no, "ra": _enc__ra, "rs": _enc__rs, "rsc": _enc__rsc, "rsc_db": _enc__rsc_db, "conv": _enc__conv, "polar": _enc__polar, "polar_mk": _enc__polar_mk, "polar_pac": _enc__polar_pac, "polar_pt": _enc__polar_pt, "repetition": _enc__repetition, "turbo_db": _enc__turbo_db, "turbo_product": _enc__turbo_product},
+    "dec": {"bch": _dec__bch, "ldpc": _dec__ldpc, "ldpc_siso": _dec__ldpc_siso, "no_siso": _dec__no_siso, "no": _dec__no, "ra": _dec__ra, "rs": _dec__rs, "rsc": _dec__rsc, "rsc_siso": _dec__rsc_siso, "rsc_db_siso": _dec__rsc_db_siso, "rsc_db": _dec__rsc_db, "conv": _dec__conv, "polar_siso": _dec__polar_siso, "polar": _dec__polar, "polar_gen": _dec__polar_gen, "polar_mk": _dec__polar_mk, "polar_pac": _dec__polar_pac, "polar_pt": _dec__polar_pt, "repetition": _dec__repetition, "turbo": _dec__turbo, "turbo_db": _dec__turbo_db, "turbo_product": _dec__turbo_product, "turbo_product_siso": _dec__turbo_product_siso},
+    "enc": {"encoder": _enc__encoder, "bch": _enc__bch, "ldpc": _enc__ldpc, "no": _enc__no, "ra": _enc__ra, "rs": _enc__rs, "rsc": _enc__rsc, "rsc_db": _enc__rsc_db, "conv": _enc__conv, "polar": _enc__polar, "polar_mk": _enc__polar_mk, "polar_pac": _enc__polar_pac, "polar_pt": _enc__polar_pt, "repetition": _enc__repetition, "turbo": _enc__turbo, "turbo_db": _enc__turbo_db, "turbo_product": _enc__turbo_product},
     "itl": {"interleaver": _itl__interleaver},
     "mdm": {"modem": _mdm__modem},
     "mnt": {"bfer": _mnt__bfer, "exit": _mnt__exit, "mi": _mnt__mi},
@@ -1746,27 +1812,43 @@ FUNCTIONS = {
 }
 
 
+# codec factories: {factory: {function: public name, args: builder arguments}} (functions: aff3ct/codec.py)
+CODECS = {'Codec_BCH': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+               'function': 'bch'},
+ 'Codec_LDPC': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                'function': 'ldpc'},
+ 'Codec_RA': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+              'function': 'ra'},
+ 'Codec_RS': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+              'function': 'rs'},
+ 'Codec_RSC': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+               'function': 'rsc'},
+ 'Codec_RSC_DB': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                  'function': 'rsc_db'},
+ 'Codec_conv': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                'function': 'conv'},
+ 'Codec_polar': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                 'function': 'polar'},
+ 'Codec_polar_MK': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                    'function': 'polar_mk'},
+ 'Codec_polar_PAC': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                     'function': 'polar_pac'},
+ 'Codec_polar_PT': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                    'function': 'polar_pt'},
+ 'Codec_repetition': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                      'function': 'repetition'},
+ 'Codec_turbo': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                 'function': 'turbo'},
+ 'Codec_turbo_DB': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                    'function': 'turbo_db'},
+ 'Codec_turbo_product': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                         'function': 'turbo_product'},
+ 'Codec_uncoded': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+                   'function': 'uncoded'}}
+
+
 # builders without function (the class they return is not wrapped yet)
 SKIPPED = [
-    "Codec_HIHO.build -> tools::Codec_HIHO<B, Q>*",
-    "Codec_SIHO.build -> tools::Codec_SIHO<B, Q>*",
-    "Codec_BCH.build -> tools::Codec_BCH<B, Q>*",
-    "Codec_SISO.build -> tools::Codec_SISO<B, Q>*",
-    "Codec_LDPC.build -> tools::Codec_LDPC<B, Q>*",
-    "Codec_RA.build -> tools::Codec_RA<B, Q>*",
-    "Codec_RS.build -> tools::Codec_RS<B, Q>*",
-    "Codec_RSC.build -> tools::Codec_RSC<B, Q>*",
-    "Codec_RSC_DB.build -> tools::Codec_RSC_DB<B, Q>*",
-    "Codec_conv.build -> tools::Codec_conv<B, Q>*",
-    "Codec_polar.build -> tools::Codec_polar<B, Q>*",
-    "Codec_polar_MK.build -> tools::Codec_polar_MK<B, Q>*",
-    "Codec_polar_PAC.build -> tools::Codec_polar_PAC<B, Q>*",
-    "Codec_polar_PT.build -> tools::Codec_polar_PT<B, Q>*",
-    "Codec_repetition.build -> tools::Codec_repetition<B, Q>*",
-    "Codec_turbo.build -> tools::Codec_turbo<B, Q>*",
-    "Codec_turbo_DB.build -> tools::Codec_turbo_DB<B, Q>*",
-    "Codec_turbo_product.build -> tools::Codec_turbo_product<B, Q>*",
-    "Codec_uncoded.build -> tools::Codec_uncoded<B, Q>*",
     "Flip_and_check.build -> tools::Flip_and_check<B, Q>*",
     "Flip_and_check_DB.build -> tools::Flip_and_check_DB<B, Q>*",
     "Modem.build_constellation -> tools::Constellation<R>*",

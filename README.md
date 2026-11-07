@@ -46,6 +46,17 @@ With several threads, each thread runs clones of the modules: use `af.mnt.Monito
 share their counters (the sequence stops on the total, and `mnt` shows it). See `examples/polar_bfer.py` for an SNR
 loop with a `streampu.Terminal_std`.
 
+Codecs build and connect the modules of a code family; the parameters of their sub-factories are prefixed as the
+command-line options (`--dec-type` → `dec_type`):
+
+```python
+cdc = af.codec.turbo(K, 3 * K + 12, enc_sub_standard="LTE", dec_n_ite=8, dec_sub_implem="FAST")
+enc, dec, itl = cdc.encoder, cdc.decoder_siho, cdc.interleaver
+help(af.codec.turbo)      # every parameter
+```
+
+See `examples/ldpc_bfer.py`.
+
 ## Design documents
 
 - [`Plan.md`](Plan.md) — architecture, wrapping rules and roadmap;
