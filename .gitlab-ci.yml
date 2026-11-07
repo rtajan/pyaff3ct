@@ -1,0 +1,194 @@
+# CI of pyaff3ct, on the model of pystreampu.
+#
+# - build-streampu: wheel of pystreampu (PYSTREAMPU_REF of PYSTREAMPU_URL), reused from the cache while the commit of
+#   this ref does not change (a pystreampu build takes ~15 minutes);
+# - build: wheel of pyaff3ct (AFF3CT in multi-precision + the wrapper), with ccache;
+# - tests: pytest on the installed wheels;
+# - generated: the committed generated files match the pinned AFF3CT (API fingerprint, dtype combinations, class graph);
+# - track-aff3ct: scheduled pipelines (and by hand): what changed in AFF3CT upstream since the pinned revision; fails
+#   when a change hits a class marked done/wip in docs/design/status.json (report in the artifacts).
+#
+# pystreampu is cloned from its public GitHub repository (no credentials); PYSTREAMPU_URL and PYSTREAMPU_REF can be
+# overridden when running a pipeline (e.g. to test a branch of pystreampu).
+
+# A single pipeline per push: the merge request pipeline when a merge request is open for the branch, the branch
+# pipeline otherwise (and the tag, scheduled and manual pipelines)
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+variables:
+  # Full clones (same reason as pystreampu: shallow fetches failed with "missing blob object"); the submodules are
+  # initialized by hand: only lib/aff3ct and the sub-modules AFF3CT needs to build (not refs/ nor conf/)
+  GIT_STRATEGY: clone
+  GIT_DEPTH: 0
+  GIT_SUBMODULE_STRATEGY: none
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  CI_BASE_IMAGE: "python:3.12"
+  PYTEST_WORKERS: 4
+  # pystreampu to build against (it must provide the Module downcast registry for every test to pass)
+  PYSTREAMPU_URL: "https://github.com/rtajan/pystreampu.git"
+  PYSTREAMPU_REF: "develop"  # provides the Module downcast registry (merged); any branch or tag can be given
+  # ccache: the object files are reused from one pipeline to the next (GitLab cache)
+  CCACHE_DIR: "$CI_PROJECT_DIR/.ccache"
+  CCACHE_BASEDIR: "$CI_PROJECT_DIR"
+  CCACHE_MAXSIZE: "3G"
+  CMAKE_C_COMPILER_LAUNCHER: ccache
+  CMAKE_CXX_COMPILER_LAUNCHER: ccache
+
+.linux_base: &linux_base
+  image: $CI_BASE_IMAGE
+  tags:
+    - x86_64
+    - docker
+  # The scheduled pipelines only run `track-aff3ct`
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - when: on_success
+  before_script:
+    - apt-get update
+    - apt-get install -y --no-install-recommends gcc g++ cmake ninja-build git ccache
+    - python --version
+    - python -m venv venv
+    - . venv/bin/activate
+    - python -m pip install --upgrade pip
+    - python -m pip install pybind11==3.0.4 scikit-build-core setuptools_scm  # same versions as pyproject.toml
+
+.aff3ct_submodules: &aff3ct_submodules
+  - git submodule update --init lib/aff3ct
+  - git -C lib/aff3ct submodule update --init --recursive lib/cli lib/MIPP lib/date
+
+.python_cache: &python_cache
+  key: ${CI_PROJECT_PATH}
+  paths:
+    - .cache/pip/
+
+.ccache_cache: &ccache_cache
+  key: ccache-${CI_JOB_NAME}
+  paths:
+    - .ccache/
+
+stages:
+  - build-streampu
+  - build
+  - tests
+  - tracking
+
+
+build-streampu:
+  stage: build-streampu
+  <<: *linux_base
+  cache:
+    - *python_cache
+    - *ccache_cache
+    # wheels of pystreampu, one per commit
+    - key: streampu-wheels
+      paths:
+        - .cache/streampu/
+  script:
+    - export SHA=$(git ls-remote "$PYSTREAMPU_URL" "$PYSTREAMPU_REF" | head -1 | cut -f1)
+    - test -n "$SHA" || (echo "pystreampu ref '$PYSTREAMPU_REF' not found in $PYSTREAMPU_URL"; exit 1)
+    - echo "pystreampu $PYSTREAMPU_REF = $SHA"
+    - mkdir -p .cache/streampu/$SHA dist-streampu
+    - |
+      if ! ls .cache/streampu/$SHA/*.whl > /dev/null 2>&1; then
+        git clone --recursive "$PYSTREAMPU_URL" pystreampu
+        git -C pystreampu checkout "$SHA"
+        git -C pystreampu submodule update --init --recursive
+        python -m pip wheel ./pystreampu --no-deps -w .cache/streampu/$SHA -v
+        ccache --show-stats
+      fi
+    - cp .cache/streampu/$SHA/*.whl dist-streampu/
+    - ls -lh dist-streampu
+  artifacts:
+    name: streampu-wheel
+    paths:
+      - dist-streampu/
+    expire_in: 1 day
+
+
+build:
+  stage: build
+  <<: *linux_base
+  needs: [build-streampu]
+  cache:
+    - *python_cache
+    - *ccache_cache
+  script:
+    - *aff3ct_submodules
+    - python -m pip install dist-streampu/*.whl
+    # streampu provides the pybind11/StreamPU CMake configuration and the pystreampu headers: no build isolation
+    - python -m pip wheel . --no-deps --no-build-isolation -w dist -v
+    - ccache --show-stats
+    - ls -lh dist
+  artifacts:
+    name: aff3ct-wheel
+    paths:
+      - dist/
+    expire_in: 1 day
+
+
+tests:
+  stage: tests
+  <<: *linux_base
+  needs: [build-streampu, build]
+  cache:
+    <<: *python_cache
+  script:
+    - python -m pip install dist-streampu/*.whl dist/*.whl
+    - python -m pip install pytest pytest-xdist
+    # outside the source tree: `python -c` puts the current directory first in sys.path, where aff3ct/ has no _ext
+    - (cd /tmp && python -c "import aff3ct as af; print(af.__file__, af.AFF3CT_VERSION, 'registry:', af._ext.HAS_STREAMPU_DOWNCAST_REGISTRY)")
+    # `pytest` (not `python -m pytest`): the source tree must not shadow the installed package
+    - pytest tests -n $PYTEST_WORKERS -rxX --junitxml=report.xml
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
+
+
+# The generated files are committed: they must match the pinned AFF3CT (run after a bump of lib/aff3ct:
+# scripts/track_aff3ct.py --update, then scripts/gen_instantiations.py)
+generated:
+  stage: tests
+  <<: *linux_base
+  needs: []
+  before_script: []
+  script:
+    - *aff3ct_submodules
+    - python scripts/aff3ct_api.py lib/aff3ct -o docs/design/aff3ct_api.json
+    - python scripts/gen_instantiations.py
+    - python scripts/gen_class_graph.py lib/aff3ct/include docs/design
+    - git diff --stat
+    - git diff --quiet || (echo "Generated files are outdated (see the diff above)"; exit 1)
+
+
+# AFF3CT upstream changes since the pinned revision (scheduled pipeline, e.g. weekly, or Run pipeline by hand)
+track-aff3ct:
+  stage: tracking
+  image: $CI_BASE_IMAGE
+  tags:
+    - x86_64
+    - docker
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "web"
+  variables:
+    AFF3CT_TRACKED_REF: "origin/develop"
+  script:
+    - git submodule update --init lib/aff3ct
+    - python scripts/track_aff3ct.py --repo lib/aff3ct --fetch --to "$AFF3CT_TRACKED_REF" --fail-on-impact
+  artifacts:
+    when: always
+    name: aff3ct-changes
+    paths:
+      - docs/design/changes/
+    expire_in: 3 months

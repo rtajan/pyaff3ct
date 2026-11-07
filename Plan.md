@@ -260,7 +260,7 @@ Python standards (`TypeError` pour les dtypes et paramètres inconnus, `ValueErr
 `task.module`…) d'après son type dynamique exact ; si cette classe concrète n'est pas enregistrée
 (`CRC_polynomial_fast<int>`, et surtout les 47 classes « factory-only »), il retombe sur `Module` : les tâches restent
 utilisables mais les accesseurs AFF3CT sont perdus. *Constaté en phase 1*. **Décision et réalisation** : registre de
-« downcasters » dans pystreampu (branche `feat/module-downcast-registry`, en-tête
+« downcasters » dans pystreampu (mergé sur `develop`, en-tête
 `wrapper/Common/Tools/Module_downcast.hpp`) — spécialisation de `pybind11::polymorphic_type_hook<spu::module::Module>`
 qui, pour un type dynamique non enregistré, interroge les downcasters inscrits par les extensions (stockés dans les
 *shared data* des internals pybind11, donc partagés malgré les copies de StreamPU ; mutex pour le mode sans GIL).
@@ -268,8 +268,8 @@ Côté pyaff3ct, chaque `py::class_` de module appelle `add_module_class<T>()` (
 renvoie la classe enregistrée la plus dérivée (`internal/Common/Tools/downcast.hpp`). Détection à la compilation
 (`__has_include`, `aff3ct._ext.HAS_STREAMPU_DOWNCAST_REGISTRY`) : avec un pystreampu sans registre, tout fonctionne
 sauf ce typage (test en `xfail`). Tests : clones d'une `Sequence` à 2 threads typés `CRC_int16` avec leurs
-accesseurs ; toute classe de module enregistrée est inscrite (`_N_MODULE_CLASSES`). À faire : exiger dans
-`pyproject.toml` la version de streampu qui publie le registre.
+accesseurs ; toute classe de module enregistrée est inscrite (`_N_MODULE_CLASSES`). La CI construit pystreampu
+depuis `develop` ; à faire à sa prochaine publication : exiger cette version de streampu dans `pyproject.toml`.
 
 **R9 — Non exposé.** 88 classes outils (API polaires SIMD, règles de mise à jour LDPC, réseaux de tri, PRNG, arbres,
 `Reorderer`, constantes DVB-S2, `Contents_*`…) : ce sont des détails d'implémentation choisis par les factories.
@@ -436,7 +436,7 @@ Organisation proposée :
 1. **Version de StreamPU** : *résolu à date* (pystreampu et AFF3CT sur `85ed022`, v1.10.0) ; surveillé par le suivi (§7).
 2. **Deux copies statiques de StreamPU** (modèle officiel des extensions) : `set_task_autoalloc` refait à l'import.
    *Vérifié en phase 1* : traduction des exceptions, `Sequence` multi-thread (clones de modules AFF3CT) et typage des
-   modules renvoyés par pystreampu (R8 bis, registre de downcasters, en attente d'intégration dans pystreampu).
+   modules renvoyés par pystreampu (R8 bis, registre de downcasters, mergé dans pystreampu `develop`).
    Attention : réinstaller streampu touche les en-têtes StreamPU dont dépend AFF3CT, d'où une recompilation complète
    d'AFF3CT (~15 min sur 2 cœurs) au build suivant.
    Note : `Stateful` n'est pas exporté au niveau de `streampu` (seul `Stateful_core` l'est) : les tests utilisent
