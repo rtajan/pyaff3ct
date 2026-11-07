@@ -445,7 +445,10 @@ inventaire mis à jour (`done`), docstrings présentes.
     `11,10,01`, 8 itérations, facteur d'échelle LTE_VEC), à 4 threads ; `examples/ldpc_bfer.py` (codec LDPC).
 - **Modems et canaux** ✅ : `Constellation_{PAM,PSK,QAM,user}` (`symbols` en tableau complexe, `bps`…) ;
   `af.mdm.modem(N, type="QAM", bps=4)` construit (et garde) la constellation des types génériques, comme le
-  simulateur, et une constellation donnée fixe le type ; `mdm.N_mod` donne la taille du canal. Canaux AWGN,
+  simulateur, et une constellation donnée fixe le type ; `af.mdm.modem(N, symbols=...)` pour une constellation
+  quelconque sans objet ni fichier (constructeur protégé `Constellation(symbols, name)` d'AFF3CT, exposé par
+  `af.tools.Constellation(symbols, normalize=True)` ; symbole `i` = image des bits de `i`, premier bit de poids
+  faible) ; `mdm.N_mod` donne la taille du canal. Canaux AWGN,
   Rayleigh (`add_noise_wg` → `demodulate_wg`, `complex=True`), BEC et BSC (modem `OOK` avec `channel_type`, moniteur
   `count_unknown_values=True` comme le simulateur pour un bruit EP) validés contre `refs` (non codé : 16-QAM AWGN,
   QPSK Rayleigh, OOK BEC / BSC, BER à 5 écarts-types). Générateur : les templates d'outils header-only qui

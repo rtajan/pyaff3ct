@@ -16,6 +16,16 @@ namespace pyaf
 {
 namespace wrapper
 {
+//! Gives access to the protected constructor Constellation(symbols, name) of AFF3CT.
+template<typename R>
+struct Constellation_symbols : public Constellation<R>
+{
+    Constellation_symbols(const std::vector<typename Constellation<R>::S>& symbols, const std::string& name)
+      : Constellation<R>(symbols, name)
+    {
+    }
+};
+
 template<typename R>
 static void
 wrap_constellations_internal(py::handle scope)
@@ -26,11 +36,38 @@ wrap_constellations_internal(py::handle scope)
                   class_name<R>("Constellation").c_str(),
                   R"pbdoc(Base class of the constellations of the generic modems (PSK, PAM, QAM, user).
 
-The symbol ``i`` is the image of the bits of ``i`` (the first bit is the most significant one).
+The symbol ``i`` is the image of the bits of ``i``, the first bit being the least significant one.
 
 >>> cstl = af.tools.Constellation_QAM(4)          # 16-QAM
 >>> cstl.symbols                                   # numpy.ndarray[complex64]
 >>> mdm = af.mdm.modem(N, cstl)                    # generic modem (keeps the constellation alive)
+>>> cstl = af.tools.Constellation(np.exp(2j * np.pi * np.arange(8) / 8))   # any symbols
+)pbdoc")
+      .def(
+        py::init(
+          [](const std::vector<S>& symbols, bool normalize, const std::string& name)
+          {
+              std::vector<S> s = symbols;
+              if (normalize && !s.empty())
+              {
+                  R es = 0;
+                  for (auto& x : s)
+                      es += std::norm(x);
+                  const auto k = std::sqrt(es / (R)s.size());
+                  for (auto& x : s)
+                      x /= k;
+              }
+              return static_cast<C*>(new Constellation_symbols<R>(s, name));
+          }),
+        "symbols"_a,
+        "normalize"_a = true,
+        "name"_a = "User<C>",
+        R"pbdoc(Constellation of the given symbols (2^bps of them; the symbol ``i`` is the image of the bits of ``i``, LSB first).
+
+Args:
+    symbols (array-like of complex): the symbols.
+    normalize (bool): scale them to a unit mean energy (as the constellation files of AFF3CT).
+    name (str): name of the constellation.
 )pbdoc")
       .def_property_readonly("name", &C::get_name, "str: name (e.g. 'QAM').")
       .def_property_readonly("bps", &C::get_n_bits_per_symbol, "int: number of bits per symbol.")
