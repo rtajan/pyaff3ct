@@ -403,9 +403,9 @@ inventaire mis à jour (`done`), docstrings présentes.
   binomiaux) ; la CI récupère `refs` et, de `conf`, la seule matrice utilisée.
 - Exemple ✅ `examples/polar_bfer.py` (`streampu.Sequence` multi-thread, `Terminal_std`, bits gelés adaptés au bruit
   par `set_frozen_bits` sur les clones). Restent `examples/ldpc_bfer.py` et un notebook.
-- Constaté côté pystreampu (à remonter) : `Terminal_std(reporters)` ne garde pas ses reporters en vie (à garder par
-  l'appelant) ; `stop_temp_report` est lié à `start_temp_report` ; `Sequence(task)` prend la tâche pour la
-  **première** (le passer par une socket de fin : `Sequence(mnt["check_errors::status"])`).
+- Constaté côté pystreampu, corrigé dans la v1.2.1 (exigée) : `Terminal_std(reporters)` ne gardait pas ses reporters
+  en vie ; `stop_temp_report` était lié à `start_temp_report`. `Sequence(task)` prend la tâche pour la **première**
+  (le passer par une socket de fin : `Sequence(mnt["check_errors::status"])`).
 - **Réduction multi-thread** ✅ : avec `Monitor_BFER`, chaque thread a son clone et la séquence s'arrête dès qu'**un**
   clone atteint `max_fe` (FER réduit biaisé vers le haut ; l'original ne compte au mieux que les trames du premier
   thread).
@@ -540,10 +540,9 @@ Organisation proposée :
    modules renvoyés par pystreampu (R8 bis, registre de downcasters, mergé dans pystreampu `develop`).
    Attention : réinstaller streampu touche les en-têtes StreamPU dont dépend AFF3CT, d'où une recompilation complète
    d'AFF3CT (~15 min sur 2 cœurs) au build suivant.
-   Note : `Stateful` n'est pas exporté au niveau de `streampu` (seul `Stateful_core` l'est) : les tests utilisent
-   `streampu._ext.sfl.Stateful` ; un export public côté pystreampu serait plus propre.
-   Note : itérer sur une `streampu.Socket` (`for s in sock`, `list(sock)`) ne termine pas (`__getitem__` sans fin
-   d'itération) — à corriger côté pystreampu (lever `IndexError` ou définir `__iter__`).
+   pystreampu v1.2.1 (exigée par `pyproject.toml`, `PYSTREAMPU_REF` de la CI) : registre de downcast publié,
+   `streampu.Stateful` exporté, indexation des sockets bornée (`IndexError`, fin de `iter(socket)`),
+   `Terminal_std` qui garde ses reporters, `stop_temp_report` corrigé.
 3. **ABI pybind11** : même contrainte que pystreampu (`>=3.0.4,<3.1`, même compilateur et stdlib), contrôlée en CI.
 4. **Temps de compilation et taille binaire** : environ 190 classes × 4 à 6 instanciations. Leviers : une TU par famille,
    option CMake pour restreindre les précisions (`PYAFF3CT_PRECISIONS=32` en dev), ccache, LTO uniquement en release.

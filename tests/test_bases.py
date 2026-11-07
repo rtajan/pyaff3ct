@@ -10,7 +10,7 @@ import streampu as spu
 import aff3ct as af
 
 # Stateful is not exported at the top level of streampu (only Stateful_core is)
-Stateful = spu._ext.sfl.Stateful
+Stateful = spu.Stateful
 
 API = json.loads((Path(__file__).parent.parent / "docs" / "design" / "aff3ct_api.json").read_text())["classes"]
 

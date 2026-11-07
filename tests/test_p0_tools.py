@@ -1,5 +1,6 @@
 """P0 tools: interleaver cores and interleavers, frozen bits generators, noise conversions, interface accessors."""
 
+import gc
 import io
 import math
 
@@ -268,6 +269,17 @@ def test_monitor_bfer_and_reporters():
     ter.final_report(out)
     out = out.getvalue()
     assert "FER" in out and "Eb/N0" in out and "SIM_THR" in out
+
+
+def test_terminal_keeps_its_reporters_alive():
+    # streampu >= 1.2.1: Terminal_std keeps the reporters given in a temporary list
+    mnt = af.mnt.Monitor_BFER(4, 1)
+    ter = spu.Terminal_std([af.tools.Reporter_BFER(mnt), af.tools.Reporter_noise(af.tools.sigma_from_ebn0(1.0))])
+    gc.collect()
+    out = io.StringIO()
+    ter.legend(out)  # reads the reporters (a dangling one would crash or print garbage)
+    ter.final_report(out)
+    assert "FER" in out.getvalue() and "Eb/N0" in out.getvalue()
 
 
 def test_reporters_keep_their_objects_alive():

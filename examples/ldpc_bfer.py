@@ -38,7 +38,7 @@ def simulate(H_path: str, ebn0s, max_fe=100, n_threads=1, n_ite=50, quiet=False)
 
     noise = af.tools.sigma_from_ebn0(ebn0s[0], K / N)
     reporters = [af.tools.Reporter_noise(noise), af.tools.Reporter_BFER(mnt), af.tools.Reporter_throughput(mnt)]
-    ter = spu.Terminal_std(reporters)  # does not keep its reporters alive: `reporters` does
+    ter = spu.Terminal_std(reporters)
     if not quiet:
         ter.legend()
     results = []

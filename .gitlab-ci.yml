@@ -35,7 +35,7 @@ variables:
   PYTEST_WORKERS: 4
   # pystreampu to build against (it must provide the Module downcast registry for every test to pass)
   PYSTREAMPU_URL: "https://github.com/rtajan/pystreampu.git"
-  PYSTREAMPU_REF: "develop"  # provides the Module downcast registry (merged); any branch or tag can be given
+  PYSTREAMPU_REF: "v1.2.1"  # the release required by pyproject.toml (downcast registry...); any branch or tag works
   # ccache: the object files are reused from one pipeline to the next (GitLab cache)
   CCACHE_DIR: "$CI_PROJECT_DIR/.ccache"
   CCACHE_BASEDIR: "$CI_PROJECT_DIR"

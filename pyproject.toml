@@ -1,7 +1,7 @@
 [build-system]
 # streampu is needed at build time (pybind11/StreamPU CMake config and headers of pystreampu): until it is on PyPI,
 # build with `pip install --no-build-isolation .` in an environment where streampu is installed.
-requires = ["scikit-build-core>=1.0", "setuptools_scm", "pybind11==3.0.4", "streampu"]
+requires = ["scikit-build-core>=1.0", "setuptools_scm", "pybind11==3.0.4", "streampu>=1.2.1"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -13,7 +13,8 @@ readme = "README.md"
 license = "MIT"
 dependencies = [
     "numpy",
-    "streampu",
+    # >= 1.2.1: module downcast registry, Terminal_std keeping its reporters, bounded Socket indexing
+    "streampu>=1.2.1",
     # Same pybind11 ABI as streampu (internals v11, stable within the 3.0 series)
     "pybind11>=3.0.4,<3.1",
 ]
