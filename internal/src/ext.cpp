@@ -8,7 +8,7 @@
 #include "internal/internal.hpp"
 
 #include "internal/Wrapper/Factory/Factory.hpp"
-#include "internal/Wrapper/Factory/Module/CRC/CRC.hpp"
+#include "internal/Generated/factories.hpp"
 #include "internal/Wrapper/Module/Bases.hpp"
 #include "internal/Wrapper/Testing/Testing.hpp"
 #include "internal/Wrapper/Tools/Interface/Interfaces.hpp"
@@ -48,7 +48,7 @@ PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())
 
     auto fac = m.def_submodule("factory", "AFF3CT factories (advanced use: command-line parity, parameters).");
     wrap_factory(fac);
-    wrap_factory_crc(fac);
+    pyaf::generated::wrap_factories(fac); // every factory (generated, scripts/gen_factories.py)
 
     wrap_testing(m.def_submodule("_testing", "Helpers of the test suite (not part of the public API)."));
 

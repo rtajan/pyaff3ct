@@ -6,6 +6,6 @@ Class templates are grouped by dtype combination (``isinstance(x, qnt.<Class>)``
 """
 
 from aff3ct import _ext
-from aff3ct._dispatch import export
+from aff3ct._dispatch import export, export_functions
 
-__all__ = export(_ext.qnt, globals())
+__all__ = export(_ext.qnt, globals()) + export_functions(globals(), "qnt")

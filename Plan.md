@@ -344,9 +344,36 @@ inventaire mis à jour (`done`), docstrings présentes.
   exécution des tâches `build`/`extract` d'un CRC).
 
 ### Phase 2 — MVP : chaîne BFER complète (priorité **P0**, 93 entrées)
-- **D'abord** : générateur des factories et des fonctions de famille depuis `aff3ct_api.json` (paramètres publics et
-  leurs défauts, signatures des `build*`) → bindings C++ `def_param` / `def_builders` et fonctions Python
-  (`af.dec.polar(...)`) avec docstrings et stubs. Il a besoin des factories concrètes, d'où sa place ici.
+- **D'abord** ✅ : générateur `scripts/gen_factories.py` (depuis `aff3ct_api.json`, `instantiations.py` et
+  `status.json`) → une unité C++ par factory (79 factories, 88 builders : paramètres `def_param`, sous-factories en
+  références, builders par dtype, builders non templates en `_<builder>_raw`) et `aff3ct/_generated/functions.py`
+  (55 fonctions de famille, exportées par chaque sous-module). Règles appliquées :
+  - **Positionnels** : les tailles (`K`, `N_cw`, `N`) de la factory la plus haute de la famille qui en déclare
+    (`Decoder` → `K, N_cw` ; `Monitor_BFER` → `K` ; le `N` de `Decoder_LDPC` reste un mot-clé), puis les arguments du
+    builder ; **mots-clés seuls** : tous les autres paramètres (`None` = défaut AFF3CT) et les dtypes (`B=`, `Q=`…).
+  - **Un builder = une fonction** : `polar` (`build`), `polar_siso`, `polar_gen` ; les surcharges d'un builder
+    (`Channel.build()` / `build(dist)`) sont fusionnées, pybind11 choisit d'après les arguments donnés.
+  - Arguments optionnels : liés aussi en surcharges tronquées (pybind11 ne charge pas `None` vers un pointeur de type
+    non wrappé) ; un défaut non littéral (`std::ostream& stream = std::cout`) n'est pas exposé.
+  - Une fonction n'est générée que si la classe renvoyée est wrappée (module : une base wrappée suffit, grâce au
+    registre de downcasters ; outil : le type exact) ; les autres sont listées dans `SKIPPED` (28 : `Codec_*`,
+    `Frozenbits_generator`, `Interleaver_core`, `Constellation`…) et apparaîtront en wrappant ces outils.
+  - `Codec` et `Decoder` (bases de famille) sont liées sans constructeur ; `Terminal.build` est écarté
+    (`vector<unique_ptr<Reporter>>`, utiliser `streampu.Terminal_std`).
+  - Convention AFF3CT à connaître : un bit vaut 0 ou « non nul » ; les moniteurs comparent en booléens.
+    `aff3ct.tools.hard(x)` (socket ou tableau) en donne la vue 0 / 1. Mesuré par `scripts/probe_bit_convention.py`
+    → `docs/design/bit_convention.md` (à relancer à chaque évolution d'AFF3CT) : sur 100 combinaisons
+    (fonction × type × implem × dtypes), les encodeurs rendent toujours 0 / 1, et seuls les décodeurs polaires
+    **FAST** (SC, SCL, SCL_MEM, ASCL, ASCL_MEM) et **SCAN** rendent le bit de signe pour un 1 (`-128` en `int8`,
+    `-2147483648` en `int32`), sur `V_K` comme sur `V_N` ; tous décodent correctement.
+  - Défaut des surcharges tronquées corrigé : un argument suivant peut être donné sans les précédents
+    (`encoder=` sans `crc=`), les défauts littéraux étant gardés.
+  - **Manque identifié** : un module construit par une factory est typé d'après sa base wrappée la plus dérivée
+    (`Encoder_int32`) ; les interfaces de la classe concrète (`trellis` d'un encodeur RSC, `frozen_bits`…) ne sont
+    donc accessibles que si la classe concrète est enregistrée → à faire dans cette phase pour les classes
+    concrètes « wrap » (inventaire), en commençant par celles qui portent une interface.
+  - Vérifié : chaîne source → `enc.polar` → BPSK → AWGN → `dec.polar` (SC NAIVE/FAST, `int8`/`int16`/`int32`) →
+    `mnt.bfer`, CA-SCL avec un CRC gardé en vie par le décodeur, SISO SCAN.
 - Modules : `Source_random_fast`, `CRC_polynomial/NO`, `Encoder_{NO,polar,polar_sys,LDPC,LDPC_from_H,BCH,RS,repetition_sys}`,
   `Modem_BPSK(_fast)`, `Channel_{AWGN_LLR,NO}`, `Quantizer_{NO,pow2}`, `Decoder_{NO,repetition,BCH_std,RS_std}` +
   polaire SC et LDPC BP via factory, `Interleaver`, `Puncturer_NO`, `Monitor_BFER`.
@@ -441,6 +468,8 @@ Organisation proposée :
    d'AFF3CT (~15 min sur 2 cœurs) au build suivant.
    Note : `Stateful` n'est pas exporté au niveau de `streampu` (seul `Stateful_core` l'est) : les tests utilisent
    `streampu._ext.sfl.Stateful` ; un export public côté pystreampu serait plus propre.
+   Note : itérer sur une `streampu.Socket` (`for s in sock`, `list(sock)`) ne termine pas (`__getitem__` sans fin
+   d'itération) — à corriger côté pystreampu (lever `IndexError` ou définir `__iter__`).
 3. **ABI pybind11** : même contrainte que pystreampu (`>=3.0.4,<3.1`, même compilateur et stdlib), contrôlée en CI.
 4. **Temps de compilation et taille binaire** : environ 190 classes × 4 à 6 instanciations. Leviers : une TU par famille,
    option CMake pour restreindre les précisions (`PYAFF3CT_PRECISIONS=32` en dev), ccache, LTO uniquement en release.

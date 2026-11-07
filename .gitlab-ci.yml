@@ -4,7 +4,8 @@
 #   this ref does not change (a pystreampu build takes ~15 minutes);
 # - build: wheel of pyaff3ct (AFF3CT in multi-precision + the wrapper), with ccache;
 # - tests: pytest on the installed wheels;
-# - generated: the committed generated files match the pinned AFF3CT (API fingerprint, dtype combinations, class graph);
+# - generated: the committed generated files match the pinned AFF3CT (API fingerprint, dtype combinations, factories
+#   and module-level functions, class graph);
 # - track-aff3ct: scheduled pipelines (and by hand): what changed in AFF3CT upstream since the pinned revision; fails
 #   when a change hits a class marked done/wip in docs/design/status.json (report in the artifacts).
 #
@@ -165,6 +166,7 @@ generated:
     - *aff3ct_submodules
     - python scripts/aff3ct_api.py lib/aff3ct -o docs/design/aff3ct_api.json
     - python scripts/gen_instantiations.py
+    - python scripts/gen_factories.py
     - python scripts/gen_class_graph.py lib/aff3ct/include docs/design
     - git diff --stat
     - git diff --quiet || (echo "Generated files are outdated (see the diff above)"; exit 1)

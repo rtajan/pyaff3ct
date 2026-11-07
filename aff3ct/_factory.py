@@ -85,22 +85,33 @@ class _ClassOrInstanceMethod:
         return functools.partial(self.func, obj)
 
 
-def _builders(fac: Any) -> dict[str, dict]:
-    return INSTANTIATIONS.get(_key(fac), {}).get("builders", {})
+def _builders(fac: Any) -> dict[str, dict | None]:
+    """Builders of a factory: {name: instantiation entry} (``None`` for a non-template builder)."""
+    res: dict[str, dict | None] = dict(INSTANTIATIONS.get(_key(fac), {}).get("builders", {}))
+    for name in getattr(type(fac), "_raw_builders", ()):
+        res.setdefault(name, None)
+    return res
 
 
-def _call_builder(self: Factory, builder: str, *args: Any, **dtypes: Any) -> Any:
-    """Build with the instance of `builder` selected by `dtypes`.
+def _call_builder(self: Factory, builder: str, *args: Any, **kwargs: Any) -> Any:
+    """Build with the instance of `builder` selected by the dtypes given by keyword.
 
-    As the AFF3CT command line does (parse, ``store()``, then build), the derived parameters (CRC size from the
-    polynomial, code rate...) are computed first, on a temporary copy: the factory keeps the values given by the
-    user, and a derived value never outlives a change of the parameters it comes from.
+    The keywords that name a template parameter of the builder (``B``, ``Q``... or ``dtype``) choose the instance;
+    the other ones are arguments of the builder (``crc=``, ``encoder=``...), as the positional ones. As the AFF3CT
+    command line does (parse, ``store()``, then build), the derived parameters (CRC size from the polynomial, code
+    rate...) are computed first, on a temporary copy: the factory keeps the values given by the user, and a derived
+    value never outlives a change of the parameters it comes from.
     """
-    entry = builder_entry(_key(self), builder)
-    combo = resolve_combo(entry, dtypes, f"{type(self).__name__}.{builder}")
+    entry = _builders(self).get(builder)
     fac = self.clone()
     fac._complete()
-    return getattr(fac, f"{builder}_{'_'.join(combo)}")(*args)
+    if entry is None:  # non-template builder
+        return getattr(fac, f"_{builder}_raw")(*args, **kwargs)
+    tparams = set(entry["params"]) | {"dtype"}
+    dtypes = {k: v for k, v in kwargs.items() if k in tparams}
+    bargs = {k: v for k, v in kwargs.items() if k not in tparams}
+    combo = resolve_combo(entry, dtypes, f"{type(self).__name__}.{builder}")
+    return getattr(fac, f"{builder}_{'_'.join(combo)}")(*args, **bargs)
 
 
 def _getattr(self: Factory, name: str) -> Callable:
@@ -146,4 +157,20 @@ def build(factory_cls: type, params: dict[str, Any], dtypes: dict[str, Any], *ar
     return _call_builder(fac, builder, *args, **dtypes)
 
 
-__all__ = ["build"]
+def make(factory: str, builder: str, params: dict[str, Any], args: dict[str, Any], dtypes: dict[str, Any]) -> Any:
+    """Engine of the generated module-level functions (``aff3ct._generated.functions``).
+
+    Args:
+        factory (str): name of the factory class in ``aff3ct.factory``.
+        builder (str): builder to call (``build``, ``build_siso``...).
+        params (dict): factory parameters (``None`` = AFF3CT default).
+        args (dict): builder arguments by name (``None`` = C++ default, or overload without this argument).
+        dtypes (dict): template dtypes (``None`` = default / only compatible value).
+    """
+    fac = getattr(_ext.factory, factory)(**params)
+    kwargs = {k: v for k, v in args.items() if v is not None}
+    kwargs.update({k: v for k, v in dtypes.items() if v is not None})
+    return _call_builder(fac, builder, **kwargs)
+
+
+__all__ = ["build", "make"]

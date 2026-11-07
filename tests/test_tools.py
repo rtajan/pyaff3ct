@@ -42,3 +42,14 @@ def test_noise_event_probability():
     assert ep.type == af.tools.Noise_type.EP and ep.value == pytest.approx(0.1)
     ep.set_value(0.2)
     assert ep.value == pytest.approx(0.2)
+
+
+def test_hard_bits():
+    sign_bit = np.iinfo(np.int32).min  # a 1 returned by a FAST polar decoder
+    x = np.array([[0, sign_bit, 1, 0, -1]], dtype=np.int32)
+    h = af.tools.hard(x)
+    np.testing.assert_array_equal(h, [[0, 1, 1, 0, 1]])
+    assert h.dtype == np.int32 and x[0, 1] == sign_bit  # same dtype, input untouched
+    s = spu.array([0, 7, 0], dtype=spu.int8)
+    np.testing.assert_array_equal(af.tools.hard(s), [[0, 1, 0]])
+    np.testing.assert_array_equal(af.tools.hard([True, False]), [1, 0])
