@@ -244,13 +244,13 @@
 | `AList` | `Tools/Code/LDPC/AList/AList.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.AList` | done |
 | `LDPC_matrix_handler` | `Tools/Code/LDPC/Matrix_handler/LDPC_matrix_handler.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.LDPC_matrix_handler` | done |
 | `QC` | `Tools/Code/LDPC/QC/QC.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.QC` | done |
-| `Frozenbits_generator_5G` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_5G.hpp` | `` | Frozenbits_generator_file | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_5G` | todo |
-| `Frozenbits_generator_GA` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_GA` | todo |
-| `Frozenbits_generator_RM` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_RM.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_RM` | todo |
-| `Frozenbits_generator_TV` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_TV.hpp` | `` | Frozenbits_generator_file | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_TV` | todo |
-| `Polar_code` | `Tools/Code/Polar/Polar_code.hpp` | `` |  | wrap | P1 | `aff3ct.tools.polar.Polar_code` | todo |
-| `Pretransform_generator` | `Tools/Code/Polar/Pretransform_generator/Pretransform_generator.hpp` | `` | Interface_get_set_noise, spu::tools::Interface_clone | abstract | P1 | `aff3ct.tools.polar.Pretransform_generator` | todo |
-| `Pretransform_generator_file` | `Tools/Code/Polar/Pretransform_generator/Pretransform_generator_file.hpp` | `` | Pretransform_generator | wrap | P1 | `aff3ct.tools.polar.Pretransform_generator_file` | todo |
+| `Frozenbits_generator_5G` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_5G.hpp` | `` | Frozenbits_generator_file | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_5G` | done |
+| `Frozenbits_generator_GA` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_GA` | done |
+| `Frozenbits_generator_RM` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_RM.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_RM` | done |
+| `Frozenbits_generator_TV` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_TV.hpp` | `` | Frozenbits_generator_file | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_TV` | done |
+| `Polar_code` | `Tools/Code/Polar/Polar_code.hpp` | `` |  | wrap | P1 | `aff3ct.tools.polar.Polar_code` | done |
+| `Pretransform_generator` | `Tools/Code/Polar/Pretransform_generator/Pretransform_generator.hpp` | `` | Interface_get_set_noise, spu::tools::Interface_clone | abstract | P1 | `aff3ct.tools.polar.Pretransform_generator` | done |
+| `Pretransform_generator_file` | `Tools/Code/Polar/Pretransform_generator/Pretransform_generator_file.hpp` | `` | Pretransform_generator | wrap | P1 | `aff3ct.tools.polar.Pretransform_generator_file` | done |
 | `CRC_checker` | `Tools/Code/Turbo/Post_processing_SISO/CRC/CRC_checker.hpp` | `typename B = int, typename R = float` | Post_processing_SISO | wrap | P1 | `aff3ct.tools.turbo.CRC_checker` | todo |
 | `CRC_checker_DB` | `Tools/Code/Turbo/Post_processing_SISO/CRC/CRC_checker_DB.hpp` | `typename B = int, typename R = float` | CRC_checker | wrap | P1 | `aff3ct.tools.turbo.CRC_checker_DB` | todo |
 | `Flip_and_check` | `Tools/Code/Turbo/Post_processing_SISO/Flip_and_check/Flip_and_check.hpp` | `typename B = int, typename R = float` | CRC_checker | wrap | P1 | `aff3ct.tools.turbo.Flip_and_check` | todo |

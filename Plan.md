@@ -453,6 +453,15 @@ inventaire mis à jour (`done`), docstrings présentes.
   `count_unknown_values=True` comme le simulateur pour un bruit EP) validés contre `refs` (non codé : 16-QAM AWGN,
   QPSK Rayleigh, OOK BEC / BSC, BER à 5 écarts-types). Générateur : les templates d'outils header-only qui
   transmettent leurs paramètres à leur base en prennent les combinaisons (`Constellation_QAM<R>`).
+- **Décodeurs et outils polaires** ✅ : `Polar_code` (mono / multi-noyaux), `Frozenbits_generator_{GA,RM,5G,TV}`,
+  `Pretransform_generator(_file)`. `from_cli(args, strict=False)` : une ligne de commande AFF3CT complète donnée à
+  chaque factory, qui n'en prend que ses arguments. `tests/test_references.py` reconstruit les chaînes **depuis la
+  ligne de commande des références** (source, CRC, codec, modem, canal ; tailles propagées et AZCW comme
+  `BFER_std.cpp`, poinçonneur activé comme les lanceurs polaire / turbo / LDPC) : CA-ASCL polaire raccourci,
+  Viterbi, BCJR, répétition, LDPC BP flooding SPA / AMS (min, min*), layered NMS, Gallager A / B / E, WBF, MWBF,
+  LDPC NMS sur BEC et BSC (bruit EP). La CI récupère les 4 matrices utilisées.
+  Restent sans fonction : `Scaling_factor`, `Flip_and_check` (post-traitements internes aux décodeurs turbo, réglés
+  par les codecs : `dec_sf_*`, `dec_fnc_*`).
 
 - DoD : un test de construction et d'exécution par classe, et un test de parité CLI par factory.
 

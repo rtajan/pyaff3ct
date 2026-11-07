@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import math
 import re
+import shlex
 import sys
 from pathlib import Path
 
@@ -131,12 +132,12 @@ def run_codec(cdc, ebn0s, max_fe, crc=None, n_threads=1):
     dec.decode_siho(y)
     v = dec["decode_siho::V_K"]
     mnt.check_errors(u, crc.extract(v) if crc is not None else v)
-    seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
     out = []
     for ebn0 in ebn0s:
         s = af.tools.sigma_from_ebn0(ebn0, K_info / N)
         sigma.numpy[...] = s.sigma
-        cdc.set_noise(s)  # modules of the codec only (not their clones): enough for these codes
+        cdc.set_noise(s)  # modules of the codec only (frozen bits of the polar codes...):
+        seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)  # cloned after
         mnt.reset()
         seq.exec()
         out.append((ebn0, mnt.ber, mnt.fer, mnt.n_analyzed_frames))
@@ -244,3 +245,144 @@ def test_ook_erasure_and_symmetric_channels_match_the_reference(channel):
     chn = af.chn.channel(K, type=channel, seed=1)
     run = run_uncoded(K, mdm, chn, [0.1, 0.3], lambda p: p, 2000, event_probability=True)
     check_ber(run, ref, K)
+
+
+# ----------------------------------------------------------------------------------------------- from the command line
+CODECS_OF_CLI = {"POLAR": "Codec_polar", "CONV": "Codec_conv", "RSC": "Codec_RSC", "REP": "Codec_repetition",
+                 "LDPC": "Codec_LDPC", "BCH": "Codec_BCH", "RS": "Codec_RS", "TURBO": "Codec_turbo", "RA": "Codec_RA"}
+CONF_FILES = ("CCSDS_64_128.alist", "WIMAX_288_576.alist", "MACKAY_504_1008.alist", "PEG_Reg_1008x504.alist")
+
+
+def reference_args(path: Path) -> list[str]:
+    """AFF3CT command line of a reference, the paths of the configuration files made absolute."""
+    cmd = next(line for line in path.read_text().splitlines() if line.startswith("command="))[len("command="):]
+    args = shlex.split(cmd)[1:]
+    conf = REFS.parent / "conf"
+    return [str(conf / a[len("conf/"):]) if a.startswith("conf/") else a for a in args]
+
+
+def option(args, *names, default=None):
+    for n in names:
+        if n in args:
+            return args[args.index(n) + 1]
+    return default
+
+
+def run_reference(path: Path, points, max_fe, n_threads=4):
+    """The BFER chain of a reference built from its command line: each factory (source, CRC, codec, modem, channel)
+    takes its own arguments (from_cli(..., strict=False)), the sizes are propagated as by the AFF3CT simulator.
+    Returns [(noise, BER, FER, frames)]."""
+    args = reference_args(path)
+    for a in args:
+        if a.endswith((".alist", ".qc")) and not Path(a).exists():
+            pytest.skip(f"{a} not checked out (lib/aff3ct/conf)")
+    code = option(args, "-C", "--sim-cde-type")
+    fac = getattr(af.factory, CODECS_OF_CLI[code])()
+    if code in ("POLAR", "TURBO", "TURBO_DB", "LDPC"):
+        fac.enable_puncturer()  # as the BFER launchers of AFF3CT for these codes (-N is then the frame size)
+    fac.from_cli(args, strict=False)
+    if option(args, "--src-type") == "AZCW":  # as BFER_std.cpp: all-zero source <=> all-zero encoder
+        fac.enc.type = "AZCW"
+    probe = fac.clone()
+    probe._complete()
+    crc = None
+    if any(a.startswith("--crc-") for a in args):
+        crc_fac = af.factory.CRC.from_cli(args, strict=False)
+        crc_fac._complete()
+        crc_fac.K = probe.K - crc_fac.size
+        crc = crc_fac.build()
+    cdc = fac.build(crc) if crc is not None else fac.build()
+    enc, pct, dec = cdc.encoder, cdc.puncturer, cdc.decoder_siho
+    K_info = enc.K - (crc.size if crc is not None else 0)
+    N = pct.N if pct is not None else enc.N
+
+    ep = option(args, "-E", "--sim-noise-type") == "EP"
+    # sizes set after the command line (-K, -N are also arguments of these factories); all-zero codewords: source too
+    src_fac = af.factory.Source.from_cli(args, strict=False)
+    src_fac.K = K_info
+    if probe.enc.type == "AZCW":
+        src_fac.type = "AZCW"
+    src = src_fac.build()
+    mdm_fac = af.factory.Modem.from_cli(args, strict=False)
+    mdm_fac.N = N
+    chn_type = option(args, "--chn-type", default="AWGN")
+    mdm_fac.channel_type = chn_type
+    mdm = mdm_fac.build()
+    chn_fac = af.factory.Channel.from_cli(args, strict=False)
+    chn_fac.N, chn_fac.seed = mdm.N_mod, 1
+    chn = chn_fac.build()
+    mnt = af.mnt.Monitor_BFER_AR(K_info, max_fe, count_unknown_values=ep)
+
+    cp = spu.array([1.0], dtype=spu.float32)
+    u = src.generate()[0]
+    x = enc.encode(crc.build(u) if crc is not None else u)
+    if pct is not None:
+        x = pct.puncture(x)
+    y = mdm.demodulate(cp, chn.add_noise(cp, mdm.modulate(x)))
+    if pct is not None:
+        y = pct.depuncture(y)
+    dec.decode_siho(y)
+    v = dec["decode_siho::V_K"]
+    mnt.check_errors(u, crc.extract(v) if crc is not None else v)
+    out = []
+    for p in points:
+        if ep:
+            noise = af.tools.Event_probability[spu.float32](p)
+            cp.numpy[...] = p
+        else:
+            noise = af.tools.sigma_from_ebn0(p, K_info / N)
+            cp.numpy[...] = noise.sigma
+        cdc.set_noise(noise)  # modules of the codec (frozen bits of the polar codes...), cloned below
+        seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
+        mnt.reset()
+        seq.exec()
+        out.append((p, mnt.ber, mnt.fer, mnt.n_analyzed_frames))
+    return out
+
+
+def read_ref_ep(path: Path) -> dict[float, tuple[int, int, float]]:
+    """{event probability: (FRA, FE, FER)} of a reference with an EP noise (no Es/N0, Eb/N0 columns)."""
+    pts = {}
+    for line in path.read_text().splitlines():
+        cols = [c.strip() for c in re.split(r"\|\|?", line)]
+        if len(cols) >= 6 and re.fullmatch(r"[0-9.]+", cols[0] or "x") and re.fullmatch(r"[0-9]+", cols[1] or "x"):
+            pts[float(cols[0])] = (int(cols[1]), int(cols[3]), float(cols[5]))
+    return pts
+
+
+@pytest.mark.parametrize(
+    "ref, points, max_fe",
+    [
+        # polar: CA-SCL (adaptive SCL, 24-LTEA CRC, SPC nodes), shortening of the last bits
+        ("POLAR/AWGN/BPSK/ASCL/Polar_N160_K40_ASCL_FA_L32_CRC24_SPC4_p32.txt", [2.0, 3.0], 150),
+        ("CONV/AWGN/BPSK/Viterbi/CONV_N140_K64_Viterbi_p32.txt", [1.0, 2.0], 150),
+        ("RSC/AWGN/BPSK/BCJR/RSC_N2056_K1024_BCJR_p32.txt", [0.5, 1.0], 150),
+        ("REP/AWGN/BPSK/Repetition_N4096_K128_STD_p32.txt", [2.0, 4.0], 150),
+        # LDPC decoders (all-zero codewords as the references)
+        ("LDPC/AWGN/BPSK/BP_FLOODING/SPA/LDPC_N576_K288_flooding_SPA_i100_WiMAX.txt", [1.0, 1.5], 150),
+        ("LDPC/AWGN/BPSK/BP_FLOODING/AMS/LDPC_N576_K288_flooding_AMS_minstar_i100_WiMAX.txt", [1.0, 1.5], 150),
+        ("LDPC/AWGN/BPSK/BP_FLOODING/AMS/LDPC_N576_K288_flooding_AMS_min_i100_WiMAX.txt", [1.25, 1.75], 150),
+        ("LDPC/AWGN/BPSK/BP_HORIZONTAL_LAYERED/NMS/LDPC_N576_K288_hlayered_NMS_i100_WiMAX.txt", [1.0, 1.5], 150),
+        # Gallager decoders: steep curves, references with few frames: more frame errors
+        ("LDPC/AWGN/BPSK/BP_FLOODING/GALA/LDPC_N1008_K504_flooding_GALA_i200_MacKay.txt", [4.75, 5.25], 300),
+        ("LDPC/AWGN/BPSK/BP_FLOODING/GALB/LDPC_N1008_K504_flooding_GALB_i200_MacKay.txt", [4.75, 5.25], 300),
+        ("LDPC/AWGN/BPSK/BP_FLOODING/GALE/LDPC_N1008_K504_flooding_GALE_i200_MacKay.txt", [2.0, 3.0], 300),
+        ("LDPC/AWGN/BPSK/BIT_FLIPPING/WBF/LDPC_N1008_K504_WBF_i100.txt", [2.0, 3.0], 150),
+        ("LDPC/AWGN/BPSK/BIT_FLIPPING/MWBF/LDPC_N1008_K504_MWBF02_i100.txt", [2.0, 3.0], 150),
+    ],
+)
+def test_chains_from_the_reference_command_lines(ref, points, max_fe):
+    check(run_reference(REFS / ref, points, max_fe), read_ref(REFS / ref), points)
+
+
+@pytest.mark.parametrize(
+    "ref, points",
+    [
+        ("LDPC/BEC/OOK/BP_HORIZONTAL_LAYERED/NMS/LDPC_N576_K288_hlayered_NMS_i100_WiMAX.txt", [0.44, 0.42]),
+        ("LDPC/BSC/OOK/BP_HORIZONTAL_LAYERED/NMS/LDPC_N576_K288_hlayered_NMS_i100_WiMAX.txt", [0.07, 0.06]),
+    ],
+)
+def test_erasure_and_symmetric_channels_from_the_reference_command_lines(ref, points):
+    ref_pts = read_ref_ep(REFS / ref)
+    measured = run_reference(REFS / ref, points, max_fe=150)
+    check(measured, {round(p, 4): v for p, v in ref_pts.items()}, points)

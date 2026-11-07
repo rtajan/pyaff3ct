@@ -334,3 +334,29 @@ def test_monitor_bfer_ar_callbacks_prevent_cloning():
     mnt.record_callback_check(lambda: None)
     with pytest.raises(spu.exceptions.RuntimeError, match="clone"):
         spu.Sequence(mnt["check_errors::status"], n_threads=2)
+
+
+# ----------------------------------------------------------------------------------------------- polar tools
+def test_polar_code_and_other_frozen_bits_generators():
+    code = af.tools.Polar_code(16, [[1, 0], [1, 1]])
+    assert code.N == 16 and code.is_mono_kernel() and code.can_be_systematic()
+    mk = af.tools.Polar_code([[[1, 0], [1, 1]], [[1, 1, 1], [1, 0, 1], [0, 1, 1]]], [0, 1])
+    assert mk.N == 6 and not mk.is_mono_kernel()
+    ga = af.tools.Frozenbits_generator_GA(8, 16, code)
+    np.testing.assert_array_equal(ga.generate(af.tools.Sigma(0.8)),
+                                  af.tools.Frozenbits_generator_GA_Arikan(8, 16).generate(af.tools.Sigma(0.8)))
+    assert af.tools.Frozenbits_generator_GA(3, 6, mk).generate(af.tools.Sigma(0.8)).sum() == 3
+    rm = af.tools.Frozenbits_generator_RM(8, 16).generate()
+    assert rm.sum() == 8
+    # reads the 5G sequence of the AFF3CT configuration files at generate()
+    assert isinstance(af.tools.Frozenbits_generator_5G(32, 64), af.tools.Frozenbits_generator_file)
+
+
+def test_from_cli_not_strict():
+    cmd = "-C POLAR -K 32 -N 64 --crc-poly 8-DVB-S2 --dec-type SCL -L 4 --chn-type AWGN"
+    with pytest.raises(ValueError, match="Unknown argument"):
+        af.factory.CRC.from_cli(cmd)
+    crc = af.factory.CRC.from_cli(cmd, strict=False)
+    assert crc.type == "8-DVB-S2"
+    dec = af.factory.Decoder_polar.from_cli(cmd, strict=False)
+    assert (dec.type, dec.L) == ("SCL", 4)

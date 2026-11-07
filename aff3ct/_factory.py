@@ -59,11 +59,15 @@ def _repr(self: Factory) -> str:
     return f"{type(self).__name__}({', '.join(f'{k}={v!r}' for k, v in _parameters(self).items())})"
 
 
-def _from_cli(self: Factory, args: str | Iterable[str]) -> Factory:
-    """Set parameters from AFF3CT command-line arguments (``"--crc-type 32-GZIP"`` or a list); return the factory."""
+def _from_cli(self: Factory, args: str | Iterable[str], strict: bool = True) -> Factory:
+    """Set parameters from AFF3CT command-line arguments (``"--crc-type 32-GZIP"`` or a list); return the factory.
+
+    With ``strict=False``, the arguments of other factories are ignored: a whole AFF3CT command line can be given
+    (``af.factory.Codec_polar.from_cli(cmd, strict=False)``, ``af.factory.CRC.from_cli(cmd, strict=False)``...).
+    """
     if isinstance(args, str):
         args = shlex.split(args)
-    _cpp_from_cli(self, list(args))
+    _cpp_from_cli(self, list(args), strict)
     return self
 
 
@@ -78,8 +82,8 @@ class _ClassOrInstanceMethod:
         if obj is None:
 
             @functools.wraps(self.func)
-            def create(args: str | Iterable[str], **params: Any) -> Factory:
-                return self.func(cls(**params), args)
+            def create(args: str | Iterable[str], strict: bool = True, **params: Any) -> Factory:
+                return self.func(cls(**params), args, strict)
 
             return create
         return functools.partial(self.func, obj)

@@ -1648,6 +1648,44 @@ def _tools__noise(noise_val: Any = None, bit_rate: Any = None, bps: Any = None, 
 
 
 
+def _tools__polar_code(N_cw: int, *, kernel_matrix: list[numpy.ndarray] | None = None, code_path: str | None = None) -> Any:
+    """Build tools::Polar_code with the AFF3CT factory ``Polar_code`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Polar_code(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Polar_code().parameters``).
+
+    Args:
+        N_cw (int): size (factory parameter).
+        kernel_matrix (list[numpy.ndarray]): factory parameter (``std::vector<std::vector<bool>>``).
+        code_path (str): factory parameter (``std::string``).
+
+    Returns:
+        tools::Polar_code*: the built object (owned by Python).
+    """
+    return _make("Polar_code", "build", {"N_cw": N_cw, "kernel_matrix": kernel_matrix, "code_path": code_path}, {}, {})
+
+
+
+def _tools__pretransform_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
+    """Build tools::Pretransform_generator with the AFF3CT factory ``Pretransform_generator`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Pretransform_generator(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Pretransform_generator().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        type (str): factory parameter (``std::string``).
+        path_fb (str): factory parameter (``std::string``).
+        path_pb (str): factory parameter (``std::string``).
+        dump_channels_path (str): factory parameter (``std::string``).
+        noise (float): factory parameter (``float``).
+
+    Returns:
+        tools::Pretransform_generator*: the built object (owned by Python).
+    """
+    return _make("Pretransform_generator", "build", {"K": K, "N_cw": N_cw, "type": type, "path_fb": path_fb, "path_pb": path_pb, "dump_channels_path": dump_channels_path, "noise": noise}, {}, {})
+
+
+
 def _pct__puncturer(K: int, N: int, N_cw: int, *, type: str | None = None, B: Any = None, Q: Any = None) -> Any:
     """Build module::Puncturer<B, Q> with the AFF3CT factory ``Puncturer`` (builder ``build``).
 
@@ -1847,7 +1885,7 @@ FUNCTIONS = {
     "qnt": {"quantizer": _qnt__quantizer},
     "snk": {"sink": _snk__sink},
     "src": {"source": _src__source},
-    "tools": {"frozenbits_generator": _tools__frozenbits_generator, "frozenbits_generator_mk": _tools__frozenbits_generator_mk, "interleaver_core": _tools__interleaver_core, "noise": _tools__noise},
+    "tools": {"frozenbits_generator": _tools__frozenbits_generator, "frozenbits_generator_mk": _tools__frozenbits_generator_mk, "interleaver_core": _tools__interleaver_core, "noise": _tools__noise, "polar_code": _tools__polar_code, "pretransform_generator": _tools__pretransform_generator},
 }
 
 
@@ -1890,7 +1928,5 @@ CODECS = {'Codec_BCH': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': '
 SKIPPED = [
     "Flip_and_check.build -> tools::Flip_and_check<B, Q>*",
     "Flip_and_check_DB.build -> tools::Flip_and_check_DB<B, Q>*",
-    "Polar_code.build -> tools::Polar_code*",
-    "Pretransform_generator.build -> tools::Pretransform_generator*",
     "Scaling_factor.build -> tools::Scaling_factor<B, Q>*",
 ]
