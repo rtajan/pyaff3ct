@@ -55,3 +55,35 @@ def test_installed_stubs():
     for stub in ("py.typed", "__init__.pyi", "codec.pyi", "_ext/__init__.pyi", "_ext/factory.pyi"):
         assert (root / stub).exists(), stub
     assert "def polar(" in (root / "codec.pyi").read_text()
+
+
+def test_return_annotations_of_the_module_functions():
+    """The module functions are annotated with the class (or class template) of the module they return."""
+    import importlib
+
+    from aff3ct._generated.functions import FUNCTIONS
+
+    def resolve(path):
+        parts = path.split(".")
+        for i in range(len(parts), 0, -1):
+            try:
+                obj = importlib.import_module(".".join(parts[:i]))
+            except ImportError:
+                continue
+            for p in parts[i:]:
+                obj = getattr(obj, p)
+            return obj
+        raise ImportError(path)
+
+    n_typed = 0
+    for module, funcs in FUNCTIONS.items():
+        for name, func in funcs.items():
+            ann = func.__annotations__["return"]
+            if ann != "Any":
+                n_typed += 1
+                for path in ann.split(" | "):
+                    assert resolve(path) is not None, (module, name, path)
+    assert n_typed >= 50
+    fb = af.tools.Frozenbits_generator_RM(4, 8).generate()
+    assert af.dec.polar.__annotations__["return"] == "aff3ct.dec.Decoder_SIHO"
+    assert isinstance(af.dec.polar(4, 8, fb, type="SC", implem="NAIVE"), af.dec.Decoder_SIHO)
