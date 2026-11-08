@@ -484,6 +484,13 @@ inventaire mis à jour (`done`), docstrings présentes.
 - Polar MK / PAC / PT (`Polar_code`, `Pretransform_generator`), SCMA, CPM, optique (`Distributions`), `Channel_user*`,
   Monitors EXIT/MI et leurs reporters, Turbo product, variantes AVX/SSE, `Monitor_reduction` (multi-thread).
 
+Avancement :
+- ✅ **4A — polaires MK, PAC, PT** : codecs `af.codec.polar_mk / polar_pac / polar_pt` validés sur 8 références AFF3CT
+  rebâties depuis leur ligne de commande (SC, SCL, ASCL CRC32, systématique, Fano) ; fichiers `conf/cde` récupérés
+  par `scripts/fetch_aff3ct_data.sh` ; exemple `examples/polar_variants.py`, section du guide polaire.
+- 4B — SCMA, CPM ; 4C — canal optique, `Channel_user*` ; 4D — moniteurs EXIT / MI, `Monitor_reduction` ;
+  4E — modules restants (AZCW, coset, encodeur utilisateur, décodeurs genius, Viterbi liste, modules turbo produit).
+
 ### Phase 5 — Industrialisation (priorité **P3** inclus)
 - Docs mkdocs (API générée, guides, galerie d'exemples), stubs `.pyi`, wheels `cibuildwheel`, publication.
   - **Documentation (avancée, en anglais)** : MkDocs Material + mkdocstrings (`mkdocs.yml`, `docs/`, hors

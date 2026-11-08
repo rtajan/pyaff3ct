@@ -250,7 +250,8 @@ def test_ook_erasure_and_symmetric_channels_match_the_reference(channel):
 # ----------------------------------------------------------------------------------------------- from the command line
 CODECS_OF_CLI = {"POLAR": "Codec_polar", "CONV": "Codec_conv", "RSC": "Codec_RSC", "REP": "Codec_repetition",
                  "LDPC": "Codec_LDPC", "BCH": "Codec_BCH", "RS": "Codec_RS", "TURBO": "Codec_turbo", "RA": "Codec_RA",
-                 "RSC_DB": "Codec_RSC_DB", "TURBO_DB": "Codec_turbo_DB", "TPC": "Codec_turbo_product"}
+                 "RSC_DB": "Codec_RSC_DB", "TURBO_DB": "Codec_turbo_DB", "TPC": "Codec_turbo_product",
+                 "POLAR_MK": "Codec_polar_MK", "POLAR_PAC": "Codec_polar_PAC", "POLAR_PT": "Codec_polar_PT"}
 CONF_FILES = ("CCSDS_64_128.alist", "WIMAX_288_576.alist", "MACKAY_504_1008.alist", "PEG_Reg_1008x504.alist")
 
 
@@ -259,7 +260,7 @@ def reference_args(path: Path) -> list[str]:
     cmd = next(line for line in path.read_text().splitlines() if line.startswith("command="))[len("command="):]
     args = shlex.split(cmd)[1:]
     conf = REFS.parent / "conf"
-    return [str(conf / a[len("conf/"):]) if a.startswith("conf/") else a for a in args]
+    return [str(conf / a.split("conf/", 1)[1]) if a.startswith(("conf/", "./conf/")) else a for a in args]
 
 
 def option(args, *names, default=None):
@@ -417,6 +418,15 @@ def read_ref_ep(path: Path) -> dict[float, tuple[int, int, float]]:
         ("TURBO_PROD/AWGN/BPSK/BCH2/Turbo_prod_BCH_32_21_p5_i8.txt", [1.0, 1.25], 150),
         # algebraic BCH and RS
         ("BCH/AWGN/BPSK/ALGEBRAIC/BCH_N127_K120_algebraic_T1.txt", [5.0, 6.0], 150),
+        # multi-kernel polar codes (kernels and frozen bits from conf/cde), PAC and pre-transformed polar codes
+        ("POLAR_MK/AWGN/BPSK/SC/Polar_MK_N72_K36_SC_GA.txt", [2.0, 3.0], 150),
+        ("POLAR_MK/AWGN/BPSK/SCL/Polar_MK_N72_K36_SCL_L8_GA.txt", [2.0, 3.0], 150),
+        ("POLAR_MK/AWGN/BPSK/SC/Polar_MK_N768_K384_SC_GA_first.txt", [2.0, 2.5], 100),
+        ("POLAR_MK/AWGN/BPSK/SC/Polar_MK_N72_K36_SC_GA_ALT_SYS.txt", [2.0, 3.0], 150),
+        ("POLAR_MK/AWGN/BPSK/ASCL/Polar_MK_N2048_K1723_ASCL_L32_CRC32.txt", [3.0, 3.25], 100),
+        ("POLAR_PAC/AWGN/BPSK/SCL/PAC_N128_K64_0o33_L8.txt", [1.5, 2.0], 150),
+        ("POLAR_PAC/AWGN/BPSK/FANO/PAC_N128_K64_0o33_DELTA1_perr-snr2.35.txt", [1.0, 1.5], 100),
+        ("POLAR_PT/AWGN/BPSK/SCL/Polar_PT_N128_K64_L128.txt", [1.0, 1.5], 100),
     ],
 )
 def test_chains_from_the_reference_command_lines(ref, points, max_fe):

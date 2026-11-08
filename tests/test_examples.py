@@ -177,3 +177,14 @@ def test_seed_sequence_gives_each_thread_its_own_values():
     assert len(seeds) == 6 and len(set(seeds)) == 6 and seeds == af.tools.seed_sequence(seq, seed=1)
     bits, noise = draws()
     assert not (bits[1] == bits[0]).all() and not np.allclose(noise[1], noise[0])
+
+
+def test_polar_variants():
+    import polar_variants
+
+    if not polar_variants.available():
+        pytest.skip("configuration files of AFF3CT not fetched (scripts/fetch_aff3ct_data.sh)")
+    res = polar_variants.run(ebn0s=[1.0, 2.0], max_fe=50)
+    assert len(res) == 3
+    for name, (fer_1, fer_2) in res.items():
+        assert 0 < fer_2 < fer_1 < 0.5, (name, fer_1, fer_2)

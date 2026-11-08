@@ -56,3 +56,39 @@ modules (one per thread), made when it is created:
 
 The [BER/FER tutorial](../tutorial/bfer.md#the-snr-loop) shows the other way: keep the sequence and call
 `set_frozen_bits` on `seq.get_cloned_modules(enc)` and `seq.get_cloned_modules(dec)`.
+
+## Variants
+
+Script: `examples/polar_variants.py`. The kernels, frozen bits and pre-transforms come from the configuration files of
+AFF3CT (`lib/aff3ct/conf`, fetched by `scripts/fetch_aff3ct_data.sh`).
+
+### Multi-kernel polar codes
+
+The polar transform is a product of kernels of several sizes ($2 \times 2$, $3 \times 3$...), which gives code lengths
+that are not powers of 2. The kernels and their order are read from a code file (`pc_code_path`, the AFF3CT option
+`--enc-pc-path`):
+
+```python
+--8<-- "examples/polar_variants.py:mk"
+```
+
+### PAC codes
+
+Polarization-adjusted convolutional codes encode the information bits with a convolutional code before the polar
+transform (`enc_conv`, octal polynomial, `--enc-conv`); the decoder is a list (`SCL`) or a Fano (`FANO`) decoder:
+
+```python
+--8<-- "examples/polar_variants.py:pac"
+```
+
+### Pre-transformed polar codes
+
+A binary pre-transform matrix is applied before the polar transform, its frozen bits and matrix read from files
+(`ptg_*`, `--enc-pt-*`):
+
+```python
+--8<-- "examples/polar_variants.py:pt"
+```
+
+The three codecs are used as the other ones (`cdc.encoder`, `cdc.decoder_siho`); the test suite rebuilds 8 reference
+curves of these families from their AFF3CT command lines.
