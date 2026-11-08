@@ -93,5 +93,46 @@ def seed_sequence(sequence: Any, seed: int = 0) -> list[int]:
     return seeds
 
 
+def reset_decoders_on_check(sequence: Any) -> int:
+    """SISO decoders that keep their state across the iterations of a frame, reset after each checked frame.
+
+    In an iterative receiver (turbo demodulation, see ``docs/guides/iterative.md``), the SISO decoder is called once
+    per global iteration on the same frame. Some decoders carry information from one call to the next (the LDPC BP
+    decoders keep their messages and the previous extrinsic information): by default every call starts from a blank
+    state (``auto_reset``), and the iterations bring much less. As the AFF3CT simulator (``Simulation_BFER_ite``),
+    this function disables the automatic reset of the ``aff3ct.dec.Decoder_SISO`` modules and resets them when the
+    BFER monitor of their thread has checked a frame. Call it once, after the creation of the sequence.
+
+    The monitors then hold these callbacks, and AFF3CT does not clone a monitor with callbacks: to build another
+    sequence with the same modules, call ``mnt.clear_callbacks()`` first (or keep one sequence and change its inputs,
+    the noise for instance, between the executions).
+
+    Args:
+        sequence (streampu.Sequence): the sequence, after its creation; each thread must contain one
+            ``aff3ct.mnt.Monitor_BFER``.
+
+    Returns:
+        out (int): number of decoders configured (all the threads).
+
+    Examples:
+        >>> seq = spu.Sequence(mnt["check_errors::status"], n_threads=4)
+        >>> af.tools.seed_sequence(seq)
+        >>> af.tools.reset_decoders_on_check(seq)
+        4
+    """
+    from aff3ct import dec, mnt
+    n = 0
+    for modules in sequence.get_modules_per_threads():
+        monitors = [m for m in modules if isinstance(m, mnt.Monitor_BFER)]
+        decoders = [m for m in modules if isinstance(m, dec.Decoder_SISO)]
+        if decoders and len(monitors) != 1:
+            raise ValueError(f"one BFER monitor per thread expected, found {len(monitors)}")
+        for d in decoders:
+            d.set_auto_reset(False)
+            monitors[0].record_callback_check(d.reset)
+            n += 1
+    return n
+
+
 __all__ = sorted(export(_ext.tools, globals()) + export_functions(globals(), "tools")
-                 + ["hard", "seed_sequence", "sigma_from_ebn0"])
+                 + ["hard", "reset_decoders_on_check", "seed_sequence", "sigma_from_ebn0"])

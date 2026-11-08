@@ -492,7 +492,7 @@ Avancement :
   une référence turbo + SCMA, construites depuis leur ligne de commande. Comme le simulateur : `-F` (trames par
   exécution ; SCMA : une par utilisateur, imposé par le modem), canal `add_users` pour SCMA, tâche `filter` des
   modems CPM avant la démodulation. Codebooks `conf/mod/SCMA` ; exemple `examples/scma_cpm.py`, section du guide.
-  Les références itératives (`--sim-type BFERI`, LDPC + CPM) restent à couvrir (boucle démodulation-décodage).
+  Les références itératives (`--sim-type BFERI`, LDPC + CPM) sont couvertes en phase 5.
 - ✅ **4C — canal optique, canaux « user »** : `af.tools.Distributions` (densités lues d'un fichier, `Distribution`,
   `Distribution_mode`) : les builders du canal et du modem qui la prennent sont de nouveau liés (`af.chn.channel(N,
   dist, type="OPTICAL")`, `af.mdm.modem(N, None, dist, ...)`) ; 2 références LDPC sur canal optique (bruit ROP)
@@ -513,8 +513,8 @@ Avancement :
 **Clôture de la phase 4** : 52 références AFF3CT rebâties depuis leur ligne de commande (62 tests de référence au
 total), 249 tests. Restent hors
 périmètre : `Decoder_RS_genius`, inutilisable dans AFF3CT v4.7.2 (il ne redéfinit que l'ancien décodage dur sans statut ;
-test `xfail` strict qui signalera une correction amont), les simulations itératives `--sim-type BFERI` (boucle
-démodulation-décodage, LDPC + CPM) et `Monitor_reduction` (sa boucle statique est propre au simulateur ;
+test `xfail` strict qui signalera une correction amont), les simulations itératives `--sim-type BFERI` (faites en
+phase 5) et `Monitor_reduction` (sa boucle statique est propre au simulateur ;
 `af.mnt.reduce` en tient lieu).
 
 ### Phase 5 — Industrialisation (priorité **P3** inclus)
@@ -537,6 +537,12 @@ démodulation-décodage, LDPC + CPM) et `Monitor_reduction` (sa boucle statique 
   d'être écrit sur `std::cout`, invisible des notebooks), `Dumper` (trames en erreur) ; guide « Debugging ». Non liés :
   `Dumper_reduction` (prend la propriété de `unique_ptr`), générateurs GSL/MKL (AFF3CT compilé sans ces
   bibliothèques).
+- Simulations itératives : ✅ démodulation turbo (`BFERI`) : boucle de séquence avec `Switcher` et `Iterator` de
+  StreamPU, liée en style Python (`spu.Task.call_auto_exec = False` le temps des liaisons) ;
+  `af.tools.reset_decoders_on_check(seq)` (décodeurs SISO sans remise à zéro automatique, remis à zéro après chaque
+  trame vérifiée par le moniteur du thread, comme `Simulation_BFER_ite`) ; 2 références LDPC (4224, 2112) + GMSK
+  rebâties depuis leur ligne de commande (approche coset, entrelaceur `USER`) ; exemple
+  `examples/turbo_demodulation.py` (vrai encodeur, sans coset), guide « Iterative receivers ».
 
 ## 7. Suivi des évolutions d'AFF3CT
 

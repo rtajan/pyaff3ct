@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # AFF3CT data used by the tests and the documentation: the BER/FER reference curves (refs submodule, 5 MB) and, from
-# the configuration files (a large repository), only the LDPC matrices used by the tests and the examples.
+# the configuration files (a large repository), only the files (matrices, codebooks...) used by the tests and examples.
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
@@ -12,5 +12,6 @@ git clone -q --filter=blob:none --no-checkout https://github.com/aff3ct/configur
 git -C lib/aff3ct/conf sparse-checkout set --no-cone /dec/LDPC/CCSDS_64_128.alist /dec/LDPC/WIMAX_288_576.alist \
   /dec/LDPC/MACKAY_504_1008.alist /dec/LDPC/PEG_Reg_1008x504.alist \
   /cde/awgn_polar_codes/MK/ /cde/awgn_polar_codes/PT/7/ /mod/SCMA/ \
-  /chn/optical_channel.dist /dec/LDPC/PureIRA_R_4_5_N16k_H.alist /dec/LDPC/PureIRA_R_9_10_N16k_H.alist
+  /chn/optical_channel.dist /dec/LDPC/PureIRA_R_4_5_N16k_H.alist /dec/LDPC/PureIRA_R_9_10_N16k_H.alist \
+  /dec/LDPC/GSM_2112_4224.alist /itl/GSM-LDPC_4224.itl
 git -C lib/aff3ct/conf checkout -q "$CONF_SHA"

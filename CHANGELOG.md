@@ -26,8 +26,11 @@ version of a build comes from the git tags (`setuptools_scm`): between two tags,
 - Debug tools: `af.tools.Histogram` (also the histogram of `Monitor_MI`, `mnt.mutinfo_hist`), `af.tools.Frame_trace`
   (text view of frames, returned as a string), `af.tools.Dumper` (frames in error recorded and written to files);
   example `examples/debugging.py`, guide *Debugging*.
-- 19 more AFF3CT references rebuilt from their command lines (52 in all); `scripts/fetch_aff3ct_data.sh` fetches
-  their configuration files.
+- Iterative receivers (turbo demodulation, the `BFERI` simulations of AFF3CT): loop of a sequence with the
+  `Switcher` and `Iterator` of StreamPU, `af.tools.reset_decoders_on_check(seq)` (the SISO decoders keep their
+  state across the iterations of a frame); example `examples/turbo_demodulation.py`, guide *Iterative receivers*.
+- 21 more AFF3CT references rebuilt from their command lines (54 in all, 2 of them iterative);
+  `scripts/fetch_aff3ct_data.sh` fetches their configuration files.
 
 ### Changed
 
