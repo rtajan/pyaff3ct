@@ -540,3 +540,99 @@ def test_erasure_and_symmetric_channels_from_the_reference_command_lines(ref, po
     ref_pts = read_ref_ep(REFS / ref)
     measured = run_reference(REFS / ref, points, max_fe=150)
     check(measured, {round(p, 4): v for p, v in ref_pts.items()}, points)
+
+
+# --------------------------------------------------------------------------------------- iterative simulations (BFERI)
+def run_bferi_reference(path: Path, points, max_fe, n_threads=2):
+    """Turbo demodulation of a BFERI reference, built from its command line as Simulation_BFER_ite.cpp: bit
+    interleaver, modem (filter + demodulate, then tdemodulate in the loop), LLR interleavers sharing the interleaver
+    core, coset approach (--sim-coset: COSET encoder, cosets around the decoder), loop of --sim-ite global iterations
+    (Switcher + Iterator), decoder state kept between the iterations of a frame. Returns [(Eb/N0, BER, FER, frames)]."""
+    args = reference_args(path)
+    for a in args:
+        if "/conf/" in a and not Path(a).exists():
+            pytest.skip(f"{a} not checked out (lib/aff3ct/conf)")
+    code = option(args, "-C", "--sim-cde-type")
+    B, R, Q = PRECISIONS[option(args, "-p", "--sim-prec", default="32")]
+    assert Q == R, "fixed point (quantizer in the loop) not covered here"
+    n_ite = int(option(args, "-I", "--sim-ite", default="15"))
+    coset = "--sim-coset" in args
+    fac = getattr(af.factory, CODECS_OF_CLI[code])()
+    fac.from_cli(args, strict=False)
+    if coset:  # as BFER_ite.cpp (launcher)
+        fac.enc.type = "COSET"
+    cdc = fac.build(B=B, Q=Q)
+    enc, dcs, dch = cdc.encoder, cdc.decoder_siso, cdc.decoder_siho
+    K, N = enc.K, enc.N
+    src_fac = af.factory.Source.from_cli(args, strict=False)
+    src_fac.K = K
+    src = src_fac.build(B=B)
+    itl_fac = af.factory.Interleaver.from_cli(args, strict=False)
+    itl_fac.core.size = N
+    core = itl_fac.core.build()
+    itb, itl1, itl2 = af.itl.interleaver(core, D=B), af.itl.interleaver(core, D=Q), af.itl.interleaver(core, D=Q)
+    mdm_fac = af.factory.Modem.from_cli(args, strict=False)
+    mdm_fac.N = N
+    mdm_probe = mdm_fac.clone()
+    mdm_probe._complete()
+    mdm1, mdm2 = mdm_fac.build(B=B, R=R, Q=Q), mdm_fac.build(B=B, R=R, Q=Q)
+    chn_fac = af.factory.Channel.from_cli(args, strict=False)
+    chn_fac.N, chn_fac.seed, chn_fac.complex = mdm1.N_mod, 1, mdm_probe.complex
+    chn = chn_fac.build(R=R)
+    csr = [af.cst.coset_real(N, type="STD", B=B, R=Q) for _ in range(3)] if coset else None
+    csb = af.cst.coset_bit(K, type="STD", B1=B, B2=B) if coset else None
+    mnt = af.mnt.Monitor_BFER_AR[B](K, max_fe)
+    swi, ite = spu.Switcher(2, N, Q), spu.Iterator(n_ite)
+    cp = spu.array([1.0], dtype=R)
+
+    spu.Task.call_auto_exec = False
+    try:
+        u = src.generate()[0]
+        x = enc.encode(u)
+        y = chn.add_noise(cp, mdm1.modulate(itb.interleave(x)))
+        if mdm1.is_filter():
+            y = mdm1.filter(cp, y)
+        llr = itl1.deinterleave(mdm1.demodulate(cp, y))
+        ite.iterate.bind(swi.select)
+        loop, end = swi.commute(swi["select::out_data"], ite.iterate())
+        if coset:
+            loop = csr[0].apply(x, loop)
+        ext = dcs.decode_siso(loop)[1]
+        if coset:
+            ext = csr[1].apply(x, ext)
+        ext = itl2.deinterleave(mdm2.tdemodulate(cp, y, itl2.interleave(ext)))
+        swi.select(in_data0=ext, in_data1=llr)
+        if coset:
+            end = csr[2].apply(x, end)
+        v = dch.decode_siho(end)[1]
+        if coset:
+            v = csb.apply(u, v)
+        mnt.check_errors(u, v)
+    finally:
+        spu.Task.call_auto_exec = True
+
+    out = []
+    upf = mdm_probe.cpm_upf if mdm_probe.type == "CPM" else 1
+    # one sequence for all the points (the noise is an input): the monitors hold the callbacks of the decoders
+    seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
+    af.tools.seed_sequence(seq)
+    assert af.tools.reset_decoders_on_check(seq) == n_threads
+    for p in points:
+        noise = af.tools.sigma_from_ebn0(p, K / N, bps=mdm_probe.bps, upsample_factor=upf, R=R)
+        cp.numpy[...] = noise.sigma
+        mnt.reset()
+        seq.exec()
+        out.append((p, mnt.ber, mnt.fer, mnt.n_analyzed_frames))
+    return out
+
+
+@pytest.mark.parametrize(
+    "ref, points, max_fe",
+    [
+        # LDPC (4224, 2112) over GMSK (CPM, GSM standard), 10 global iterations of 1 BP iteration, coset approach
+        ("LDPC/AWGN/CPM/BP_HORIZONTAL_LAYERED/NMS/LDPC_N4224_K2112_hlayered_NMS_I10.txt", [1.5, 1.75], 100),
+        ("LDPC/AWGN/CPM/BP_FLOODING/SPA/LDPC_N4224_K2112_flooding_SPA_I10.txt", [1.5, 1.75], 100),
+    ],
+)
+def test_iterative_chains_from_the_reference_command_lines(ref, points, max_fe):
+    check(run_bferi_reference(REFS / ref, points, max_fe), read_ref(REFS / ref), points)

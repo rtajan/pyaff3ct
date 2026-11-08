@@ -314,10 +314,10 @@
 | `Gaussian_noise_generator_MKL` | `Tools/Algo/Draw_generator/Gaussian_noise_generator/MKL/Gaussian_noise_generator_MKL.hpp` | `typename R = float` | Gaussian_noise_generator | wrap | P3 | `aff3ct.tools.gen.Gaussian_noise_generator_MKL` | todo |
 | `User_pdf_noise_generator_GSL` | `Tools/Algo/Draw_generator/User_pdf_noise_generator/GSL/User_pdf_noise_generator_GSL.hpp` | `typename R = float` | User_pdf_noise_generator | wrap | P3 | `aff3ct.tools.gen.User_pdf_noise_generator_GSL` | todo |
 | `User_pdf_noise_generator_MKL` | `Tools/Algo/Draw_generator/User_pdf_noise_generator/MKL/User_pdf_noise_generator_MKL.hpp` | `typename R = float` | User_pdf_noise_generator | wrap | P3 | `aff3ct.tools.gen.User_pdf_noise_generator_MKL` | todo |
-| `Histogram` | `Tools/Algo/Histogram.hpp` | `typename R` | spu::tools::Interface_reset | wrap | P3 | `aff3ct.tools.Histogram` | todo |
-| `Dumper` | `Tools/Display/Dumper/Dumper.hpp` | `` |  | wrap | P3 | `aff3ct.tools.Dumper` | todo |
+| `Histogram` | `Tools/Algo/Histogram.hpp` | `typename R` | spu::tools::Interface_reset | wrap | P3 | `aff3ct.tools.Histogram` | done |
+| `Dumper` | `Tools/Display/Dumper/Dumper.hpp` | `` |  | wrap | P3 | `aff3ct.tools.Dumper` | done |
 | `Dumper_reduction` | `Tools/Display/Dumper/Dumper_reduction.hpp` | `` | Dumper | wrap | P3 | `aff3ct.tools.Dumper_reduction` | todo |
-| `Frame_trace` | `Tools/Display/Frame_trace/Frame_trace.hpp` | `typename B = int` |  | wrap | P3 | `aff3ct.tools.Frame_trace` | todo |
+| `Frame_trace` | `Tools/Display/Frame_trace/Frame_trace.hpp` | `typename B = int` |  | wrap | P3 | `aff3ct.tools.Frame_trace` | done |
 
 ## Factories
 

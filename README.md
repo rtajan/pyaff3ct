@@ -120,6 +120,7 @@ pytest tests -n 4                                  # not `python -m pytest` from
 PYTHON=path/to/python scripts/dev_build.sh         # incremental development build (build/dev, linked in aff3ct/)
 ```
 
+- [`CHANGELOG.md`](CHANGELOG.md): changes of each version (tags `vX.Y.Z`; the wheels are not on PyPI yet);
 - [`Plan.md`](Plan.md): architecture, wrapping rules and roadmap (phases 0 to 3 done: every code family, generic
   modems, fixed point; next: advanced modules, wheels);
 - [`docs/design/`](docs/design): class graph of AFF3CT and per-class wrapping status, regenerated after an AFF3CT

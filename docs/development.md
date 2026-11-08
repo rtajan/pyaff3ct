@@ -36,3 +36,21 @@ pip install ".[docs]" --no-build-isolation
 python scripts/doc_figures.py --threads 4
 mkdocs serve
 ```
+
+## Versions and releases
+
+The version comes from the git tags (`setuptools_scm`): a build at the tag `v0.2.0` is `0.2.0`, a build 3 commits
+later `0.2.0.post3+g<hash>`. Changes are listed in `CHANGELOG.md`, section *Unreleased*, in each merge request.
+
+To release a version:
+
+1. in `CHANGELOG.md`, rename *Unreleased* to the version and its date, and open a new empty *Unreleased* section;
+2. merge, then tag the merge commit of `main` and push the tag:
+
+   ```bash
+   git checkout main && git pull
+   git tag -a v0.2.0 -m "pyAFF3CT 0.2.0"
+   git push origin v0.2.0
+   ```
+
+The wheels are not published on PyPI yet.

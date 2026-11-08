@@ -212,3 +212,17 @@ def test_optical():
     rops = [float(r) for r in af.tools.Distributions(str(optical.PDF)).noise_range[::10]]
     ber = optical.uncoded_ber(rops, n_frames=50)
     assert 0.03 < ber[0] < 0.1 and all(b2 < b1 for b1, b2 in zip(ber, ber[1:])), ber  # decreases with the ROP
+
+
+def test_turbo_demodulation():
+    import math
+
+    import turbo_demodulation as td
+
+    if not td.H_PATH.exists() or not td.ITL_PATH.exists():
+        pytest.skip("GSM LDPC matrix / interleaver of AFF3CT not fetched (scripts/fetch_aff3ct_data.sh)")
+    # LDPC/AWGN/CPM/BP_HORIZONTAL_LAYERED/NMS/LDPC_N4224_K2112_hlayered_NMS_I10.txt at 1.75 dB: FER 0.294
+    mnt = td.simulate(1.75, n_ite=10, max_fe=60)
+    fer, ref = mnt.fer, 0.294
+    assert abs(fer - ref) <= 4 * math.sqrt(ref * (1 - ref) / mnt.n_analyzed_frames) + 0.02, fer
+    assert td.simulate(1.75, n_ite=1, max_fe=20).fer > 0.9  # the iterations make the difference

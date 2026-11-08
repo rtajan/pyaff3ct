@@ -21,6 +21,8 @@ nav:
       - Modulations and channels: guides/modems.md
       - Fixed-point decoding: guides/fixed_point.md
       - Monitors: guides/monitors.md
+      - Iterative receivers: guides/iterative.md
+      - Debugging: guides/debugging.md
   - Concepts: concepts.md
   - API reference:
       - reference/index.md
