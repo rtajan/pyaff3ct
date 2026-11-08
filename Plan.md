@@ -488,7 +488,12 @@ Avancement :
 - ✅ **4A — polaires MK, PAC, PT** : codecs `af.codec.polar_mk / polar_pac / polar_pt` validés sur 8 références AFF3CT
   rebâties depuis leur ligne de commande (SC, SCL, ASCL CRC32, systématique, Fano) ; fichiers `conf/cde` récupérés
   par `scripts/fetch_aff3ct_data.sh` ; exemple `examples/polar_variants.py`, section du guide polaire.
-- 4B — SCMA, CPM ; 4C — canal optique, `Channel_user*` ; 4D — moniteurs EXIT / MI, `Monitor_reduction` ;
+- ✅ **4B — SCMA, CPM** : modems validés sur 5 références non codées (SCMA AWGN et Rayleigh, CPM `k/p` et GSM) et
+  une référence turbo + SCMA, construites depuis leur ligne de commande. Comme le simulateur : `-F` (trames par
+  exécution ; SCMA : une par utilisateur, imposé par le modem), canal `add_users` pour SCMA, tâche `filter` des
+  modems CPM avant la démodulation. Codebooks `conf/mod/SCMA` ; exemple `examples/scma_cpm.py`, section du guide.
+  Les références itératives (`--sim-type BFERI`, LDPC + CPM) restent à couvrir (boucle démodulation-décodage).
+- 4C — canal optique, `Channel_user*` ; 4D — moniteurs EXIT / MI, `Monitor_reduction` ;
   4E — modules restants (AZCW, coset, encodeur utilisateur, décodeurs genius, Viterbi liste, modules turbo produit).
 
 ### Phase 5 — Industrialisation (priorité **P3** inclus)

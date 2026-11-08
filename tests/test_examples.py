@@ -188,3 +188,15 @@ def test_polar_variants():
     assert len(res) == 3
     for name, (fer_1, fer_2) in res.items():
         assert 0 < fer_2 < fer_1 < 0.5, (name, fer_1, fer_2)
+
+
+def test_scma_cpm():
+    import math
+
+    import scma_cpm
+
+    if not scma_cpm.CODEBOOK.exists():
+        pytest.skip("SCMA codebooks of AFF3CT not fetched (scripts/fetch_aff3ct_data.sh)")
+    for ber, ref, n_bits in [(scma_cpm.scma_ber(8.0, n_frames=3000), 0.00651, 3000 * 128),  # UNCODED/AWGN/SCMA CS1
+                             (scma_cpm.cpm_ber(3.0), 0.0457, 100 * 4003)]:  # UNCODED/AWGN/CPM GSM
+        assert abs(ber - ref) <= 5 * math.sqrt(ref * (1 - ref) / n_bits) + 0.05 * ref, (ber, ref)

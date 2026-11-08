@@ -191,23 +191,32 @@ def check_ber(measured, ref, K):
         assert abs(ber - r_ber) <= 5 * sd + 1e-4, (noise, ber, r_ber, sd)
 
 
-def run_uncoded(K, mdm, chn, noises, to_cp, n_frames, with_gains=False, event_probability=False):
-    """Uncoded chain src -> modulate -> channel -> demodulate -> hard decision -> monitor; [(noise, BER, FRA)]."""
+def run_uncoded(K, mdm, chn, noises, to_cp, n_frames, with_gains=False, event_probability=False, inter_frame=1):
+    """Uncoded chain src -> modulate -> channel -> demodulate -> hard decision -> monitor; [(noise, BER, FRA)].
+    inter_frame: frames per execution of the tasks (-F of the simulator; SCMA: one frame per user)."""
     src = af.src.source(K, type="RAND", seed=0)
     # as the simulator: with an event probability noise (BEC, BSC), the erased bits count as errors
     mnt = af.mnt.Monitor_BFER_AR(K, max_fe=10**9, max_n_frames=n_frames, count_unknown_values=event_probability)
-    cp = spu.array([1.0], dtype=spu.float32)
+    cdc = af.codec.uncoded(K, K)  # as the simulator for UNCODED: hard decision
+    dec = cdc.decoder_siho
+    inter_frame = max(inter_frame, mdm.n_frames)  # SCMA: one frame per user, imposed by the modem
+    for m in (src, mdm, chn, dec, mnt):  # before the bindings: the sockets are sized for n_frames frames
+        if m.n_frames != inter_frame:
+            m.n_frames = inter_frame
+    cp = spu.array([1.0] * inter_frame, dtype=spu.float32)  # one noise value per frame
     u = src.generate()[0]
     if with_gains:
         chn.add_noise_wg(cp, mdm.modulate(u))
         llr = mdm.demodulate_wg(cp, chn["add_noise_wg::H_N"], chn["add_noise_wg::Y_N"])
     else:
-        llr = mdm.demodulate(cp, chn.add_noise(cp, mdm.modulate(u)))
-    cdc = af.codec.uncoded(K, K)  # as the simulator for UNCODED: hard decision
-    dec = cdc.decoder_siho
+        y = chn.add_noise(cp, mdm.modulate(u))
+        if mdm.is_filter():  # CPM: matched filtering of the received signal before the demodulation (as BFER_std)
+            y = mdm.filter(cp, y)
+        llr = mdm.demodulate(cp, y)
     dec.decode_siho(llr)
     mnt.check_errors(u, dec["decode_siho::V_K"])
     seq = spu.Sequence(mnt["check_errors::status"], n_threads=4)
+    af.tools.seed_sequence(seq)
     out = []
     for n in noises:
         cp.numpy[...] = to_cp(n)
@@ -245,6 +254,47 @@ def test_ook_erasure_and_symmetric_channels_match_the_reference(channel):
     chn = af.chn.channel(K, type=channel, seed=1)
     run = run_uncoded(K, mdm, chn, [0.1, 0.3], lambda p: p, 2000, event_probability=True)
     check_ber(run, ref, K)
+
+
+def run_uncoded_reference(path: Path, points, n_frames=200):
+    """Uncoded BER of a reference, modem and channel built from its command line (SCMA, CPM...)."""
+    args = reference_args(path)
+    for a in args:
+        if "/conf/" in a and not Path(a).exists():
+            pytest.skip(f"{a} not checked out (lib/aff3ct/conf)")
+    K = int(option(args, "-K", "--src-info-bits"))
+    chn_type = option(args, "--chn-type", default="AWGN")
+    mdm_fac = af.factory.Modem.from_cli(args, strict=False)
+    mdm_fac.N, mdm_fac.channel_type = K, chn_type
+    probe = mdm_fac.clone()
+    probe._complete()
+    mdm = mdm_fac.build(mdm_fac.build_constellation()) if probe.type in ("PSK", "PAM", "QAM", "USER") else mdm_fac.build()
+    chn_fac = af.factory.Channel.from_cli(args, strict=False)
+    chn_fac.N, chn_fac.seed, chn_fac.complex = mdm.N_mod, 1, probe.complex
+    chn_fac.add_users = probe.type == "SCMA"  # as the simulator: the channel sums the signals of the users
+    chn = chn_fac.build()
+    upf = probe.cpm_upf if probe.type == "CPM" else 1
+    to_cp = lambda e: af.tools.sigma_from_ebn0(e, 1.0, bps=probe.bps, upsample_factor=upf).sigma  # noqa: E731
+    F = int(option(args, "-F", "--sim-inter-lvl", default="1"))
+    return run_uncoded(K, mdm, chn, points, to_cp, n_frames, with_gains=chn_type.startswith("RAYLEIGH"),
+                       inter_frame=F), K
+
+
+@pytest.mark.parametrize(
+    "ref, points, n_frames",
+    [
+        # SCMA: 6 users (-F 6) sharing 4 resources, codebooks from conf/mod/SCMA
+        ("UNCODED/AWGN/SCMA/Uncoded_K128_SCMA_bps3_CS1.txt", [8.0, 10.0], 3000),
+        ("UNCODED/RAYLEIGH/SCMA/Uncoded_K1200_SCMA_bps3_CS1.txt", [18.0, 22.0], 1200),
+        # CPM: modulation index k/p, memory L, rectangular pulse, 8 samples per symbol; GSM (GMSK)
+        ("UNCODED/AWGN/CPM/Uncoded_K4500_CPM_k1_p4_L3_bps1_REC.txt", [4.0, 8.0], 100),
+        ("UNCODED/AWGN/CPM/Uncoded_K4500_CPM_k3_p8_L3_bps2_REC.txt", [0.99, 4.99], 100),
+        ("UNCODED/AWGN/CPM/Uncoded_K4003_CPM_GSM.txt", [3.0, 6.0], 100),
+    ],
+)
+def test_uncoded_modems_from_the_reference_command_lines(ref, points, n_frames):
+    run, K = run_uncoded_reference(REFS / ref, points, n_frames)
+    check_ber(run, read_ref_cols(REFS / ref, 1, 2, 5), K)
 
 
 # ----------------------------------------------------------------------------------------------- from the command line
@@ -328,6 +378,7 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
         mdm = mdm_fac.build(B=B, R=R, Q=R)
     chn_fac = af.factory.Channel.from_cli(args, strict=False)
     chn_fac.N, chn_fac.seed, chn_fac.complex = mdm.N_mod, 1, mdm_probe.complex  # as the simulator
+    chn_fac.add_users = mdm_probe.type == "SCMA"  # the channel sums the signals of the users
     chn = chn_fac.build(R=R)
     qnt = None
     if Q in (spu.int8, spu.int16):  # fixed point: LLRs quantized after the demodulator, as BFER_std.cpp
@@ -338,12 +389,20 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
         qnt = qnt_fac.build(R=R, Q=Q)
     mnt = af.mnt.Monitor_BFER_AR[B](K_info, max_fe, count_unknown_values=ep)
 
-    cp = spu.array([1.0], dtype=R)
+    # frames per execution of the tasks (-F; SCMA: one per user, imposed by the modem), before the bindings
+    F = max(int(option(args, "-F", "--sim-inter-lvl", default="1")), mdm.n_frames)
+    for m in (src, crc, enc, pct, mdm, chn, qnt, dec, mnt):
+        if m is not None and m.n_frames != F:
+            m.n_frames = F
+    cp = spu.array([1.0] * F, dtype=R)  # one noise value per frame
     u = src.generate()[0]
     x = enc.encode(crc.build(u) if crc is not None else u)
     if pct is not None:
         x = pct.puncture(x)
-    y = mdm.demodulate(cp, chn.add_noise(cp, mdm.modulate(x)))
+    y = chn.add_noise(cp, mdm.modulate(x))
+    if mdm.is_filter():  # CPM: matched filtering before the demodulation, as BFER_std
+        y = mdm.filter(cp, y)
+    y = mdm.demodulate(cp, y)
     if qnt is not None:
         y = qnt.process(y)
     if pct is not None:
@@ -427,6 +486,8 @@ def read_ref_ep(path: Path) -> dict[float, tuple[int, int, float]]:
         ("POLAR_PAC/AWGN/BPSK/SCL/PAC_N128_K64_0o33_L8.txt", [1.5, 2.0], 150),
         ("POLAR_PAC/AWGN/BPSK/FANO/PAC_N128_K64_0o33_DELTA1_perr-snr2.35.txt", [1.0, 1.5], 100),
         ("POLAR_PT/AWGN/BPSK/SCL/Polar_PT_N128_K64_L128.txt", [1.0, 1.5], 100),
+        # turbo code over SCMA (6 users, -F 6)
+        ("TURBO/AWGN/SCMA/RSC_RSC/BCJR/LTE/Turbo_N3072_K1024_BCJR_i6_PSI2_LTE.txt", [2.5, 2.75], 100),
     ],
 )
 def test_chains_from_the_reference_command_lines(ref, points, max_fe):

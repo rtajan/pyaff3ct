@@ -61,6 +61,30 @@ outputs the gains, that the demodulator uses through `demodulate_wg`:
 --8<-- "examples/modulations.py:uncoded"
 ```
 
+## SCMA and CPM
+
+Script: `examples/scma_cpm.py`; the test suite compares both with the AFF3CT references.
+
+### SCMA
+
+Sparse code multiple access multiplexes 6 users on 4 resources: the modem works on the frames of the 6 users at
+once (`mdm.n_frames == 6`), every module of the chain must do the same, and the channel sums the signals of the users
+(`add_users=True`). The codebooks are read from the AFF3CT configuration files (`conf/mod/SCMA`):
+
+```python
+--8<-- "examples/scma_cpm.py:scma"
+```
+
+### CPM
+
+Continuous phase modulations (`cpm_k / cpm_p` modulation index, memory `cpm_L`, pulse `cpm_wave_shape`, or a standard
+such as `cpm_std="GSM"`) oversample the signal (`cpm_upf` samples per symbol, to give to the Eb/N0 conversion) and
+filter the received signal before the demodulation:
+
+```python
+--8<-- "examples/scma_cpm.py:cpm"
+```
+
 ## Uncoded bit error rates
 
 Measured by `uncoded_ber` (markers) and compared with the theory over AWGN (dotted lines):

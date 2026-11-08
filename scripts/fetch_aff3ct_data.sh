@@ -11,5 +11,5 @@ rm -rf lib/aff3ct/conf
 git clone -q --filter=blob:none --no-checkout https://github.com/aff3ct/configuration_files.git lib/aff3ct/conf
 git -C lib/aff3ct/conf sparse-checkout set --no-cone /dec/LDPC/CCSDS_64_128.alist /dec/LDPC/WIMAX_288_576.alist \
   /dec/LDPC/MACKAY_504_1008.alist /dec/LDPC/PEG_Reg_1008x504.alist \
-  /cde/awgn_polar_codes/MK/ /cde/awgn_polar_codes/PT/7/
+  /cde/awgn_polar_codes/MK/ /cde/awgn_polar_codes/PT/7/ /mod/SCMA/
 git -C lib/aff3ct/conf checkout -q "$CONF_SHA"
