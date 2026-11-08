@@ -8,3 +8,4 @@ aff3ct/_version.py
 .pytest_cache/
 .venv/
 site/
+docs/assets/figures/

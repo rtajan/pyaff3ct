@@ -2,7 +2,7 @@
 """AFF3CT tools (noise...).
 
 Class templates are grouped by dtype combination (``isinstance(x, tools.<Class>)`` whatever the dtypes,
-``tools.<Class>[streampu.int32]`` for one instance); see :class:`aff3ct._dispatch.Template`.
+``tools.<Class>[streampu.int32]`` for one instance); see ``aff3ct._dispatch.Template``.
 """
 
 from typing import Any

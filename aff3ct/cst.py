@@ -2,7 +2,7 @@
 """Cosets (all-zero codeword simulations).
 
 Class templates are grouped by dtype combination (``isinstance(x, cst.<Class>)`` whatever the dtypes,
-``cst.<Class>[streampu.int32]`` for one instance); see :class:`aff3ct._dispatch.Template`.
+``cst.<Class>[streampu.int32]`` for one instance); see ``aff3ct._dispatch.Template``.
 """
 
 from aff3ct import _ext

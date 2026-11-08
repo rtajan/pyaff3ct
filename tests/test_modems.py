@@ -77,3 +77,23 @@ def test_modem_from_symbols(type_):
     assert "symbols" in __import__("inspect").signature(af.mdm.modem).parameters
     with pytest.raises(TypeError, match="either"):
         af.mdm.modem(K, af.tools.Constellation_PSK(3), symbols=psk8)
+
+
+@pytest.mark.parametrize("bit_order, weights", [("LSB", [1, 2, 4]), ("MSB", [4, 2, 1])])
+def test_modem_bit_order(bit_order, weights):
+    K = 99
+    psk8 = np.exp(2j * np.pi * np.arange(8) / 8)
+    mdm = af.mdm.modem(K, symbols=psk8, bit_order=bit_order)
+    u = spu.array(np.random.default_rng(3).integers(0, 2, K).tolist(), dtype=spu.int32)
+    x = mdm.modulate(u)
+    sym = x.numpy[0][0::2] + 1j * x.numpy[0][1::2]
+    np.testing.assert_allclose(sym, psk8[u.numpy[0].reshape(-1, 3) @ np.array(weights)], atol=1e-5)
+    llr = mdm.demodulate(spu.array([0.01], dtype=spu.float32), x)
+    np.testing.assert_array_equal((llr.numpy[0] < 0).astype(np.int32), u.numpy[0])
+
+
+def test_modem_bit_order_errors():
+    with pytest.raises(ValueError, match="bit_order"):
+        af.mdm.modem(8, symbols=[1, -1], bit_order="msb")
+    with pytest.raises(TypeError, match="symbols"):
+        af.mdm.modem(8, type="QAM", bps=2, bit_order="MSB")

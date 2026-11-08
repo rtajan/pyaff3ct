@@ -4,8 +4,11 @@ Python bindings (pybind11) for [AFF3CT](https://github.com/aff3ct/aff3ct), built
 [pystreampu](https://github.com/aff3ct/pystreampu): every AFF3CT module is a `streampu.Module`,
 its tasks are callable from Python and its sockets are exposed as NumPy arrays.
 
-Status: phase 2 in progress (generated module-level functions for every factory, P0 tools, BER/FER validated against
-the AFF3CT references) — see `Plan.md`.
+Status: phase 3 completed (core coverage: every code family, generic modems, fixed point; 33 AFF3CT reference curves
+rebuilt from their command lines) — see `Plan.md`.
+
+Documentation: `docs/` (MkDocs), published by the CI on GitLab Pages; locally:
+`pip install ".[docs]" --no-build-isolation && python scripts/doc_figures.py && mkdocs serve`.
 
 ## Development build
 

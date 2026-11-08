@@ -41,7 +41,7 @@ def _chn__channel(N: int, dist: Any = None, *, type: str | None = None, implem: 
 
     Args:
         N (int): size (factory parameter).
-        dist (const aff3ct::tools::Distributions<R>&): builder argument, only for one of the overloads.
+        dist (aff3ct.tools.Distributions): builder argument ``const aff3ct::tools::Distributions<R>&``, only for one of the overloads.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
@@ -109,8 +109,8 @@ def _dec__bch(K: int, N_cw: int, GF: Any, encoder: Any = None, *, type: str | No
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        GF (const aff3ct::tools::BCH_polynomial_generator<B>&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        GF (aff3ct.tools.BCH_polynomial_generator): builder argument ``const aff3ct::tools::BCH_polynomial_generator<B>&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -141,9 +141,9 @@ def _dec__ldpc(K: int, N_cw: int, H: Any, info_bits_pos: Any, encoder: Any = Non
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        H (const aff3ct::tools::Sparse_matrix&): builder argument.
-        info_bits_pos (const std::vector<unsigned>&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        H (aff3ct.tools.Sparse_matrix): builder argument ``const aff3ct::tools::Sparse_matrix&``.
+        info_bits_pos (list[int]): builder argument ``const std::vector<unsigned>&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -185,9 +185,9 @@ def _dec__ldpc_siso(K: int, N_cw: int, H: Any, info_bits_pos: Any, encoder: Any 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        H (const aff3ct::tools::Sparse_matrix&): builder argument.
-        info_bits_pos (const std::vector<unsigned>&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        H (aff3ct.tools.Sparse_matrix): builder argument ``const aff3ct::tools::Sparse_matrix&``.
+        info_bits_pos (list[int]): builder argument ``const std::vector<unsigned>&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -229,7 +229,7 @@ def _dec__no_siso(K: int, N_cw: int, encoder: Any = None, *, type: str | None = 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -258,7 +258,7 @@ def _dec__no(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None,
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -287,8 +287,8 @@ def _dec__ra(K: int, N_cw: int, itl: Any, encoder: Any = None, *, type: str | No
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        itl (const aff3ct::module::Interleaver<Q>&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<Q>&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -318,8 +318,8 @@ def _dec__rs(K: int, N_cw: int, GF: Any, encoder: Any = None, *, type: str | Non
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        GF (const aff3ct::tools::RS_polynomial_generator&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        GF (aff3ct.tools.RS_polynomial_generator): builder argument ``const aff3ct::tools::RS_polynomial_generator&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -350,7 +350,7 @@ def _dec__rsc(K: int, N_cw: int, trellis: Any, *, type: str | None = None, imple
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        trellis (const std::vector<std::vector<int>>&): builder argument.
+        trellis (list[list[int]]): builder argument ``const std::vector<std::vector<int>>&``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -385,7 +385,7 @@ def _dec__rsc_siso(K: int, N_cw: int, trellis: Any, *, type: str | None = None, 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        trellis (const std::vector<std::vector<int>>&): builder argument.
+        trellis (list[list[int]]): builder argument ``const std::vector<std::vector<int>>&``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -420,8 +420,8 @@ def _dec__rsc_db_siso(K: int, N_cw: int, trellis: Any, encoder: Any = None, *, t
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        trellis (const std::vector<std::vector<int>>&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        trellis (list[list[int]]): builder argument ``const std::vector<std::vector<int>>&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -452,8 +452,8 @@ def _dec__rsc_db(K: int, N_cw: int, trellis: Any, encoder: Any = None, *, type: 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        trellis (const std::vector<std::vector<int>>&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        trellis (list[list[int]]): builder argument ``const std::vector<std::vector<int>>&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -484,9 +484,9 @@ def _dec__conv(K: int, N_cw: int, trellis: Any, crc: Any = None, encoder: Any = 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        trellis (const std::vector<std::vector<int>>&): builder argument.
-        crc (const aff3ct::module::CRC<B>*): builder argument, default ``nullptr``.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        trellis (list[list[int]]): builder argument ``const std::vector<std::vector<int>>&``.
+        crc (aff3ct.crc.CRC): builder argument ``const aff3ct::module::CRC<B>*``, default ``nullptr``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -517,8 +517,8 @@ def _dec__polar_siso(K: int, N_cw: int, frozen_bits: Any, encoder: Any = None, *
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        frozen_bits (const std::vector<bool>&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -553,9 +553,9 @@ def _dec__polar(K: int, N_cw: int, frozen_bits: Any, crc: Any = None, encoder: A
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        frozen_bits (const std::vector<bool>&): builder argument.
-        crc (const aff3ct::module::CRC<B>*): builder argument, default ``nullptr``.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
+        crc (aff3ct.crc.CRC): builder argument ``const aff3ct::module::CRC<B>*``, default ``nullptr``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -590,8 +590,8 @@ def _dec__polar_gen(K: int, N_cw: int, crc: Any = None, encoder: Any = None, *, 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        crc (const aff3ct::module::CRC<B>*): builder argument, default ``nullptr``.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        crc (aff3ct.crc.CRC): builder argument ``const aff3ct::module::CRC<B>*``, default ``nullptr``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -626,10 +626,10 @@ def _dec__polar_mk(K: int, N_cw: int, code: Any, frozen_bits: Any, crc: Any = No
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        code (const aff3ct::tools::Polar_code&): builder argument.
-        frozen_bits (const std::vector<bool>&): builder argument.
-        crc (const aff3ct::module::CRC<B>*): builder argument, default ``nullptr``.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        code (aff3ct.tools.Polar_code): builder argument ``const aff3ct::tools::Polar_code&``.
+        frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
+        crc (aff3ct.crc.CRC): builder argument ``const aff3ct::module::CRC<B>*``, default ``nullptr``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -660,10 +660,10 @@ def _dec__polar_pac(K: int, N_cw: int, frozen_bits: Any, Perr: Any, crc: Any = N
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        frozen_bits (const std::vector<bool>&): builder argument.
-        Perr (const std::vector<double>&): builder argument.
-        crc (const aff3ct::module::CRC<B>*): builder argument, default ``nullptr``.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
+        Perr (list): builder argument ``const std::vector<double>&``.
+        crc (aff3ct.crc.CRC): builder argument ``const aff3ct::module::CRC<B>*``, default ``nullptr``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -696,11 +696,11 @@ def _dec__polar_pt(K: int, N_cw: int, frozen_bits: Any, dynamic_frozen_bits: Any
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        frozen_bits (const std::vector<bool>&): builder argument.
-        dynamic_frozen_bits (const std::vector<bool>&): builder argument.
-        pretransform (const std::map<uint32_t, std::vector<uint32_t>>&): builder argument.
-        crc (const aff3ct::module::CRC<B>*): builder argument, default ``nullptr``.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
+        dynamic_frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
+        pretransform (dict): builder argument ``const std::map<uint32_t, std::vector<uint32_t>>&``.
+        crc (aff3ct.crc.CRC): builder argument ``const aff3ct::module::CRC<B>*``, default ``nullptr``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -736,7 +736,7 @@ def _dec__repetition(K: int, N_cw: int, encoder: Any = None, *, type: str | None
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -766,10 +766,10 @@ def _dec__turbo(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, itl: 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        siso_n (const aff3ct::module::Decoder_SISO<B, Q>&): builder argument, only for one of the overloads.
-        siso_i (const aff3ct::module::Decoder_SISO<B, Q>&): builder argument, only for one of the overloads.
-        itl (const aff3ct::module::Interleaver<Q>&): builder argument, only for one of the overloads.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        siso_n (aff3ct.dec.Decoder_SISO): builder argument ``const aff3ct::module::Decoder_SISO<B, Q>&``, only for one of the overloads.
+        siso_i (aff3ct.dec.Decoder_SISO): builder argument ``const aff3ct::module::Decoder_SISO<B, Q>&``, only for one of the overloads.
+        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<Q>&``, only for one of the overloads.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -802,10 +802,10 @@ def _dec__turbo_db(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, it
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        siso_n (const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>&): builder argument, only for one of the overloads.
-        siso_i (const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>&): builder argument, only for one of the overloads.
-        itl (const aff3ct::module::Interleaver<Q>&): builder argument, only for one of the overloads.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        siso_n (aff3ct.dec.Decoder_RSC_DB_BCJR): builder argument ``const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>&``, only for one of the overloads.
+        siso_i (aff3ct.dec.Decoder_RSC_DB_BCJR): builder argument ``const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>&``, only for one of the overloads.
+        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<Q>&``, only for one of the overloads.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -836,10 +836,10 @@ def _dec__turbo_product(K: int, N_cw: int, cp_r: Any, cp_c: Any, itl: Any, encod
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        cp_r (const aff3ct::module::Decoder_chase_pyndiah<B, Q>&): builder argument.
-        cp_c (const aff3ct::module::Decoder_chase_pyndiah<B, Q>&): builder argument.
-        itl (const aff3ct::module::Interleaver<Q>&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        cp_r (aff3ct.dec.Decoder_chase_pyndiah): builder argument ``const aff3ct::module::Decoder_chase_pyndiah<B, Q>&``.
+        cp_c (aff3ct.dec.Decoder_chase_pyndiah): builder argument ``const aff3ct::module::Decoder_chase_pyndiah<B, Q>&``.
+        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<Q>&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -876,10 +876,10 @@ def _dec__turbo_product_siso(K: int, N_cw: int, cp_r: Any, cp_c: Any, itl: Any, 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        cp_r (const aff3ct::module::Decoder_chase_pyndiah<B, Q>&): builder argument.
-        cp_c (const aff3ct::module::Decoder_chase_pyndiah<B, Q>&): builder argument.
-        itl (const aff3ct::module::Interleaver<Q>&): builder argument.
-        encoder (aff3ct::module::Encoder<B>*): builder argument, default ``nullptr``.
+        cp_r (aff3ct.dec.Decoder_chase_pyndiah): builder argument ``const aff3ct::module::Decoder_chase_pyndiah<B, Q>&``.
+        cp_c (aff3ct.dec.Decoder_chase_pyndiah): builder argument ``const aff3ct::module::Decoder_chase_pyndiah<B, Q>&``.
+        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<Q>&``.
+        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -942,7 +942,7 @@ def _enc__bch(K: int, N_cw: int, GF: Any, *, type: str | None = None, path: str 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        GF (const aff3ct::tools::BCH_polynomial_generator<B>&): builder argument.
+        GF (aff3ct.tools.BCH_polynomial_generator): builder argument ``const aff3ct::tools::BCH_polynomial_generator<B>&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -970,9 +970,9 @@ def _enc__ldpc(K: int, N_cw: int, G: Any, H: Any, dvbs2: Any = None, *, type: st
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        G (const aff3ct::tools::Sparse_matrix&): builder argument.
-        H (const aff3ct::tools::Sparse_matrix&): builder argument.
-        dvbs2 (const aff3ct::tools::dvbs2_values&): builder argument, only for one of the overloads.
+        G (aff3ct.tools.Sparse_matrix): builder argument ``const aff3ct::tools::Sparse_matrix&``.
+        H (aff3ct.tools.Sparse_matrix): builder argument ``const aff3ct::tools::Sparse_matrix&``.
+        dvbs2 (aff3ct.tools.dvbs2_values): builder argument ``const aff3ct::tools::dvbs2_values&``, only for one of the overloads.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1032,7 +1032,7 @@ def _enc__ra(K: int, N_cw: int, itl: Any, *, type: str | None = None, path: str 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        itl (const aff3ct::module::Interleaver<B>&): builder argument.
+        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<B>&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1059,7 +1059,7 @@ def _enc__rs(K: int, N_cw: int, GF: Any, *, type: str | None = None, path: str |
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        GF (const aff3ct::tools::RS_polynomial_generator&): builder argument.
+        GF (aff3ct.tools.RS_polynomial_generator): builder argument ``const aff3ct::tools::RS_polynomial_generator&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1170,7 +1170,7 @@ def _enc__polar(K: int, N_cw: int, frozen_bits: Any, *, type: str | None = None,
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        frozen_bits (const std::vector<bool>&): builder argument.
+        frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1198,8 +1198,8 @@ def _enc__polar_mk(K: int, N_cw: int, code: Any, frozen_bits: Any, *, type: str 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        code (const aff3ct::tools::Polar_code&): builder argument.
-        frozen_bits (const std::vector<bool>&): builder argument.
+        code (aff3ct.tools.Polar_code): builder argument ``const aff3ct::tools::Polar_code&``.
+        frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1226,7 +1226,7 @@ def _enc__polar_pac(K: int, N_cw: int, frozen_bits: Any, *, type: str | None = N
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        frozen_bits (const std::vector<bool>&): builder argument.
+        frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1254,9 +1254,9 @@ def _enc__polar_pt(K: int, N_cw: int, frozen_bits: Any, dynamic_frozen_bits: Any
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        frozen_bits (const std::vector<bool>&): builder argument.
-        dynamic_frozen_bits (const std::vector<bool>&): builder argument.
-        pretransform (const std::map<uint32_t, std::vector<uint32_t>>&): builder argument.
+        frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
+        dynamic_frozen_bits (numpy.ndarray[bool]): builder argument ``const std::vector<bool>&``.
+        pretransform (dict): builder argument ``const std::map<uint32_t, std::vector<uint32_t>>&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1312,9 +1312,9 @@ def _enc__turbo(K: int, N_cw: int, enc_n: Any, enc_i: Any, itl: Any, *, type: st
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        enc_n (const aff3ct::module::Encoder<B>&): builder argument.
-        enc_i (const aff3ct::module::Encoder<B>&): builder argument.
-        itl (const aff3ct::module::Interleaver<B>&): builder argument.
+        enc_n (aff3ct.enc.Encoder): builder argument ``const aff3ct::module::Encoder<B>&``.
+        enc_i (aff3ct.enc.Encoder): builder argument ``const aff3ct::module::Encoder<B>&``.
+        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<B>&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1342,8 +1342,8 @@ def _enc__turbo_db(K: int, N_cw: int, sub_enc: Any, itl: Any, *, type: str | Non
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        sub_enc (const aff3ct::module::Encoder_RSC_DB<B>&): builder argument.
-        itl (const aff3ct::module::Interleaver<B>&): builder argument.
+        sub_enc (aff3ct.enc.Encoder_RSC_DB): builder argument ``const aff3ct::module::Encoder_RSC_DB<B>&``.
+        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<B>&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1370,9 +1370,9 @@ def _enc__turbo_product(K: int, N_cw: int, enc_r: Any, enc_c: Any, itl: Any, *, 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        enc_r (const aff3ct::module::Encoder_BCH<B>&): builder argument.
-        enc_c (const aff3ct::module::Encoder_BCH<B>&): builder argument.
-        itl (const aff3ct::module::Interleaver<B>&): builder argument.
+        enc_r (aff3ct.enc.Encoder_BCH): builder argument ``const aff3ct::module::Encoder_BCH<B>&``.
+        enc_c (aff3ct.enc.Encoder_BCH): builder argument ``const aff3ct::module::Encoder_BCH<B>&``.
+        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<B>&``.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -1421,7 +1421,7 @@ def _tools__frozenbits_generator_mk(K: int, N_cw: int, pc: Any, *, type: str | N
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        pc (const aff3ct::tools::Polar_code&): builder argument.
+        pc (aff3ct.tools.Polar_code): builder argument ``const aff3ct::tools::Polar_code&``.
         type (str): factory parameter (``std::string``).
         path_fb (str): factory parameter (``std::string``).
         dump_channels_path (str): factory parameter (``std::string``).
@@ -1440,7 +1440,7 @@ def _itl__interleaver(itl_core: Any, *, D: Any = None) -> Any:
     Equivalent to ``aff3ct.factory.Interleaver(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver().parameters``).
 
     Args:
-        itl_core (aff3ct::tools::Interleaver_core<>&): builder argument.
+        itl_core (aff3ct.tools.Interleaver_core): builder argument ``aff3ct::tools::Interleaver_core<>&``.
         D (streampu.dtype): template parameter ``D``.
 
     Compiled dtype combinations (D): (int8); (int16); (int32); (int64); (float32); (float64).
@@ -1483,8 +1483,8 @@ def _mdm__modem(N: int, cstl: Any = None, dist: Any = None, *, type: str | None 
 
     Args:
         N (int): size (factory parameter).
-        cstl (const aff3ct::tools::Constellation<R>*): builder argument, default ``nullptr``.
-        dist (const aff3ct::tools::Distributions<R>&): builder argument, only for one of the overloads.
+        cstl (aff3ct.tools.Constellation): builder argument ``const aff3ct::tools::Constellation<R>*``, default ``nullptr``.
+        dist (aff3ct.tools.Distributions): builder argument ``const aff3ct::tools::Distributions<R>&``, only for one of the overloads.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         const_path (str): factory parameter (``std::string``).
@@ -1565,7 +1565,7 @@ def _mnt__bfer(K: int, count_unknown_values: Any = None, *, type: str | None = N
 
     Args:
         K (int): size (factory parameter).
-        count_unknown_values (bool): builder argument, default ``false``.
+        count_unknown_values (bool): builder argument ``bool``, default ``false``.
         type (str): factory parameter (``std::string``).
         err_hist_path (str): factory parameter (``std::string``).
         err_hist (int): factory parameter (``int``).
@@ -1630,10 +1630,10 @@ def _tools__noise(noise_val: Any = None, bit_rate: Any = None, bps: Any = None, 
     Equivalent to ``aff3ct.factory.Noise(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Noise().parameters``).
 
     Args:
-        noise_val (R): builder argument, only for one of the overloads.
-        bit_rate (R): builder argument, default ``1.``.
-        bps (int): builder argument, default ``1``.
-        upf (int): builder argument, default ``1``.
+        noise_val (float): builder argument ``R``, only for one of the overloads.
+        bit_rate (float): builder argument ``R``, default ``1.``.
+        bps (int): builder argument ``int``, default ``1``.
+        upf (int): builder argument ``int``, default ``1``.
         range (list[float]): factory parameter (``std::vector<float>``).
         type (str): factory parameter (``std::string``).
         pdf_path (str): factory parameter (``std::string``).
@@ -1740,7 +1740,7 @@ def _pct__polar(K: int, N: int, N_cw: int, fb_generator: Any, *, type: str | Non
         K (int): size (factory parameter).
         N (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        fb_generator (const aff3ct::tools::Frozenbits_generator&): builder argument.
+        fb_generator (aff3ct.tools.Frozenbits_generator): builder argument ``const aff3ct::tools::Frozenbits_generator&``.
         type (str): factory parameter (``std::string``).
         B (streampu.dtype): template parameter ``B``.
         Q (streampu.dtype): template parameter ``Q``.
@@ -1890,37 +1890,85 @@ FUNCTIONS = {
 
 
 # codec factories: {factory: {function: public name, args: builder arguments}} (functions: aff3ct/codec.py)
-CODECS = {'Codec_BCH': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+CODECS = {'Codec_BCH': {'args': [{'default': 'nullptr',
+                         'name': 'crc',
+                         'py_type': 'aff3ct.crc.CRC',
+                         'type': 'const aff3ct::module::CRC<B>*'}],
                'function': 'bch'},
- 'Codec_LDPC': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_LDPC': {'args': [{'default': 'nullptr',
+                          'name': 'crc',
+                          'py_type': 'aff3ct.crc.CRC',
+                          'type': 'const aff3ct::module::CRC<B>*'}],
                 'function': 'ldpc'},
- 'Codec_RA': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_RA': {'args': [{'default': 'nullptr',
+                        'name': 'crc',
+                        'py_type': 'aff3ct.crc.CRC',
+                        'type': 'const aff3ct::module::CRC<B>*'}],
               'function': 'ra'},
- 'Codec_RS': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_RS': {'args': [{'default': 'nullptr',
+                        'name': 'crc',
+                        'py_type': 'aff3ct.crc.CRC',
+                        'type': 'const aff3ct::module::CRC<B>*'}],
               'function': 'rs'},
- 'Codec_RSC': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_RSC': {'args': [{'default': 'nullptr',
+                         'name': 'crc',
+                         'py_type': 'aff3ct.crc.CRC',
+                         'type': 'const aff3ct::module::CRC<B>*'}],
                'function': 'rsc'},
- 'Codec_RSC_DB': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_RSC_DB': {'args': [{'default': 'nullptr',
+                            'name': 'crc',
+                            'py_type': 'aff3ct.crc.CRC',
+                            'type': 'const aff3ct::module::CRC<B>*'}],
                   'function': 'rsc_db'},
- 'Codec_conv': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_conv': {'args': [{'default': 'nullptr',
+                          'name': 'crc',
+                          'py_type': 'aff3ct.crc.CRC',
+                          'type': 'const aff3ct::module::CRC<B>*'}],
                 'function': 'conv'},
- 'Codec_polar': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_polar': {'args': [{'default': 'nullptr',
+                           'name': 'crc',
+                           'py_type': 'aff3ct.crc.CRC',
+                           'type': 'const aff3ct::module::CRC<B>*'}],
                  'function': 'polar'},
- 'Codec_polar_MK': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_polar_MK': {'args': [{'default': 'nullptr',
+                              'name': 'crc',
+                              'py_type': 'aff3ct.crc.CRC',
+                              'type': 'const aff3ct::module::CRC<B>*'}],
                     'function': 'polar_mk'},
- 'Codec_polar_PAC': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_polar_PAC': {'args': [{'default': 'nullptr',
+                               'name': 'crc',
+                               'py_type': 'aff3ct.crc.CRC',
+                               'type': 'const aff3ct::module::CRC<B>*'}],
                      'function': 'polar_pac'},
- 'Codec_polar_PT': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_polar_PT': {'args': [{'default': 'nullptr',
+                              'name': 'crc',
+                              'py_type': 'aff3ct.crc.CRC',
+                              'type': 'const aff3ct::module::CRC<B>*'}],
                     'function': 'polar_pt'},
- 'Codec_repetition': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_repetition': {'args': [{'default': 'nullptr',
+                                'name': 'crc',
+                                'py_type': 'aff3ct.crc.CRC',
+                                'type': 'const aff3ct::module::CRC<B>*'}],
                       'function': 'repetition'},
- 'Codec_turbo': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_turbo': {'args': [{'default': 'nullptr',
+                           'name': 'crc',
+                           'py_type': 'aff3ct.crc.CRC',
+                           'type': 'const aff3ct::module::CRC<B>*'}],
                  'function': 'turbo'},
- 'Codec_turbo_DB': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_turbo_DB': {'args': [{'default': 'nullptr',
+                              'name': 'crc',
+                              'py_type': 'aff3ct.crc.CRC',
+                              'type': 'const aff3ct::module::CRC<B>*'}],
                     'function': 'turbo_db'},
- 'Codec_turbo_product': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_turbo_product': {'args': [{'default': 'nullptr',
+                                   'name': 'crc',
+                                   'py_type': 'aff3ct.crc.CRC',
+                                   'type': 'const aff3ct::module::CRC<B>*'}],
                          'function': 'turbo_product'},
- 'Codec_uncoded': {'args': [{'default': 'nullptr', 'name': 'crc', 'type': 'const aff3ct::module::CRC<B>*'}],
+ 'Codec_uncoded': {'args': [{'default': 'nullptr',
+                             'name': 'crc',
+                             'py_type': 'aff3ct.crc.CRC',
+                             'type': 'const aff3ct::module::CRC<B>*'}],
                    'function': 'uncoded'}}
 
 
