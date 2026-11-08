@@ -533,7 +533,10 @@ démodulation-décodage, LDPC + CPM) et `Monitor_reduction` (sa boucle statique 
     (`mkdocs build --strict`, artefact `public/`) et `pages` (branche par défaut). Pages : accueil, installation,
     tutoriel (première chaîne, courbes BER/FER, codecs, factories et ligne de commande), guides (polaire, LDPC,
     turbo, modems et canaux, virgule fixe), concepts, référence d'API, développement.
-- Outils de debug optionnels : `Dumper`, `Frame_trace`, `Histogram`, générateurs GSL/MKL.
+- Outils de debug : ✅ `Histogram` (aussi l'histogramme de `Monitor_MI`), `Frame_trace` (texte renvoyé au lieu
+  d'être écrit sur `std::cout`, invisible des notebooks), `Dumper` (trames en erreur) ; guide « Debugging ». Non liés :
+  `Dumper_reduction` (prend la propriété de `unique_ptr`), générateurs GSL/MKL (AFF3CT compilé sans ces
+  bibliothèques).
 
 ## 7. Suivi des évolutions d'AFF3CT
 

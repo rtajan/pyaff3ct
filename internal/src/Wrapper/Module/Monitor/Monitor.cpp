@@ -135,6 +135,13 @@ Args:
       .def_property_readonly("mi_min", &M::get_MI_min, "float: minimum mutual information of a frame.")
       .def_property_readonly("mi_max", &M::get_MI_max, "float: maximum mutual information of a frame.")
       .def("n_trials_limit_achieved", &M::n_trials_limit_achieved, "Return True if max_n_trials frames are checked.")
+      .def("activate_mutinfo_histogram",
+           &M::activate_mutinfo_histogram,
+           "val"_a,
+           "Record the mutual information of each frame in a histogram (off by default).")
+      .def_property_readonly("mutinfo_hist",
+                             &M::get_mutinfo_hist,
+                             "aff3ct.tools.Histogram: mutual information of the frames (activate_mutinfo_histogram).")
       .def("collect",
            py::overload_cast<const M&, bool>(&M::collect),
            "monitor"_a,

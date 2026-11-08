@@ -83,7 +83,10 @@ def resolve_combo(entry: Mapping[str, Any], dtypes: Mapping[str, Any], what: str
 
 
 # class templates of pyaff3ct itself (internal/include/internal/Module): same dtype combinations as an AFF3CT class
-PYAFF3CT_TEMPLATES = {"Module::Monitor_BFER_AR": "Module::Monitor_BFER"}
+PYAFF3CT_TEMPLATES = {
+    "Module::Monitor_BFER_AR": "Module::Monitor_BFER",
+    "Tools::Histogram": "Tools::Distribution",  # header-only in AFF3CT: bound for the same R (float32, float64)
+}
 
 
 def _known(key: str) -> bool:

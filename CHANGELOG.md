@@ -23,6 +23,9 @@ version of a build comes from the git tags (`setuptools_scm`): between two tags,
   `examples/mutual_information.py`, guide *Monitors*.
 - Tests of the remaining modules: all-zero, coset and user encoders, BCH genius decoder, list Viterbi decoder,
   SIMD BCJR decoders, bit-packed polar encoder, DVB-S2 LDPC encoder, OOK optical modem with ROP estimation.
+- Debug tools: `af.tools.Histogram` (also the histogram of `Monitor_MI`, `mnt.mutinfo_hist`), `af.tools.Frame_trace`
+  (text view of frames, returned as a string), `af.tools.Dumper` (frames in error recorded and written to files);
+  example `examples/debugging.py`, guide *Debugging*.
 - 19 more AFF3CT references rebuilt from their command lines (52 in all); `scripts/fetch_aff3ct_data.sh` fetches
   their configuration files.
 
