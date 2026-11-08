@@ -33,20 +33,4 @@ pyaf::generated::wrap_factory_Encoder_LDPC(py::handle scope)
           py::keep_alive<0, 2>(),
           py::keep_alive<0, 3>());
 
-    def_builders<gen::Factory_Encoder_LDPC__build>(
-      cls,
-      "build",
-      [](auto c)
-      {
-          using B = typename decltype(c)::template at<0>;
-          return [](const F& f, const aff3ct::tools::Sparse_matrix& G, const aff3ct::tools::Sparse_matrix& H, const aff3ct::tools::dvbs2_values& dvbs2) -> spu::module::Module*
-          { return f.template build<B>(G, H, dvbs2); };
-      },
-          py::arg("G"),
-          py::arg("H"),
-          py::arg("dvbs2"),
-          py::keep_alive<0, 2>(),
-          py::keep_alive<0, 3>(),
-          py::keep_alive<0, 4>());
-
 }

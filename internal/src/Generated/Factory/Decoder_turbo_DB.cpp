@@ -40,39 +40,6 @@ pyaf::generated::wrap_factory_Decoder_turbo_DB(py::handle scope)
       [](auto c)
       {
           using B = typename decltype(c)::template at<0>; using Q = typename decltype(c)::template at<1>;
-          return [](const F& f, const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>& siso_n, const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>& siso_i, const aff3ct::module::Interleaver<Q>& itl) -> spu::module::Module*
-          { return f.template build<B, Q>(siso_n, siso_i, itl); };
-      },
-          py::arg("siso_n"),
-          py::arg("siso_i"),
-          py::arg("itl"),
-          py::keep_alive<0, 2>(),
-          py::keep_alive<0, 3>(),
-          py::keep_alive<0, 4>());
-    def_builders<gen::Factory_Decoder_turbo_DB__build>(
-      cls,
-      "build",
-      [](auto c)
-      {
-          using B = typename decltype(c)::template at<0>; using Q = typename decltype(c)::template at<1>;
-          return [](const F& f, const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>& siso_n, const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>& siso_i, const aff3ct::module::Interleaver<Q>& itl, aff3ct::module::Encoder<B>* encoder) -> spu::module::Module*
-          { return f.template build<B, Q>(siso_n, siso_i, itl, encoder); };
-      },
-          py::arg("siso_n"),
-          py::arg("siso_i"),
-          py::arg("itl"),
-          py::arg("encoder") = nullptr,
-          py::keep_alive<0, 2>(),
-          py::keep_alive<0, 3>(),
-          py::keep_alive<0, 4>(),
-          py::keep_alive<0, 5>());
-
-    def_builders<gen::Factory_Decoder_turbo_DB__build>(
-      cls,
-      "build",
-      [](auto c)
-      {
-          using B = typename decltype(c)::template at<0>; using Q = typename decltype(c)::template at<1>;
           return [](const F& f) -> spu::module::Module*
           { return f.template build<B, Q>(); };
       });

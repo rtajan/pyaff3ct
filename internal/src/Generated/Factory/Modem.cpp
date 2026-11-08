@@ -55,18 +55,6 @@ pyaf::generated::wrap_factory_Modem(py::handle scope)
           py::arg("cstl") = nullptr,
           py::keep_alive<0, 2>());
 
-    def_builders<gen::Factory_Modem__build>(
-      cls,
-      "build",
-      [](auto c)
-      {
-          using B = typename decltype(c)::template at<0>; using R = typename decltype(c)::template at<1>; using Q = typename decltype(c)::template at<2>;
-          return [](const F& f, const aff3ct::tools::Distributions<R>& dist) -> spu::module::Module*
-          { return f.template build<B, R, Q>(dist); };
-      },
-          py::arg("dist"),
-          py::keep_alive<0, 2>());
-
     def_builders<gen::Factory_Modem__build_constellation>(
       cls,
       "build_constellation",

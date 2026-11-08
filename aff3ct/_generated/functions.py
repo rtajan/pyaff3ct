@@ -34,14 +34,13 @@ def _crc__crc(K: int, *, type: str | None = None, implem: str | None = None, siz
 
 
 
-def _chn__channel(N: int, dist: Any = None, *, type: str | None = None, implem: str | None = None, path: str | None = None, block_fading: str | None = None, add_users: bool | None = None, complex: bool | None = None, seed: int | None = None, gain_occur: int | None = None, R: Any = None) -> Any:
+def _chn__channel(N: int, *, type: str | None = None, implem: str | None = None, path: str | None = None, block_fading: str | None = None, add_users: bool | None = None, complex: bool | None = None, seed: int | None = None, gain_occur: int | None = None, R: Any = None) -> Any:
     """Build module::Channel<R> with the AFF3CT factory ``Channel`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Channel(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Channel().parameters``).
 
     Args:
         N (int): size (factory parameter).
-        dist (aff3ct.tools.Distributions): builder argument ``const aff3ct::tools::Distributions<R>&``, only for one of the overloads.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
@@ -57,7 +56,177 @@ def _chn__channel(N: int, dist: Any = None, *, type: str | None = None, implem: 
     Returns:
         module::Channel<R>*: the built object (owned by Python).
     """
-    return _make("Channel", "build", {"N": N, "type": type, "implem": implem, "path": path, "block_fading": block_fading, "add_users": add_users, "complex": complex, "seed": seed, "gain_occur": gain_occur}, {"dist": dist}, {"R": R})
+    return _make("Channel", "build", {"N": N, "type": type, "implem": implem, "path": path, "block_fading": block_fading, "add_users": add_users, "complex": complex, "seed": seed, "gain_occur": gain_occur}, {}, {"R": R})
+
+
+
+def _enc__encoder(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> Any:
+    """Build module::Encoder<B> with the AFF3CT factory ``Encoder`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Encoder(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        type (str): factory parameter (``std::string``).
+        path (str): factory parameter (``std::string``).
+        systematic (bool): factory parameter (``bool``).
+        seed (int): factory parameter (``int``).
+        tail_length (int): factory parameter (``int``).
+        start_idx (int): factory parameter (``int``).
+        R (float): factory parameter (``float``).
+        B (streampu.dtype): template parameter ``B``.
+
+    Compiled dtype combinations (B): (int8); (int16); (int32); (int64).
+
+    Returns:
+        module::Encoder<B>*: the built object (owned by Python).
+    """
+    return _make("Encoder", "build", {"K": K, "N_cw": N_cw, "type": type, "path": path, "systematic": systematic, "seed": seed, "tail_length": tail_length, "start_idx": start_idx, "R": R}, {}, {"B": B})
+
+
+
+def _pct__puncturer(K: int, N: int, N_cw: int, *, type: str | None = None, B: Any = None, Q: Any = None) -> Any:
+    """Build module::Puncturer<B, Q> with the AFF3CT factory ``Puncturer`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Puncturer(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Puncturer().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        type (str): factory parameter (``std::string``).
+        B (streampu.dtype): template parameter ``B``.
+        Q (streampu.dtype): template parameter ``Q``.
+
+    Compiled dtype combinations (B, Q): (int8, int8); (int16, int16); (int32, float32); (int64, float64).
+
+    Returns:
+        module::Puncturer<B, Q>*: the built object (owned by Python).
+    """
+    return _make("Puncturer", "build", {"K": K, "N": N, "type": type, "N_cw": N_cw}, {}, {"B": B, "Q": Q})
+
+
+
+def _tools__interleaver_core(*, size: int | None = None, type: str | None = None, path: str | None = None, read_order: str | None = None, n_cols: int | None = None, seed: int | None = None, uniform: bool | None = None, T: Any = None) -> Any:
+    """Build tools::Interleaver_core<T> with the AFF3CT factory ``Interleaver_core`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Interleaver_core(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver_core().parameters``).
+
+    Args:
+        size (int): factory parameter (``int``).
+        type (str): factory parameter (``std::string``).
+        path (str): factory parameter (``std::string``).
+        read_order (str): factory parameter (``std::string``).
+        n_cols (int): factory parameter (``int``).
+        seed (int): factory parameter (``int``).
+        uniform (bool): factory parameter (``bool``).
+        T (streampu.dtype): template parameter ``T``.
+
+    Compiled dtype combinations (T): (uint32).
+
+    Returns:
+        tools::Interleaver_core<T>*: the built object (owned by Python).
+    """
+    return _make("Interleaver_core", "build", {"size": size, "type": type, "path": path, "read_order": read_order, "n_cols": n_cols, "seed": seed, "uniform": uniform}, {}, {"T": T})
+
+
+
+def _itl__interleaver(itl_core: Any, *, D: Any = None) -> Any:
+    """Build module::Interleaver<D> with the AFF3CT factory ``Interleaver`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Interleaver(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver().parameters``).
+
+    Args:
+        itl_core (aff3ct.tools.Interleaver_core): builder argument ``aff3ct::tools::Interleaver_core<>&``.
+        D (streampu.dtype): template parameter ``D``.
+
+    Compiled dtype combinations (D): (int8); (int16); (int32); (int64); (float32); (float64).
+
+    Returns:
+        module::Interleaver<D>*: the built object (owned by Python).
+    """
+    return _make("Interleaver", "build", {}, {"itl_core": itl_core}, {"D": D})
+
+
+
+def _tools__frozenbits_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
+    """Build tools::Frozenbits_generator with the AFF3CT factory ``Frozenbits_generator`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Frozenbits_generator(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Frozenbits_generator().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        type (str): factory parameter (``std::string``).
+        path_fb (str): factory parameter (``std::string``).
+        path_pb (str): factory parameter (``std::string``).
+        dump_channels_path (str): factory parameter (``std::string``).
+        noise (float): factory parameter (``float``).
+
+    Returns:
+        tools::Frozenbits_generator*: the built object (owned by Python).
+    """
+    return _make("Frozenbits_generator", "build", {"K": K, "N_cw": N_cw, "type": type, "path_fb": path_fb, "path_pb": path_pb, "dump_channels_path": dump_channels_path, "noise": noise}, {}, {})
+
+
+
+def _tools__polar_code(N_cw: int, *, kernel_matrix: list[numpy.ndarray] | None = None, code_path: str | None = None) -> Any:
+    """Build tools::Polar_code with the AFF3CT factory ``Polar_code`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Polar_code(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Polar_code().parameters``).
+
+    Args:
+        N_cw (int): size (factory parameter).
+        kernel_matrix (list[numpy.ndarray]): factory parameter (``std::vector<std::vector<bool>>``).
+        code_path (str): factory parameter (``std::string``).
+
+    Returns:
+        tools::Polar_code*: the built object (owned by Python).
+    """
+    return _make("Polar_code", "build", {"N_cw": N_cw, "kernel_matrix": kernel_matrix, "code_path": code_path}, {}, {})
+
+
+
+def _tools__frozenbits_generator_mk(K: int, N_cw: int, pc: Any, *, type: str | None = None, path_fb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
+    """Build tools::Frozenbits_generator with the AFF3CT factory ``Frozenbits_generator_MK`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Frozenbits_generator_MK(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Frozenbits_generator_MK().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        pc (aff3ct.tools.Polar_code): builder argument ``const aff3ct::tools::Polar_code&``.
+        type (str): factory parameter (``std::string``).
+        path_fb (str): factory parameter (``std::string``).
+        dump_channels_path (str): factory parameter (``std::string``).
+        noise (float): factory parameter (``float``).
+
+    Returns:
+        tools::Frozenbits_generator*: the built object (owned by Python).
+    """
+    return _make("Frozenbits_generator_MK", "build", {"K": K, "N_cw": N_cw, "type": type, "path_fb": path_fb, "dump_channels_path": dump_channels_path, "noise": noise}, {"pc": pc}, {})
+
+
+
+def _tools__pretransform_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
+    """Build tools::Pretransform_generator with the AFF3CT factory ``Pretransform_generator`` (builder ``build``).
+
+    Equivalent to ``aff3ct.factory.Pretransform_generator(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Pretransform_generator().parameters``).
+
+    Args:
+        K (int): size (factory parameter).
+        N_cw (int): size (factory parameter).
+        type (str): factory parameter (``std::string``).
+        path_fb (str): factory parameter (``std::string``).
+        path_pb (str): factory parameter (``std::string``).
+        dump_channels_path (str): factory parameter (``std::string``).
+        noise (float): factory parameter (``float``).
+
+    Returns:
+        tools::Pretransform_generator*: the built object (owned by Python).
+    """
+    return _make("Pretransform_generator", "build", {"K": K, "N_cw": N_cw, "type": type, "path_fb": path_fb, "path_pb": path_pb, "dump_channels_path": dump_channels_path, "noise": noise}, {}, {})
 
 
 
@@ -794,17 +963,14 @@ def _dec__turbo(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, itl: 
 
 
 
-def _dec__turbo_db(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, itl: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, n_ite: int | None = None, crc_start_ite: int | None = None, B: Any = None, Q: Any = None) -> Any:
-    """Build module::Decoder_turbo_DB<B, Q> with the AFF3CT factory ``Decoder_turbo_DB`` (builder ``build``).
+def _dec__turbo_db(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, n_ite: int | None = None, crc_start_ite: int | None = None, B: Any = None, Q: Any = None) -> Any:
+    """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_turbo_DB`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_turbo_DB(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_turbo_DB().parameters``).
 
     Args:
         K (int): size (factory parameter).
         N_cw (int): size (factory parameter).
-        siso_n (aff3ct.dec.Decoder_RSC_DB_BCJR): builder argument ``const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>&``, only for one of the overloads.
-        siso_i (aff3ct.dec.Decoder_RSC_DB_BCJR): builder argument ``const aff3ct::module::Decoder_RSC_DB_BCJR<B, Q>&``, only for one of the overloads.
-        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<Q>&``, only for one of the overloads.
         encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
@@ -822,115 +988,9 @@ def _dec__turbo_db(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, it
     Compiled dtype combinations (B, Q): (int8, int8); (int16, int16); (int32, float32); (int64, float64).
 
     Returns:
-        module::Decoder_turbo_DB<B, Q>*: the built object (owned by Python).
-    """
-    return _make("Decoder_turbo_DB", "build", {"K": K, "N_cw": N_cw, "type": type, "implem": implem, "systematic": systematic, "hamming": hamming, "tail_length": tail_length, "flips": flips, "seed": seed, "R": R, "n_ite": n_ite, "crc_start_ite": crc_start_ite}, {"siso_n": siso_n, "siso_i": siso_i, "itl": itl, "encoder": encoder}, {"B": B, "Q": Q})
-
-
-
-def _dec__turbo_product(K: int, N_cw: int, cp_r: Any, cp_c: Any, itl: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, n_ite: int | None = None, n_least_reliable_positions: int | None = None, n_test_vectors: int | None = None, n_competitors: int | None = None, parity_extended: int | None = None, alpha: list[float] | None = None, beta: list[float] | None = None, cp_coef: list[float] | None = None, B: Any = None, Q: Any = None) -> Any:
-    """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_turbo_product`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Decoder_turbo_product(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_turbo_product().parameters``).
-
-    Args:
-        K (int): size (factory parameter).
-        N_cw (int): size (factory parameter).
-        cp_r (aff3ct.dec.Decoder_chase_pyndiah): builder argument ``const aff3ct::module::Decoder_chase_pyndiah<B, Q>&``.
-        cp_c (aff3ct.dec.Decoder_chase_pyndiah): builder argument ``const aff3ct::module::Decoder_chase_pyndiah<B, Q>&``.
-        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<Q>&``.
-        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
-        type (str): factory parameter (``std::string``).
-        implem (str): factory parameter (``std::string``).
-        systematic (bool): factory parameter (``bool``).
-        hamming (bool): factory parameter (``bool``).
-        tail_length (int): factory parameter (``int``).
-        flips (int): factory parameter (``int``).
-        seed (int): factory parameter (``int``).
-        R (float): factory parameter (``float``).
-        n_ite (int): factory parameter (``int``).
-        n_least_reliable_positions (int): factory parameter (``int``).
-        n_test_vectors (int): factory parameter (``int``).
-        n_competitors (int): factory parameter (``int``).
-        parity_extended (int): factory parameter (``int``).
-        alpha (list[float]): factory parameter (``std::vector<float>``).
-        beta (list[float]): factory parameter (``std::vector<float>``).
-        cp_coef (list[float]): factory parameter (``std::vector<float>``).
-        B (streampu.dtype): template parameter ``B``.
-        Q (streampu.dtype): template parameter ``Q``.
-
-    Compiled dtype combinations (B, Q): (int8, int8); (int16, int16); (int32, float32); (int64, float64).
-
-    Returns:
         module::Decoder_SIHO<B, Q>*: the built object (owned by Python).
     """
-    return _make("Decoder_turbo_product", "build", {"K": K, "N_cw": N_cw, "type": type, "implem": implem, "systematic": systematic, "hamming": hamming, "tail_length": tail_length, "flips": flips, "seed": seed, "R": R, "n_ite": n_ite, "n_least_reliable_positions": n_least_reliable_positions, "n_test_vectors": n_test_vectors, "n_competitors": n_competitors, "parity_extended": parity_extended, "alpha": alpha, "beta": beta, "cp_coef": cp_coef}, {"cp_r": cp_r, "cp_c": cp_c, "itl": itl, "encoder": encoder}, {"B": B, "Q": Q})
-
-
-
-def _dec__turbo_product_siso(K: int, N_cw: int, cp_r: Any, cp_c: Any, itl: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, n_ite: int | None = None, n_least_reliable_positions: int | None = None, n_test_vectors: int | None = None, n_competitors: int | None = None, parity_extended: int | None = None, alpha: list[float] | None = None, beta: list[float] | None = None, cp_coef: list[float] | None = None, B: Any = None, Q: Any = None) -> Any:
-    """Build module::Decoder_SISO<B, Q> with the AFF3CT factory ``Decoder_turbo_product`` (builder ``build_siso``).
-
-    Equivalent to ``aff3ct.factory.Decoder_turbo_product(**parameters).build_siso(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_turbo_product().parameters``).
-
-    Args:
-        K (int): size (factory parameter).
-        N_cw (int): size (factory parameter).
-        cp_r (aff3ct.dec.Decoder_chase_pyndiah): builder argument ``const aff3ct::module::Decoder_chase_pyndiah<B, Q>&``.
-        cp_c (aff3ct.dec.Decoder_chase_pyndiah): builder argument ``const aff3ct::module::Decoder_chase_pyndiah<B, Q>&``.
-        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<Q>&``.
-        encoder (aff3ct.enc.Encoder): builder argument ``aff3ct::module::Encoder<B>*``, default ``nullptr``.
-        type (str): factory parameter (``std::string``).
-        implem (str): factory parameter (``std::string``).
-        systematic (bool): factory parameter (``bool``).
-        hamming (bool): factory parameter (``bool``).
-        tail_length (int): factory parameter (``int``).
-        flips (int): factory parameter (``int``).
-        seed (int): factory parameter (``int``).
-        R (float): factory parameter (``float``).
-        n_ite (int): factory parameter (``int``).
-        n_least_reliable_positions (int): factory parameter (``int``).
-        n_test_vectors (int): factory parameter (``int``).
-        n_competitors (int): factory parameter (``int``).
-        parity_extended (int): factory parameter (``int``).
-        alpha (list[float]): factory parameter (``std::vector<float>``).
-        beta (list[float]): factory parameter (``std::vector<float>``).
-        cp_coef (list[float]): factory parameter (``std::vector<float>``).
-        B (streampu.dtype): template parameter ``B``.
-        Q (streampu.dtype): template parameter ``Q``.
-
-    Compiled dtype combinations (B, Q): (int8, int8); (int16, int16); (int32, float32); (int64, float64).
-
-    Returns:
-        module::Decoder_SISO<B, Q>*: the built object (owned by Python).
-    """
-    return _make("Decoder_turbo_product", "build_siso", {"K": K, "N_cw": N_cw, "type": type, "implem": implem, "systematic": systematic, "hamming": hamming, "tail_length": tail_length, "flips": flips, "seed": seed, "R": R, "n_ite": n_ite, "n_least_reliable_positions": n_least_reliable_positions, "n_test_vectors": n_test_vectors, "n_competitors": n_competitors, "parity_extended": parity_extended, "alpha": alpha, "beta": beta, "cp_coef": cp_coef}, {"cp_r": cp_r, "cp_c": cp_c, "itl": itl, "encoder": encoder}, {"B": B, "Q": Q})
-
-
-
-def _enc__encoder(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> Any:
-    """Build module::Encoder<B> with the AFF3CT factory ``Encoder`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Encoder(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder().parameters``).
-
-    Args:
-        K (int): size (factory parameter).
-        N_cw (int): size (factory parameter).
-        type (str): factory parameter (``std::string``).
-        path (str): factory parameter (``std::string``).
-        systematic (bool): factory parameter (``bool``).
-        seed (int): factory parameter (``int``).
-        tail_length (int): factory parameter (``int``).
-        start_idx (int): factory parameter (``int``).
-        R (float): factory parameter (``float``).
-        B (streampu.dtype): template parameter ``B``.
-
-    Compiled dtype combinations (B): (int8); (int16); (int32); (int64).
-
-    Returns:
-        module::Encoder<B>*: the built object (owned by Python).
-    """
-    return _make("Encoder", "build", {"K": K, "N_cw": N_cw, "type": type, "path": path, "systematic": systematic, "seed": seed, "tail_length": tail_length, "start_idx": start_idx, "R": R}, {}, {"B": B})
+    return _make("Decoder_turbo_DB", "build", {"K": K, "N_cw": N_cw, "type": type, "implem": implem, "systematic": systematic, "hamming": hamming, "tail_length": tail_length, "flips": flips, "seed": seed, "R": R, "n_ite": n_ite, "crc_start_ite": crc_start_ite}, {"encoder": encoder}, {"B": B, "Q": Q})
 
 
 
@@ -962,7 +1022,7 @@ def _enc__bch(K: int, N_cw: int, GF: Any, *, type: str | None = None, path: str 
 
 
 
-def _enc__ldpc(K: int, N_cw: int, G: Any, H: Any, dvbs2: Any = None, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, N: int | None = None, H_path: str | None = None, G_path: str | None = None, H_reorder: str | None = None, G_method: str | None = None, G_save_path: str | None = None, standard: str | None = None, B: Any = None) -> Any:
+def _enc__ldpc(K: int, N_cw: int, G: Any, H: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, N: int | None = None, H_path: str | None = None, G_path: str | None = None, H_reorder: str | None = None, G_method: str | None = None, G_save_path: str | None = None, standard: str | None = None, B: Any = None) -> Any:
     """Build module::Encoder_LDPC<B> with the AFF3CT factory ``Encoder_LDPC`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_LDPC(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_LDPC().parameters``).
@@ -972,7 +1032,6 @@ def _enc__ldpc(K: int, N_cw: int, G: Any, H: Any, dvbs2: Any = None, *, type: st
         N_cw (int): size (factory parameter).
         G (aff3ct.tools.Sparse_matrix): builder argument ``const aff3ct::tools::Sparse_matrix&``.
         H (aff3ct.tools.Sparse_matrix): builder argument ``const aff3ct::tools::Sparse_matrix&``.
-        dvbs2 (aff3ct.tools.dvbs2_values): builder argument ``const aff3ct::tools::dvbs2_values&``, only for one of the overloads.
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         systematic (bool): factory parameter (``bool``).
@@ -994,7 +1053,7 @@ def _enc__ldpc(K: int, N_cw: int, G: Any, H: Any, dvbs2: Any = None, *, type: st
     Returns:
         module::Encoder_LDPC<B>*: the built object (owned by Python).
     """
-    return _make("Encoder_LDPC", "build", {"K": K, "N_cw": N_cw, "type": type, "path": path, "systematic": systematic, "seed": seed, "tail_length": tail_length, "start_idx": start_idx, "R": R, "N": N, "H_path": H_path, "G_path": G_path, "H_reorder": H_reorder, "G_method": G_method, "G_save_path": G_save_path, "standard": standard}, {"G": G, "H": H, "dvbs2": dvbs2}, {"B": B})
+    return _make("Encoder_LDPC", "build", {"K": K, "N_cw": N_cw, "type": type, "path": path, "systematic": systematic, "seed": seed, "tail_length": tail_length, "start_idx": start_idx, "R": R, "N": N, "H_path": H_path, "G_path": G_path, "H_reorder": H_reorder, "G_method": G_method, "G_save_path": G_save_path, "standard": standard}, {"G": G, "H": H}, {"B": B})
 
 
 
@@ -1334,149 +1393,7 @@ def _enc__turbo(K: int, N_cw: int, enc_n: Any, enc_i: Any, itl: Any, *, type: st
 
 
 
-def _enc__turbo_db(K: int, N_cw: int, sub_enc: Any, itl: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> Any:
-    """Build module::Encoder_turbo_DB<B> with the AFF3CT factory ``Encoder_turbo_DB`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Encoder_turbo_DB(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_turbo_DB().parameters``).
-
-    Args:
-        K (int): size (factory parameter).
-        N_cw (int): size (factory parameter).
-        sub_enc (aff3ct.enc.Encoder_RSC_DB): builder argument ``const aff3ct::module::Encoder_RSC_DB<B>&``.
-        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<B>&``.
-        type (str): factory parameter (``std::string``).
-        path (str): factory parameter (``std::string``).
-        systematic (bool): factory parameter (``bool``).
-        seed (int): factory parameter (``int``).
-        tail_length (int): factory parameter (``int``).
-        start_idx (int): factory parameter (``int``).
-        R (float): factory parameter (``float``).
-        B (streampu.dtype): template parameter ``B``.
-
-    Compiled dtype combinations (B): (int8); (int16); (int32); (int64).
-
-    Returns:
-        module::Encoder_turbo_DB<B>*: the built object (owned by Python).
-    """
-    return _make("Encoder_turbo_DB", "build", {"K": K, "N_cw": N_cw, "type": type, "path": path, "systematic": systematic, "seed": seed, "tail_length": tail_length, "start_idx": start_idx, "R": R}, {"sub_enc": sub_enc, "itl": itl}, {"B": B})
-
-
-
-def _enc__turbo_product(K: int, N_cw: int, enc_r: Any, enc_c: Any, itl: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, parity_extended: int | None = None, B: Any = None) -> Any:
-    """Build module::Encoder_turbo_product<B> with the AFF3CT factory ``Encoder_turbo_product`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Encoder_turbo_product(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_turbo_product().parameters``).
-
-    Args:
-        K (int): size (factory parameter).
-        N_cw (int): size (factory parameter).
-        enc_r (aff3ct.enc.Encoder_BCH): builder argument ``const aff3ct::module::Encoder_BCH<B>&``.
-        enc_c (aff3ct.enc.Encoder_BCH): builder argument ``const aff3ct::module::Encoder_BCH<B>&``.
-        itl (aff3ct.itl.Interleaver): builder argument ``const aff3ct::module::Interleaver<B>&``.
-        type (str): factory parameter (``std::string``).
-        path (str): factory parameter (``std::string``).
-        systematic (bool): factory parameter (``bool``).
-        seed (int): factory parameter (``int``).
-        tail_length (int): factory parameter (``int``).
-        start_idx (int): factory parameter (``int``).
-        R (float): factory parameter (``float``).
-        parity_extended (int): factory parameter (``int``).
-        B (streampu.dtype): template parameter ``B``.
-
-    Compiled dtype combinations (B): (int8); (int16); (int32); (int64).
-
-    Returns:
-        module::Encoder_turbo_product<B>*: the built object (owned by Python).
-    """
-    return _make("Encoder_turbo_product", "build", {"K": K, "N_cw": N_cw, "type": type, "path": path, "systematic": systematic, "seed": seed, "tail_length": tail_length, "start_idx": start_idx, "R": R, "parity_extended": parity_extended}, {"enc_r": enc_r, "enc_c": enc_c, "itl": itl}, {"B": B})
-
-
-
-def _tools__frozenbits_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
-    """Build tools::Frozenbits_generator with the AFF3CT factory ``Frozenbits_generator`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Frozenbits_generator(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Frozenbits_generator().parameters``).
-
-    Args:
-        K (int): size (factory parameter).
-        N_cw (int): size (factory parameter).
-        type (str): factory parameter (``std::string``).
-        path_fb (str): factory parameter (``std::string``).
-        path_pb (str): factory parameter (``std::string``).
-        dump_channels_path (str): factory parameter (``std::string``).
-        noise (float): factory parameter (``float``).
-
-    Returns:
-        tools::Frozenbits_generator*: the built object (owned by Python).
-    """
-    return _make("Frozenbits_generator", "build", {"K": K, "N_cw": N_cw, "type": type, "path_fb": path_fb, "path_pb": path_pb, "dump_channels_path": dump_channels_path, "noise": noise}, {}, {})
-
-
-
-def _tools__frozenbits_generator_mk(K: int, N_cw: int, pc: Any, *, type: str | None = None, path_fb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
-    """Build tools::Frozenbits_generator with the AFF3CT factory ``Frozenbits_generator_MK`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Frozenbits_generator_MK(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Frozenbits_generator_MK().parameters``).
-
-    Args:
-        K (int): size (factory parameter).
-        N_cw (int): size (factory parameter).
-        pc (aff3ct.tools.Polar_code): builder argument ``const aff3ct::tools::Polar_code&``.
-        type (str): factory parameter (``std::string``).
-        path_fb (str): factory parameter (``std::string``).
-        dump_channels_path (str): factory parameter (``std::string``).
-        noise (float): factory parameter (``float``).
-
-    Returns:
-        tools::Frozenbits_generator*: the built object (owned by Python).
-    """
-    return _make("Frozenbits_generator_MK", "build", {"K": K, "N_cw": N_cw, "type": type, "path_fb": path_fb, "dump_channels_path": dump_channels_path, "noise": noise}, {"pc": pc}, {})
-
-
-
-def _itl__interleaver(itl_core: Any, *, D: Any = None) -> Any:
-    """Build module::Interleaver<D> with the AFF3CT factory ``Interleaver`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Interleaver(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver().parameters``).
-
-    Args:
-        itl_core (aff3ct.tools.Interleaver_core): builder argument ``aff3ct::tools::Interleaver_core<>&``.
-        D (streampu.dtype): template parameter ``D``.
-
-    Compiled dtype combinations (D): (int8); (int16); (int32); (int64); (float32); (float64).
-
-    Returns:
-        module::Interleaver<D>*: the built object (owned by Python).
-    """
-    return _make("Interleaver", "build", {}, {"itl_core": itl_core}, {"D": D})
-
-
-
-def _tools__interleaver_core(*, size: int | None = None, type: str | None = None, path: str | None = None, read_order: str | None = None, n_cols: int | None = None, seed: int | None = None, uniform: bool | None = None, T: Any = None) -> Any:
-    """Build tools::Interleaver_core<T> with the AFF3CT factory ``Interleaver_core`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Interleaver_core(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver_core().parameters``).
-
-    Args:
-        size (int): factory parameter (``int``).
-        type (str): factory parameter (``std::string``).
-        path (str): factory parameter (``std::string``).
-        read_order (str): factory parameter (``std::string``).
-        n_cols (int): factory parameter (``int``).
-        seed (int): factory parameter (``int``).
-        uniform (bool): factory parameter (``bool``).
-        T (streampu.dtype): template parameter ``T``.
-
-    Compiled dtype combinations (T): (uint32).
-
-    Returns:
-        tools::Interleaver_core<T>*: the built object (owned by Python).
-    """
-    return _make("Interleaver_core", "build", {"size": size, "type": type, "path": path, "read_order": read_order, "n_cols": n_cols, "seed": seed, "uniform": uniform}, {}, {"T": T})
-
-
-
-def _mdm__modem(N: int, cstl: Any = None, dist: Any = None, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, B: Any = None, R: Any = None, Q: Any = None) -> Any:
+def _mdm__modem(N: int, cstl: Any = None, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, B: Any = None, R: Any = None, Q: Any = None) -> Any:
     """Build module::Modem<B, R, Q> with the AFF3CT factory ``Modem`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Modem(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Modem().parameters``).
@@ -1484,7 +1401,6 @@ def _mdm__modem(N: int, cstl: Any = None, dist: Any = None, *, type: str | None 
     Args:
         N (int): size (factory parameter).
         cstl (aff3ct.tools.Constellation): builder argument ``const aff3ct::tools::Constellation<R>*``, default ``nullptr``.
-        dist (aff3ct.tools.Distributions): builder argument ``const aff3ct::tools::Distributions<R>&``, only for one of the overloads.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         const_path (str): factory parameter (``std::string``).
@@ -1515,7 +1431,7 @@ def _mdm__modem(N: int, cstl: Any = None, dist: Any = None, *, type: str | None 
     Returns:
         module::Modem<B, R, Q>*: the built object (owned by Python).
     """
-    return _make("Modem", "build", {"N": N, "type": type, "implem": implem, "const_path": const_path, "codebook_path": codebook_path, "complex": complex, "bps": bps, "cpm_std": cpm_std, "cpm_mapping": cpm_mapping, "cpm_wave_shape": cpm_wave_shape, "cpm_L": cpm_L, "cpm_k": cpm_k, "cpm_p": cpm_p, "cpm_upf": cpm_upf, "N_mod": N_mod, "max": max, "psi": psi, "no_sig2": no_sig2, "n_ite": n_ite, "N_fil": N_fil, "rop_est_bits": rop_est_bits, "channel_type": channel_type}, {"cstl": cstl, "dist": dist}, {"B": B, "R": R, "Q": Q})
+    return _make("Modem", "build", {"N": N, "type": type, "implem": implem, "const_path": const_path, "codebook_path": codebook_path, "complex": complex, "bps": bps, "cpm_std": cpm_std, "cpm_mapping": cpm_mapping, "cpm_wave_shape": cpm_wave_shape, "cpm_L": cpm_L, "cpm_k": cpm_k, "cpm_p": cpm_p, "cpm_upf": cpm_upf, "N_mod": N_mod, "max": max, "psi": psi, "no_sig2": no_sig2, "n_ite": n_ite, "N_fil": N_fil, "rop_est_bits": rop_est_bits, "channel_type": channel_type}, {"cstl": cstl}, {"B": B, "R": R, "Q": Q})
 
 
 
@@ -1645,66 +1561,6 @@ def _tools__noise(noise_val: Any = None, bit_rate: Any = None, bps: Any = None, 
         tools::Noise<R>*: the built object (owned by Python).
     """
     return _make("Noise", "build", {"range": range, "type": type, "pdf_path": pdf_path}, {"noise_val": noise_val, "bit_rate": bit_rate, "bps": bps, "upf": upf}, {"R": R})
-
-
-
-def _tools__polar_code(N_cw: int, *, kernel_matrix: list[numpy.ndarray] | None = None, code_path: str | None = None) -> Any:
-    """Build tools::Polar_code with the AFF3CT factory ``Polar_code`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Polar_code(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Polar_code().parameters``).
-
-    Args:
-        N_cw (int): size (factory parameter).
-        kernel_matrix (list[numpy.ndarray]): factory parameter (``std::vector<std::vector<bool>>``).
-        code_path (str): factory parameter (``std::string``).
-
-    Returns:
-        tools::Polar_code*: the built object (owned by Python).
-    """
-    return _make("Polar_code", "build", {"N_cw": N_cw, "kernel_matrix": kernel_matrix, "code_path": code_path}, {}, {})
-
-
-
-def _tools__pretransform_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
-    """Build tools::Pretransform_generator with the AFF3CT factory ``Pretransform_generator`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Pretransform_generator(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Pretransform_generator().parameters``).
-
-    Args:
-        K (int): size (factory parameter).
-        N_cw (int): size (factory parameter).
-        type (str): factory parameter (``std::string``).
-        path_fb (str): factory parameter (``std::string``).
-        path_pb (str): factory parameter (``std::string``).
-        dump_channels_path (str): factory parameter (``std::string``).
-        noise (float): factory parameter (``float``).
-
-    Returns:
-        tools::Pretransform_generator*: the built object (owned by Python).
-    """
-    return _make("Pretransform_generator", "build", {"K": K, "N_cw": N_cw, "type": type, "path_fb": path_fb, "path_pb": path_pb, "dump_channels_path": dump_channels_path, "noise": noise}, {}, {})
-
-
-
-def _pct__puncturer(K: int, N: int, N_cw: int, *, type: str | None = None, B: Any = None, Q: Any = None) -> Any:
-    """Build module::Puncturer<B, Q> with the AFF3CT factory ``Puncturer`` (builder ``build``).
-
-    Equivalent to ``aff3ct.factory.Puncturer(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Puncturer().parameters``).
-
-    Args:
-        K (int): size (factory parameter).
-        N (int): size (factory parameter).
-        N_cw (int): size (factory parameter).
-        type (str): factory parameter (``std::string``).
-        B (streampu.dtype): template parameter ``B``.
-        Q (streampu.dtype): template parameter ``Q``.
-
-    Compiled dtype combinations (B, Q): (int8, int8); (int16, int16); (int32, float32); (int64, float64).
-
-    Returns:
-        module::Puncturer<B, Q>*: the built object (owned by Python).
-    """
-    return _make("Puncturer", "build", {"K": K, "N": N, "type": type, "N_cw": N_cw}, {}, {"B": B, "Q": Q})
 
 
 
@@ -1876,8 +1732,8 @@ FUNCTIONS = {
     "chn": {"channel": _chn__channel},
     "crc": {"crc": _crc__crc},
     "cst": {"coset_bit": _cst__coset_bit, "coset_real": _cst__coset_real},
-    "dec": {"bch": _dec__bch, "ldpc": _dec__ldpc, "ldpc_siso": _dec__ldpc_siso, "no_siso": _dec__no_siso, "no": _dec__no, "ra": _dec__ra, "rs": _dec__rs, "rsc": _dec__rsc, "rsc_siso": _dec__rsc_siso, "rsc_db_siso": _dec__rsc_db_siso, "rsc_db": _dec__rsc_db, "conv": _dec__conv, "polar_siso": _dec__polar_siso, "polar": _dec__polar, "polar_gen": _dec__polar_gen, "polar_mk": _dec__polar_mk, "polar_pac": _dec__polar_pac, "polar_pt": _dec__polar_pt, "repetition": _dec__repetition, "turbo": _dec__turbo, "turbo_db": _dec__turbo_db, "turbo_product": _dec__turbo_product, "turbo_product_siso": _dec__turbo_product_siso},
-    "enc": {"encoder": _enc__encoder, "bch": _enc__bch, "ldpc": _enc__ldpc, "no": _enc__no, "ra": _enc__ra, "rs": _enc__rs, "rsc": _enc__rsc, "rsc_db": _enc__rsc_db, "conv": _enc__conv, "polar": _enc__polar, "polar_mk": _enc__polar_mk, "polar_pac": _enc__polar_pac, "polar_pt": _enc__polar_pt, "repetition": _enc__repetition, "turbo": _enc__turbo, "turbo_db": _enc__turbo_db, "turbo_product": _enc__turbo_product},
+    "dec": {"bch": _dec__bch, "ldpc": _dec__ldpc, "ldpc_siso": _dec__ldpc_siso, "no_siso": _dec__no_siso, "no": _dec__no, "ra": _dec__ra, "rs": _dec__rs, "rsc": _dec__rsc, "rsc_siso": _dec__rsc_siso, "rsc_db_siso": _dec__rsc_db_siso, "rsc_db": _dec__rsc_db, "conv": _dec__conv, "polar_siso": _dec__polar_siso, "polar": _dec__polar, "polar_gen": _dec__polar_gen, "polar_mk": _dec__polar_mk, "polar_pac": _dec__polar_pac, "polar_pt": _dec__polar_pt, "repetition": _dec__repetition, "turbo": _dec__turbo, "turbo_db": _dec__turbo_db},
+    "enc": {"encoder": _enc__encoder, "bch": _enc__bch, "ldpc": _enc__ldpc, "no": _enc__no, "ra": _enc__ra, "rs": _enc__rs, "rsc": _enc__rsc, "rsc_db": _enc__rsc_db, "conv": _enc__conv, "polar": _enc__polar, "polar_mk": _enc__polar_mk, "polar_pac": _enc__polar_pac, "polar_pt": _enc__polar_pt, "repetition": _enc__repetition, "turbo": _enc__turbo},
     "itl": {"interleaver": _itl__interleaver},
     "mdm": {"modem": _mdm__modem, "modem_constellation": _mdm__modem_constellation},
     "mnt": {"bfer": _mnt__bfer, "exit": _mnt__exit, "mi": _mnt__mi},
@@ -1885,7 +1741,7 @@ FUNCTIONS = {
     "qnt": {"quantizer": _qnt__quantizer},
     "snk": {"sink": _snk__sink},
     "src": {"source": _src__source},
-    "tools": {"frozenbits_generator": _tools__frozenbits_generator, "frozenbits_generator_mk": _tools__frozenbits_generator_mk, "interleaver_core": _tools__interleaver_core, "noise": _tools__noise, "polar_code": _tools__polar_code, "pretransform_generator": _tools__pretransform_generator},
+    "tools": {"interleaver_core": _tools__interleaver_core, "frozenbits_generator": _tools__frozenbits_generator, "polar_code": _tools__polar_code, "frozenbits_generator_mk": _tools__frozenbits_generator_mk, "pretransform_generator": _tools__pretransform_generator, "noise": _tools__noise},
 }
 
 
@@ -1974,7 +1830,12 @@ CODECS = {'Codec_BCH': {'args': [{'default': 'nullptr',
 
 # builders without function (the class they return is not wrapped yet)
 SKIPPED = [
+    "Channel.build_userpdf -> module::Channel<R>*",
+    "Scaling_factor.build -> tools::Scaling_factor<B, Q>*",
     "Flip_and_check.build -> tools::Flip_and_check<B, Q>*",
     "Flip_and_check_DB.build -> tools::Flip_and_check_DB<B, Q>*",
-    "Scaling_factor.build -> tools::Scaling_factor<B, Q>*",
+    "Decoder_turbo_product.build -> module::Decoder_SIHO<B, Q>*",
+    "Decoder_turbo_product.build_siso -> module::Decoder_SISO<B, Q>*",
+    "Encoder_turbo_DB.build -> module::Encoder_turbo_DB<B>*",
+    "Encoder_turbo_product.build -> module::Encoder_turbo_product<B>*",
 ]

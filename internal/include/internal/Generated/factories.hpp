@@ -13,6 +13,16 @@ wrap_factory_CRC(py::handle scope);
 void
 wrap_factory_Channel(py::handle scope);
 void
+wrap_factory_Encoder(py::handle scope);
+void
+wrap_factory_Decoder(py::handle scope);
+void
+wrap_factory_Puncturer(py::handle scope);
+void
+wrap_factory_Interleaver_core(py::handle scope);
+void
+wrap_factory_Interleaver(py::handle scope);
+void
 wrap_factory_Codec(py::handle scope);
 void
 wrap_factory_Codec_HIHO(py::handle scope);
@@ -35,11 +45,19 @@ wrap_factory_Codec_RSC_DB(py::handle scope);
 void
 wrap_factory_Codec_conv(py::handle scope);
 void
+wrap_factory_Frozenbits_generator(py::handle scope);
+void
 wrap_factory_Codec_polar(py::handle scope);
+void
+wrap_factory_Polar_code(py::handle scope);
+void
+wrap_factory_Frozenbits_generator_MK(py::handle scope);
 void
 wrap_factory_Codec_polar_MK(py::handle scope);
 void
 wrap_factory_Codec_polar_PAC(py::handle scope);
+void
+wrap_factory_Pretransform_generator(py::handle scope);
 void
 wrap_factory_Codec_polar_PT(py::handle scope);
 void
@@ -54,8 +72,6 @@ void
 wrap_factory_Codec_uncoded(py::handle scope);
 void
 wrap_factory_Coset(py::handle scope);
-void
-wrap_factory_Decoder(py::handle scope);
 void
 wrap_factory_Decoder_BCH(py::handle scope);
 void
@@ -83,13 +99,17 @@ wrap_factory_Decoder_polar_PT(py::handle scope);
 void
 wrap_factory_Decoder_repetition(py::handle scope);
 void
+wrap_factory_Scaling_factor(py::handle scope);
+void
+wrap_factory_Flip_and_check(py::handle scope);
+void
 wrap_factory_Decoder_turbo(py::handle scope);
+void
+wrap_factory_Flip_and_check_DB(py::handle scope);
 void
 wrap_factory_Decoder_turbo_DB(py::handle scope);
 void
 wrap_factory_Decoder_turbo_product(py::handle scope);
-void
-wrap_factory_Encoder(py::handle scope);
 void
 wrap_factory_Encoder_BCH(py::handle scope);
 void
@@ -123,18 +143,6 @@ wrap_factory_Encoder_turbo_DB(py::handle scope);
 void
 wrap_factory_Encoder_turbo_product(py::handle scope);
 void
-wrap_factory_Flip_and_check(py::handle scope);
-void
-wrap_factory_Flip_and_check_DB(py::handle scope);
-void
-wrap_factory_Frozenbits_generator(py::handle scope);
-void
-wrap_factory_Frozenbits_generator_MK(py::handle scope);
-void
-wrap_factory_Interleaver(py::handle scope);
-void
-wrap_factory_Interleaver_core(py::handle scope);
-void
 wrap_factory_Modem(py::handle scope);
 void
 wrap_factory_Monitor(py::handle scope);
@@ -147,12 +155,6 @@ wrap_factory_Monitor_MI(py::handle scope);
 void
 wrap_factory_Noise(py::handle scope);
 void
-wrap_factory_Polar_code(py::handle scope);
-void
-wrap_factory_Pretransform_generator(py::handle scope);
-void
-wrap_factory_Puncturer(py::handle scope);
-void
 wrap_factory_Puncturer_LDPC(py::handle scope);
 void
 wrap_factory_Puncturer_polar(py::handle scope);
@@ -162,8 +164,6 @@ void
 wrap_factory_Puncturer_turbo_DB(py::handle scope);
 void
 wrap_factory_Quantizer(py::handle scope);
-void
-wrap_factory_Scaling_factor(py::handle scope);
 void
 wrap_factory_Sink(py::handle scope);
 void

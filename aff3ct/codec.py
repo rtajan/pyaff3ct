@@ -36,6 +36,12 @@ _SIZES = {"K", "N_cw", "N", "size"}
 _SUB_CODE_SIZES = {"Codec_turbo_product"}
 
 
+def _annotation(value: Any) -> str:
+    """Annotation of a parameter from its AFF3CT default: ``int``, ``str``..., ``numpy.ndarray`` (importable names)."""
+    t = type(value)
+    return t.__name__ if t.__module__ == "builtins" else f"{t.__module__.split('.')[0]}.{t.__qualname__}"
+
+
 def _sub_factories(fac: Any) -> dict[str, Any]:
     """{name: sub-factory} of a factory (``enc``, ``dec``, ``pct``, ``itl``, ``core``...), None ones excluded."""
     res = {}
@@ -142,7 +148,7 @@ def _make_function(factory_name: str, info: dict) -> Callable:
     sig += [P(a["name"], P.POSITIONAL_OR_KEYWORD, default=None, annotation=Any) for a in info["args"]]
     if has_pct:
         sig.append(P("N", P.KEYWORD_ONLY, default=None, annotation=int))
-    sig += [P(k, P.KEYWORD_ONLY, default=None, annotation=type(d).__name__) for k, (_, _, d) in params.items()]
+    sig += [P(k, P.KEYWORD_ONLY, default=None, annotation=_annotation(d)) for k, (_, _, d) in params.items()]
     sig += [P(d, P.KEYWORD_ONLY, default=None, annotation=Any) for d in dtypes]
     function.__signature__ = inspect.Signature(sig, return_annotation=f"aff3ct.codec.{factory_name}")
     function.__name__ = function.__qualname__ = fname

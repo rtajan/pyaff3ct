@@ -168,7 +168,7 @@ pyaf::wrapper::wrap_sparse_matrix(py::handle scope)
            &Sparse_matrix::resize,
            "n_rows"_a,
            "n_cols"_a,
-           "origin"_a = Matrix::Origin::TOP_LEFT,
+           py::arg_v("origin", Matrix::Origin::TOP_LEFT, "aff3ct.tools.Matrix.Origin.TOP_LEFT"),
            "Resized copy, the given corner being kept.")
       .def("sort_cols_per_density", &Sparse_matrix::sort_cols_per_density, "order"_a, "Sort the columns by degree.")
       .def_static("identity", &Sparse_matrix::identity, "n_rows"_a, "n_cols"_a, "Identity matrix.")
