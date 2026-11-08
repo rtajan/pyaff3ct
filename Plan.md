@@ -417,7 +417,7 @@ inventaire mis à jour (`done`), docstrings présentes.
   regroupement par dtype. Vérifié : 4 threads → FE total = `max_fe` (+ trames en vol), FER conforme à la référence
   polaire. À retirer si AFF3CT / pystreampu offrent l'équivalent (`Monitor_reduction`).
 
-### Phase 3 — Couverture cœur (priorité **P1**, 229 entrées)
+### Phase 3 — Couverture cœur (priorité **P1**, 229 entrées) ✅
 - Toutes les familles restantes « mainstream » : Turbo/RSC (+ `Post_processing_SISO`, `Flip_and_check`, `Scaling_factor`),
   RA, Repetition, Conv/Viterbi, Polar SCL/ASCL/SCF/SCAN, LDPC (toutes les règles via factory), Modem générique
   (`Constellation_*`), OOK, Rayleigh, BEC/BSC, `Extractor_*`, `Puncturer_*`, `Quantizer_custom`, générateurs de bruit.
@@ -462,6 +462,21 @@ inventaire mis à jour (`done`), docstrings présentes.
   LDPC NMS sur BEC et BSC (bruit EP). La CI récupère les 4 matrices utilisées.
   Restent sans fonction : `Scaling_factor`, `Flip_and_check` (post-traitements internes aux décodeurs turbo, réglés
   par les codecs : `dec_sf_*`, `dec_fnc_*`).
+- **Clôture de la phase 3** ✅ :
+  - **Build après `from_cli`** : `_complete()` (le `store()` d'AFF3CT sur une ligne de commande vide) perdait ce
+    qu'AFF3CT ne dérive qu'en lisant la ligne de commande (taille de trame du poinçonneur depuis `-N`, sizes BCH
+    depuis `-T`). Les arguments des `from_cli` sont mémorisés (`_CLI`, par factory) et rejoués au build
+    (`_complete_cli`), puis les paramètres changés depuis le dernier `from_cli` sont réappliqués. Sans ligne de
+    commande, un `t` BCH cohérent avec les tailles est conservé (`n_rdncy(N, t) = N - K`).
+  - **Précisions fixes** : chaînes 8 et 16 bits (`-p`) avec quantificateur après le démodulateur, comme
+    `Simulation_BFER_std.cpp` (défauts de quantification des lanceurs) ; conversion Eb/N0 avec le nombre de bits par
+    symbole du modem (`Noise.cpp`).
+  - **Références vérifiées depuis leur ligne de commande** (33, `tests/test_references.py`, ~80 s en séquentiel) :
+    polaire SC 8/16 bits, SCAN 16 bits, RSC 8/16 bits, répétition 8/16 bits, RSC double binaire (DVB-RCS2), turbo
+    double binaire (DVB-RCS1 / RCS2 : QPSK, CRC, facteur d'échelle adaptatif, flip and check ; BEC), codes produits
+    (BCH étendus, Chase-Pyndiah), BCH et RS algébriques (AWGN, BSC, BEC), en plus des précédentes.
+  - Extracteurs et poinçonneurs : accesseurs de base (`K`, `N`, `N_cw`, `frozen_bits` du poinçonneur polaire et de
+    l'extracteur) ; pas d'accesseur propre supplémentaire utile (motifs réglés par les factories).
 
 - DoD : un test de construction et d'exécution par classe, et un test de parité CLI par factory.
 

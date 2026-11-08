@@ -17,7 +17,9 @@ For the advanced uses, the factories of ``aff3ct.factory`` get a Pythonic interf
 from __future__ import annotations
 
 import functools
+import inspect
 import shlex
+import weakref
 from typing import Any, Callable, Iterable
 
 from aff3ct import _ext
@@ -67,7 +69,10 @@ def _from_cli(self: Factory, args: str | Iterable[str], strict: bool = True) -> 
     """
     if isinstance(args, str):
         args = shlex.split(args)
-    _cpp_from_cli(self, list(args), strict)
+    args = list(args)
+    _cpp_from_cli(self, args, strict)
+    previous = _CLI.get(self)
+    _CLI[self] = ((previous[0] if previous else []) + args, _values(self))
     return self
 
 
@@ -97,6 +102,68 @@ def _builders(fac: Any) -> dict[str, dict | None]:
     return res
 
 
+def _walk(fac: Factory, path: tuple[str, ...] = ()) -> Iterable[tuple[tuple[str, ...], Factory]]:
+    """(path, factory) of a factory and of its sub-factories, depth first."""
+    yield path, fac
+    for name in dir(type(fac)):
+        if name.startswith("_") or name in type(fac)._parameters or name == "parameters":
+            continue
+        if isinstance(inspect.getattr_static(type(fac), name, None), property):
+            sub = getattr(fac, name)
+            if isinstance(sub, Factory):
+                yield from _walk(sub, path + (name,))
+
+
+def _values(fac: Factory) -> dict[tuple[tuple[str, ...], str], Any]:
+    """{(path, parameter): value} of a factory and of its sub-factories."""
+    return {(path, p): getattr(f, p) for path, f in _walk(fac) for p in type(f)._parameters}
+
+
+def _same(a: Any, b: Any) -> bool:
+    try:
+        return bool(a == b)
+    except (TypeError, ValueError):  # arrays
+        import numpy as np
+
+        return bool(np.array_equal(np.asarray(a), np.asarray(b)))
+
+
+# command lines given to the factories (from_cli), and the parameters right after: {factory: (args, values)}
+_CLI: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
+
+
+def _complete(fac: Factory, origin: Factory | None = None) -> None:
+    """Derived parameters of `fac` (a copy of `origin`), as AFF3CT computes them after the command-line parsing.
+
+    - `origin` configured by ``from_cli``: ``store()`` with the same arguments (what AFF3CT derives from them, such as
+      the frame size of a puncturer from ``-N`` or the sizes of a BCH code from ``-T``, is derived again), then the
+      parameters changed since the last ``from_cli`` are set back (the command line, then the attributes).
+    - otherwise: ``store()`` with an empty command line. BCH decoders: AFF3CT then derives the correction power from
+      the sizes, ``t = (N - K) / m``, wrong when ``N - K < m t``: a correction power consistent with the sizes is kept.
+    """
+    rec = _CLI.get(origin) if origin is not None else None
+    if rec is not None:
+        args, after_cli = rec
+        changed = {k: v for k, v in _values(origin).items() if k not in after_cli or not _same(v, after_cli[k])}
+        fac._complete_cli(args)
+        for (path, p), v in changed.items():
+            target = fac
+            for name in path:
+                target = getattr(target, name)
+            setattr(target, p, v)
+        return
+    bch = [(f, f.t) for _, f in _walk(fac) if isinstance(f, _ext.factory.Decoder_BCH)]
+    fac._complete()
+    for f, t in bch:
+        if f.t != t and f.N_cw > f.K > 0 and t > 0:
+            try:
+                ok = _ext.tools.BCH_polynomial_generator_int32(f.N_cw, t).n_rdncy == f.N_cw - f.K
+            except Exception:  # noqa: BLE001  (invalid t for this N: keep the derived one)
+                ok = False
+            if ok:
+                f.t = t
+
+
 def _call_builder(self: Factory, builder: str, *args: Any, **kwargs: Any) -> Any:
     """Build with the instance of `builder` selected by the dtypes given by keyword.
 
@@ -108,7 +175,7 @@ def _call_builder(self: Factory, builder: str, *args: Any, **kwargs: Any) -> Any
     """
     entry = _builders(self).get(builder)
     fac = self.clone()
-    fac._complete()
+    _complete(fac, self)
     if entry is None:  # non-template builder
         return getattr(fac, f"_{builder}_raw")(*args, **kwargs)
     tparams = set(entry["params"]) | {"dtype"}

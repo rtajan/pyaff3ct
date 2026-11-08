@@ -110,3 +110,30 @@ def test_modules_keep_the_codec_alive():
     gc.collect()
     u = spu.array([1, 0, 1, 1, 0, 0, 1, 0], dtype=spu.int32)
     assert enc.encode(u).numpy.shape == (1, 24)
+
+
+def test_build_after_from_cli_derives_as_the_command_line():
+    # what AFF3CT derives while parsing (puncturer frame size from -N, BCH sizes from -T) survives the build
+    fac = af.factory.Codec_turbo_DB()
+    fac.enable_puncturer()
+    fac.from_cli("-C TURBO_DB -K 1504 -N 2256 --enc-sub-std DVB-RCS2", strict=False)
+    cdc = fac.build()
+    assert (cdc.encoder.K, cdc.encoder.N, cdc.puncturer.N) == (1504, 4512, 2256)
+
+    bch = af.factory.Codec_BCH().from_cli("-N 255 -T 18", strict=False).build()
+    assert (bch.encoder.K, bch.GF.t) == (131, 18)  # N - K = 124 < m t = 144: t not derivable from the sizes
+
+
+def test_attributes_set_after_from_cli_are_kept():
+    fac = af.factory.Codec_polar().from_cli("-K 32 -N 64 --dec-type SCL -L 4", strict=False)
+    fac.dec.L = 8  # after the command line: kept by the build
+    assert fac.dec.L == 8
+    cdc = fac.build()
+    assert cdc.decoder_siho is not None
+    f = af.codec.polar.factory(32, 64, dec_type="SCL", dec_L=2)
+    assert f.dec.L == 2
+
+
+def test_bch_keyword_correction_power():
+    assert af.codec.bch(131, 255, dec_t=18).GF.t == 18  # consistent with the sizes: kept
+    assert af.codec.bch(239, 255).GF.t == 2  # t derived from the sizes (default t = 5 not consistent)

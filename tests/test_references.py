@@ -249,7 +249,8 @@ def test_ook_erasure_and_symmetric_channels_match_the_reference(channel):
 
 # ----------------------------------------------------------------------------------------------- from the command line
 CODECS_OF_CLI = {"POLAR": "Codec_polar", "CONV": "Codec_conv", "RSC": "Codec_RSC", "REP": "Codec_repetition",
-                 "LDPC": "Codec_LDPC", "BCH": "Codec_BCH", "RS": "Codec_RS", "TURBO": "Codec_turbo", "RA": "Codec_RA"}
+                 "LDPC": "Codec_LDPC", "BCH": "Codec_BCH", "RS": "Codec_RS", "TURBO": "Codec_turbo", "RA": "Codec_RA",
+                 "RSC_DB": "Codec_RSC_DB", "TURBO_DB": "Codec_turbo_DB", "TPC": "Codec_turbo_product"}
 CONF_FILES = ("CCSDS_64_128.alist", "WIMAX_288_576.alist", "MACKAY_504_1008.alist", "PEG_Reg_1008x504.alist")
 
 
@@ -268,6 +269,16 @@ def option(args, *names, default=None):
     return default
 
 
+# precision (-p) -> (B, R, Q) dtypes of the simulator
+PRECISIONS = {"8": (spu.int8, spu.float32, spu.int8), "08": (spu.int8, spu.float32, spu.int8),
+              "16": (spu.int16, spu.float32, spu.int16), "32": (spu.int32, spu.float32, spu.float32),
+              "64": (spu.int64, spu.float64, spu.float64)}
+# fixed-point quantizer defaults of the AFF3CT launchers (src/Launcher/Code/*/*.cpp): {code: {Q: (bits, decimals)}}
+QNT_DEFAULTS = {"POLAR": {spu.int8: (6, 1), spu.int16: (6, 1)}, "RSC": {spu.int8: (6, 1), spu.int16: (6, 3)},
+                "RSC_DB": {spu.int8: (6, 1), spu.int16: (6, 3)}, "LDPC": {spu.int8: (6, 2), spu.int16: (6, 2)},
+                "REP": {spu.int8: (6, 2), spu.int16: (6, 2)}}
+
+
 def run_reference(path: Path, points, max_fe, n_threads=4):
     """The BFER chain of a reference built from its command line: each factory (source, CRC, codec, modem, channel)
     takes its own arguments (from_cli(..., strict=False)), the sizes are propagated as by the AFF3CT simulator.
@@ -277,6 +288,7 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
         if a.endswith((".alist", ".qc")) and not Path(a).exists():
             pytest.skip(f"{a} not checked out (lib/aff3ct/conf)")
     code = option(args, "-C", "--sim-cde-type")
+    B, R, Q = PRECISIONS[option(args, "-p", "--sim-prec", default="32")]
     fac = getattr(af.factory, CODECS_OF_CLI[code])()
     if code in ("POLAR", "TURBO", "TURBO_DB", "LDPC"):
         fac.enable_puncturer()  # as the BFER launchers of AFF3CT for these codes (-N is then the frame size)
@@ -290,8 +302,8 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
         crc_fac = af.factory.CRC.from_cli(args, strict=False)
         crc_fac._complete()
         crc_fac.K = probe.K - crc_fac.size
-        crc = crc_fac.build()
-    cdc = fac.build(crc) if crc is not None else fac.build()
+        crc = crc_fac.build(B=B)
+    cdc = fac.build(crc, B=B, Q=Q) if crc is not None else fac.build(B=B, Q=Q)
     enc, pct, dec = cdc.encoder, cdc.puncturer, cdc.decoder_siho
     K_info = enc.K - (crc.size if crc is not None else 0)
     N = pct.N if pct is not None else enc.N
@@ -302,23 +314,37 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
     src_fac.K = K_info
     if probe.enc.type == "AZCW":
         src_fac.type = "AZCW"
-    src = src_fac.build()
+    src = src_fac.build(B=B)
     mdm_fac = af.factory.Modem.from_cli(args, strict=False)
     mdm_fac.N = N
     chn_type = option(args, "--chn-type", default="AWGN")
     mdm_fac.channel_type = chn_type
-    mdm = mdm_fac.build()
+    mdm_probe = mdm_fac.clone()
+    mdm_probe._complete()
+    if mdm_probe.type in ("PSK", "PAM", "QAM", "USER"):  # generic modem: its constellation (kept alive by the modem)
+        mdm = mdm_fac.build(mdm_fac.build_constellation(R=R), B=B, R=R, Q=R)
+    else:
+        mdm = mdm_fac.build(B=B, R=R, Q=R)
     chn_fac = af.factory.Channel.from_cli(args, strict=False)
-    chn_fac.N, chn_fac.seed = mdm.N_mod, 1
-    chn = chn_fac.build()
-    mnt = af.mnt.Monitor_BFER_AR(K_info, max_fe, count_unknown_values=ep)
+    chn_fac.N, chn_fac.seed, chn_fac.complex = mdm.N_mod, 1, mdm_probe.complex  # as the simulator
+    chn = chn_fac.build(R=R)
+    qnt = None
+    if Q in (spu.int8, spu.int16):  # fixed point: LLRs quantized after the demodulator, as BFER_std.cpp
+        qnt_fac = af.factory.Quantizer()
+        qnt_fac.n_bits, qnt_fac.n_decimals = QNT_DEFAULTS.get(code, {}).get(Q, (qnt_fac.n_bits, qnt_fac.n_decimals))
+        qnt_fac.from_cli(args, strict=False)
+        qnt_fac.size = N
+        qnt = qnt_fac.build(R=R, Q=Q)
+    mnt = af.mnt.Monitor_BFER_AR[B](K_info, max_fe, count_unknown_values=ep)
 
-    cp = spu.array([1.0], dtype=spu.float32)
+    cp = spu.array([1.0], dtype=R)
     u = src.generate()[0]
     x = enc.encode(crc.build(u) if crc is not None else u)
     if pct is not None:
         x = pct.puncture(x)
     y = mdm.demodulate(cp, chn.add_noise(cp, mdm.modulate(x)))
+    if qnt is not None:
+        y = qnt.process(y)
     if pct is not None:
         y = pct.depuncture(y)
     dec.decode_siho(y)
@@ -327,10 +353,12 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
     out = []
     for p in points:
         if ep:
-            noise = af.tools.Event_probability[spu.float32](p)
+            noise = af.tools.Event_probability[R](p)
             cp.numpy[...] = p
         else:
-            noise = af.tools.sigma_from_ebn0(p, K_info / N)
+            # bits per symbol and samples per symbol of the modem, as Noise.cpp of the simulator
+            upf = mdm_probe.cpm_upf if mdm_probe.type == "CPM" else 1
+            noise = af.tools.sigma_from_ebn0(p, K_info / N, bps=mdm_probe.bps, upsample_factor=upf, R=R)
             cp.numpy[...] = noise.sigma
         cdc.set_noise(noise)  # modules of the codec (frozen bits of the polar codes...), cloned below
         seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
@@ -369,6 +397,25 @@ def read_ref_ep(path: Path) -> dict[float, tuple[int, int, float]]:
         ("LDPC/AWGN/BPSK/BP_FLOODING/GALE/LDPC_N1008_K504_flooding_GALE_i200_MacKay.txt", [2.0, 3.0], 300),
         ("LDPC/AWGN/BPSK/BIT_FLIPPING/WBF/LDPC_N1008_K504_WBF_i100.txt", [2.0, 3.0], 150),
         ("LDPC/AWGN/BPSK/BIT_FLIPPING/MWBF/LDPC_N1008_K504_MWBF02_i100.txt", [2.0, 3.0], 150),
+        # fixed point (8 and 16 bits): quantizer after the demodulator
+        ("POLAR/AWGN/BPSK/SC/Polar_N128_K96_SC_NO_SYS_p08.txt", [1.0, 2.0], 150),
+        ("POLAR/AWGN/BPSK/SC/Polar_N128_K96_SC_NO_SYS_p16.txt", [1.0, 2.0], 150),
+        ("RSC/AWGN/BPSK/BCJR/RSC_N2056_K1024_BCJR_p08.txt", [0.5, 1.0], 150),
+        ("RSC/AWGN/BPSK/BCJR/RSC_N2056_K1024_BCJR_p16.txt", [0.5, 1.0], 150),
+        ("REP/AWGN/BPSK/Repetition_N4096_K128_FAST_p16.txt", [2.0, 4.0], 150),
+        ("REP/AWGN/BPSK/Repetition_N4096_K128_FAST_p08.txt", [2.0, 4.0], 150),
+        ("POLAR/AWGN/BPSK/SCAN/Polar_N2048_K1723_SCAN_GA_naive_i4_p16.txt", [3.0, 3.5], 100),
+        # double-binary RSC (DVB-RCS2)
+        ("RSC_DB/AWGN/BPSK/RSC_DB_N2048_K1024_BCJR_p08.txt", [3.0, 4.0], 150),
+        ("RSC_DB/AWGN/BPSK/RSC_DB_N2048_K1024_BCJR_p16.txt", [3.0, 4.0], 150),
+        # double-binary turbo codes (DVB-RCS1 / RCS2, QPSK, CRC, adaptive scaling factor, flip and check)
+        ("TURBO_DB/AWGN/BPSK/RSC_DB_RSC_DB/BCJR/Turbo_DB_N2256_K1504_BCJR_i8_ref_DVB-RCS2.txt", [2.0, 2.4], 100),
+        ("TURBO_DB/AWGN/BPSK/RSC_DB_RSC_DB/BCJR/Turbo_DB_N3008_K1504_BCJR_i8_fnc_DVB-RCS1.txt", [1.2, 1.4], 100),
+        # turbo product codes (extended BCH, Chase-Pyndiah)
+        ("TURBO_PROD/AWGN/BPSK/BCH1/Turbo_prod_BCH_16_11_p5_i8.txt", [1.0, 1.5], 150),
+        ("TURBO_PROD/AWGN/BPSK/BCH2/Turbo_prod_BCH_32_21_p5_i8.txt", [1.0, 1.25], 150),
+        # algebraic BCH and RS
+        ("BCH/AWGN/BPSK/ALGEBRAIC/BCH_N127_K120_algebraic_T1.txt", [5.0, 6.0], 150),
     ],
 )
 def test_chains_from_the_reference_command_lines(ref, points, max_fe):
@@ -380,6 +427,10 @@ def test_chains_from_the_reference_command_lines(ref, points, max_fe):
     [
         ("LDPC/BEC/OOK/BP_HORIZONTAL_LAYERED/NMS/LDPC_N576_K288_hlayered_NMS_i100_WiMAX.txt", [0.44, 0.42]),
         ("LDPC/BSC/OOK/BP_HORIZONTAL_LAYERED/NMS/LDPC_N576_K288_hlayered_NMS_i100_WiMAX.txt", [0.07, 0.06]),
+        ("RS/BSC/OOK/ALGEBRAIC/RS_N63_K59_algebraic_T2.txt", [0.01, 0.05]),
+        ("RS/BEC/OOK/ALGEBRAIC/RS_N63_K59_algebraic_T2.txt", [0.01, 0.05]),
+        ("BCH/BSC/OOK/ALGEBRAIC/BCH_N255_K131_algebraic_T18.txt.txt", [0.06, 0.08]),
+        ("TURBO_DB/BEC/OOK/RSC_DB_RSC_DB/BCJR/Turbo_DB_N3008_K1504_BCJR_i8_DVB-RCS1.txt", [0.47, 0.46]),
     ],
 )
 def test_erasure_and_symmetric_channels_from_the_reference_command_lines(ref, points):
