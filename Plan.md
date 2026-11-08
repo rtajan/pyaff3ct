@@ -1,55 +1,55 @@
 # Plan — pyaff3ct
 
-Wrapper Python (pybind11) de la bibliothèque [AFF3CT](https://github.com/aff3ct/aff3ct), construit comme un
-**extension de [pystreampu](https://github.com/aff3ct/pystreampu)** (paquet séparé qui dépend de `streampu`), reparti
-de zéro : le prototype `_pyaff3ct` sert de retour d'expérience (guidelines, code, cf. §2).
+Python wrapper (pybind11) of the [AFF3CT](https://github.com/aff3ct/aff3ct) library, built as an **extension of
+[pystreampu](https://github.com/aff3ct/pystreampu)** (a separate package that depends on `streampu`), restarted from
+scratch: the `_pyaff3ct` prototype serves as lessons learned (guidelines, code, see §2).
 
-Documents associés :
+Related documents:
 
-- [`docs/design/class_graph.md`](docs/design/class_graph.md) : graphe de toutes les classes à wrapper (Mermaid, généré).
-- [`docs/design/inventory.md`](docs/design/inventory.md) : inventaire classe par classe (stratégie, priorité, nom Python, statut).
-- [`docs/design/status.json`](docs/design/status.json) : statut de wrapping par classe (`Kind::Name` → `todo`/`wip`/`done`), seule source éditée à la main.
-- [`docs/design/aff3ct_api.json`](docs/design/aff3ct_api.json) : empreinte de l'API AFF3CT de référence (cf. §7).
-- [`docs/design/changes/`](docs/design/changes/) : rapports d'évolution d'AFF3CT.
-- `scripts/` : `gen_class_graph.py` (graphe + inventaire), `aff3ct_api.py` (empreinte), `aff3ct_diff.py` (comparaison),
-  `track_aff3ct.py` (suivi d'une révision à l'autre).
+- [`docs/design/class_graph.md`](docs/design/class_graph.md): graph of all the classes to wrap (Mermaid, generated).
+- [`docs/design/inventory.md`](docs/design/inventory.md): class-by-class inventory (strategy, priority, Python name, status).
+- [`docs/design/status.json`](docs/design/status.json): wrapping status per class (`Kind::Name` → `todo`/`wip`/`done`), the only source edited by hand.
+- [`docs/design/aff3ct_api.json`](docs/design/aff3ct_api.json): fingerprint of the reference AFF3CT API (see §7).
+- [`docs/design/changes/`](docs/design/changes/): reports on the evolutions of AFF3CT.
+- `scripts/`: `gen_class_graph.py` (graph + inventory), `aff3ct_api.py` (fingerprint), `aff3ct_diff.py` (comparison),
+  `track_aff3ct.py` (tracking from one revision to another).
 
 ---
 
-## 1. Objectifs
+## 1. Goals
 
-1. **Interaction Python fluide**, dans la philosophie pystreampu : un module AFF3CT *est* un `streampu.Module` ;
-   ses tâches s'appellent comme des fonctions (`enc.encode(u)`), ses sockets se lisent en `numpy`, et les chaînes
-   s'exécutent avec `streampu.Sequence` / `streampu.Pipeline`.
-2. **Factory-first mais transparent** : la création passe par les factories AFF3CT dès qu'elles existent, pour garder
-   le même comportement que la CLI `aff3ct` (validation, valeurs par défaut, choix des implémentations SIMD/template),
-   **sans que l'utilisateur ait à manipuler la factory** : il appelle une fonction qui rend directement le module.
-3. **Héritage fidèle** : chaque `py::class_` reproduit la chaîne d'héritage C++, interfaces StreamPU comprises.
-4. **Séparation nette** : liaisons C++ dans `internal/`, API utilisateur dans `aff3ct/`.
-5. **Couverture exhaustive mais pilotée** : l'inventaire généré sert de backlog, et chaque classe passe de `todo` à `done`.
-6. **Suivi d'AFF3CT outillé** : chaque évolution amont produit un rapport d'impact sur les bindings (§7).
+1. **Smooth Python interaction**, in the pystreampu philosophy: an AFF3CT module *is* a `streampu.Module`;
+   its tasks are called like functions (`enc.encode(u)`), its sockets are read as `numpy`, and the chains
+   run with `streampu.Sequence` / `streampu.Pipeline`.
+2. **Factory-first but transparent**: creation goes through the AFF3CT factories whenever they exist, to keep
+   the same behaviour as the `aff3ct` CLI (validation, default values, choice of the SIMD/template implementations),
+   **without the user having to handle the factory**: they call a function that directly returns the module.
+3. **Faithful inheritance**: each `py::class_` reproduces the C++ inheritance chain, StreamPU interfaces included.
+4. **Clean separation**: C++ bindings in `internal/`, user API in `aff3ct/`.
+5. **Exhaustive but driven coverage**: the generated inventory serves as the backlog, and each class goes from `todo` to `done`.
+6. **Tooled tracking of AFF3CT**: each upstream change produces an impact report on the bindings (§7).
 
-## 2. Ce qu'on garde et ce qu'on change par rapport à `_pyaff3ct`
+## 2. What we keep and what we change compared to `_pyaff3ct`
 
-| Guideline `_pyaff3ct` | Décision pour `pyaff3ct` |
+| `_pyaff3ct` guideline | Decision for `pyaff3ct` |
 |---|---|
-| Arborescence `internal/include/internal/Wrapper/{Factory,Module,Tools}` + `internal/src/...` en miroir | **Conservée** (règle `.hpp`/`.hxx`/`.cpp` incluse) |
-| Factory-first | **Conservé**, durci (classes à template de *politique* uniquement via factory) **et rendu transparent** (R5) |
-| Héritage reproduit | **Conservé** ; les bases StreamPU sont **importées** de pystreampu, jamais re-wrappées |
-| Constructeurs « avec des types classiques » | **Conservé** ; les types AFF3CT nécessaires aux constructeurs (tools) sont wrappés (cf. arêtes `uses` du graphe) |
-| Une précision par build (implicite) | **Changé** : build `AFF3CT_MULTI_PREC`, choix du type au runtime via `dtype` (comme pystreampu) |
-| Liste de classes à la main | **Changé** : inventaire généré depuis les en-têtes, donc reproductible et vérifiable |
+| `internal/include/internal/Wrapper/{Factory,Module,Tools}` tree + mirrored `internal/src/...` | **Kept** (`.hpp`/`.hxx`/`.cpp` rule included) |
+| Factory-first | **Kept**, hardened (classes with a *policy* template only through a factory) **and made transparent** (R5) |
+| Reproduced inheritance | **Kept**; the StreamPU bases are **imported** from pystreampu, never re-wrapped |
+| Constructors "with classic types" | **Kept**; the AFF3CT types needed by the constructors (tools) are wrapped (see the `uses` edges of the graph) |
+| One precision per build (implicit) | **Changed**: `AFF3CT_MULTI_PREC` build, type chosen at runtime through `dtype` (as pystreampu) |
+| Hand-written list of classes | **Changed**: inventory generated from the headers, hence reproducible and checkable |
 
-État du prototype `_pyaff3ct` (consulté) : AFF3CT épinglé en **v4.1.2** (`60e113d`) ; wrappés : `CRC`,
+State of the `_pyaff3ct` prototype (reviewed): AFF3CT pinned at **v4.1.2** (`60e113d`); wrapped: `CRC`,
 `CRC_polynomial(_fast/_inter)`, `Decoder`/`_HIHO`/`_SIHO`/`_SISO`, `Encoder`, `Modem`, `Sparse_matrix`, `Galois`,
-`RS_polynomial_generator`, constantes DVB-S2, et les factories Encoder/Decoder (LDPC, polar, RS, RSC, RSC_DB) + Modem ;
-helpers `data_validator`, `str_operations`, `type_list`. Le rapport
-`docs/design/changes/v4.1.2_60e113d4..v4.7.2_e1b52965.md` liste ce qui a bougé depuis : à reprendre en connaissance
-de cause (helpers à relire en phase 1, rien à copier tel quel).
+`RS_polynomial_generator`, DVB-S2 constants, and the Encoder/Decoder factories (LDPC, polar, RS, RSC, RSC_DB) + Modem;
+helpers `data_validator`, `str_operations`, `type_list`. The report
+`docs/design/changes/v4.1.2_60e113d4..v4.7.2_e1b52965.md` lists what has moved since: to be reused knowingly
+(helpers to review in phase 1, nothing to copy as is).
 
-## 3. Architecture cible
+## 3. Target architecture
 
-### 3.1 Dépendances et édition de liens
+### 3.1 Dependencies and linking
 
 ```
 aff3ct (Python)  ──import──▶  streampu (Python, pystreampu)
@@ -57,227 +57,227 @@ aff3ct (Python)  ──import──▶  streampu (Python, pystreampu)
 aff3ct._ext (pybind11)  ──py::module_::import("streampu")──▶  streampu._ext
      │                              │
 libaff3ct (static, MULTI_PREC)      │
-     └──────── link ──────▶  libstreampu statique (exportée par pystreampu, même commit)
+     └──────── link ──────▶  static libstreampu (exported by pystreampu, same commit)
 ```
 
-Constats sur pystreampu (`develop` local, `c7318f4`) qui fixent le cadre :
+Findings on pystreampu (local `develop`, `c7318f4`) that set the frame:
 
-- StreamPU **v1.10.0 `85ed022`**, exactement le commit épinglé par AFF3CT `develop` → l'ABI des `Task`/`Socket`/`Module`
-  est commune ; `track_aff3ct.py` signale toute divergence future.
-- pybind11 épinglé **3.0.4** (dépendance `pybind11>=3.0.4,<3.1`, *internals* v11) : pyaff3ct utilise la même contrainte.
-- Python ≥ 3.10, y compris **3.14t sans GIL** : `PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())` comme pystreampu,
-  et aucune donnée globale mutable non protégée côté wrapper.
-- Le modèle officiel d'extension (`examples/custom_cpp_module`) lie **sa propre copie statique** de StreamPU et refait
-  `spu::tools::Buffer_allocator::set_task_autoalloc(true)` à l'import : pyaff3ct suit ce modèle (cf. risque 2).
-- `streampu._ext.sfl` expose `Stateful` (C++ `spu::module::Stateful`) et `Stateful_core` (modules Python).
+- StreamPU **v1.10.0 `85ed022`**, exactly the commit pinned by AFF3CT `develop` → the ABI of `Task`/`Socket`/`Module`
+  is shared; `track_aff3ct.py` reports any future divergence.
+- pybind11 pinned at **3.0.4** (dependency `pybind11>=3.0.4,<3.1`, *internals* v11): pyaff3ct uses the same constraint.
+- Python ≥ 3.10, including **free-threaded 3.14t**: `PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())` as pystreampu,
+  and no unprotected mutable global data on the wrapper side.
+- The official extension model (`examples/custom_cpp_module`) links **its own static copy** of StreamPU and calls
+  `spu::tools::Buffer_allocator::set_task_autoalloc(true)` again at import: pyaff3ct follows this model (see risk 2).
+- `streampu._ext.sfl` exposes `Stateful` (C++ `spu::module::Stateful`) and `Stateful_core` (Python modules).
 
-- Le module compilé `aff3ct._ext` fait `py::module_::import("streampu")` à l'initialisation. Les types
-  `spu::module::Module`, `Stateful`, `Source`, `Sink`, `spu::runtime::Task`, `Socket`, les interfaces
-  `spu::tools::Interface_*`, `Reporter`, `Terminal*` et `dtype` sont **ceux de pystreampu**.
-- AFF3CT est compilé en **bibliothèque statique** (`AFF3CT_COMPILE_STATIC_LIB=ON`, `AFF3CT_COMPILE_EXE=OFF`,
-  `-fPIC`, `AFF3CT_MULTI_PREC`), avec **`AFF3CT_INCLUDE_SPU_LIB=OFF`**, pour lier la StreamPU exportée par
-  pystreampu (`streampu.get_cmake_dirs()`, comme dans `pystreampu/examples/custom_cpp_module`).
-- Les helpers C++ de pystreampu (`wrapper/Common/Tools/type_list.hpp`, `type_functions.h`, `Type.hpp` : `dtype`,
-  `ALL_DTYPES`, `str2typeid`…) sont réutilisés depuis les en-têtes installés par pystreampu.
-- Aucun mécanisme d'enregistrement auprès de pystreampu (`streampu.plugins` n'existe plus) : `aff3ct` est un paquet
-  autonome qui déclare `streampu` en dépendance et l'importe ; l'intégration repose uniquement sur le partage des
-  types pybind11 (import de `streampu._ext` avant l'enregistrement des classes AFF3CT).
+- The compiled module `aff3ct._ext` calls `py::module_::import("streampu")` at initialization. The types
+  `spu::module::Module`, `Stateful`, `Source`, `Sink`, `spu::runtime::Task`, `Socket`, the interfaces
+  `spu::tools::Interface_*`, `Reporter`, `Terminal*` and `dtype` are **those of pystreampu**.
+- AFF3CT is compiled as a **static library** (`AFF3CT_COMPILE_STATIC_LIB=ON`, `AFF3CT_COMPILE_EXE=OFF`,
+  `-fPIC`, `AFF3CT_MULTI_PREC`), with **`AFF3CT_INCLUDE_SPU_LIB=OFF`**, to link the StreamPU exported by
+  pystreampu (`streampu.get_cmake_dirs()`, as in `pystreampu/examples/custom_cpp_module`).
+- The C++ helpers of pystreampu (`wrapper/Common/Tools/type_list.hpp`, `type_functions.h`, `Type.hpp`: `dtype`,
+  `ALL_DTYPES`, `str2typeid`…) are reused from the headers installed by pystreampu.
+- No registration mechanism with pystreampu (`streampu.plugins` no longer exists): `aff3ct` is a standalone
+  package that declares `streampu` as a dependency and imports it; the integration relies only on sharing the
+  pybind11 types (import of `streampu._ext` before the registration of the AFF3CT classes).
 
-### 3.2 Build et packaging
+### 3.2 Build and packaging
 
 - `scikit-build-core>=1.0` + `pybind11==3.0.4` (build) / `>=3.0.4,<3.1` (runtime) + `setuptools_scm`, C++17.
-- `lib/aff3ct` en sous-module git, épinglé.
-- Options CMake exposées via `-Ccmake.define.*` : précisions instanciées, `AFF3CT_LINK_GSL/MKL`, `-march`.
-- Une unité de compilation par famille (`Encoder_polar.cpp`, `Decoder_LDPC.cpp`…) pour paralléliser et limiter la RAM.
-  `ccache` et `CMAKE_UNITY_BUILD` sont activables en option.
-- `cibuildwheel` (Linux x86_64/aarch64, macOS) en phase 5.
+- `lib/aff3ct` as a pinned git submodule.
+- CMake options exposed through `-Ccmake.define.*`: instantiated precisions, `AFF3CT_LINK_GSL/MKL`, `-march`.
+- One compilation unit per family (`Encoder_polar.cpp`, `Decoder_LDPC.cpp`…) to parallelize and limit the RAM.
+  `ccache` and `CMAKE_UNITY_BUILD` can be enabled as options.
+- `cibuildwheel` (Linux x86_64/aarch64, macOS) in phase 5.
 
-### 3.3 Arborescence
+### 3.3 Tree
 
 ```
 pyaff3ct/
 ├── CMakeLists.txt
 ├── pyproject.toml
-├── lib/aff3ct/                       # sous-module AFF3CT (épinglé)
+├── lib/aff3ct/                       # AFF3CT submodule (pinned)
 ├── internal/
 │   ├── include/internal/
-│   │   ├── internal.hpp              # includes communs, py::module_::import("streampu")
-│   │   ├── Common/Tools/             # dispatch dtype, casters (vector<bool>, Sparse_matrix, Noise), keep_alive helpers
+│   │   ├── internal.hpp              # common includes, py::module_::import("streampu")
+│   │   ├── Common/Tools/             # dtype dispatch, casters (vector<bool>, Sparse_matrix, Noise), keep_alive helpers
 │   │   └── Wrapper/
-│   │       ├── Module/<Domaine>/<Classe>.hpp|.hxx
-│   │       ├── Factory/<Domaine>/<Classe>.hpp|.hxx
-│   │       └── Tools/<Domaine>/<Classe>.hpp|.hxx
+│   │       ├── Module/<Domain>/<Class>.hpp|.hxx
+│   │       ├── Factory/<Domain>/<Class>.hpp|.hxx
+│   │       └── Tools/<Domain>/<Class>.hpp|.hxx
 │   └── src/
 │       ├── ext.cpp                   # PYBIND11_MODULE(_ext, m)
-│       └── Wrapper/...               # miroir exact de include/
-├── aff3ct/                           # API Python
-│   ├── __init__.py                   # sous-modules, version (aucun dtype défini ici)
-│   ├── _dispatch.py                  # choix de l'instanciation C++ selon les dtypes
+│       └── Wrapper/...               # exact mirror of include/
+├── aff3ct/                           # Python API
+│   ├── __init__.py                   # submodules, version (no dtype defined here)
+│   ├── _dispatch.py                  # choice of the C++ instantiation from the dtypes
 │   ├── crc.py chn.py dec.py enc.py ext.py itl.py mdm.py mnt.py pct.py qnt.py src.py cst.py
-│   ├── factory/                      # factories (usage avancé : from_cli, params) ; cachées par défaut
+│   ├── factory/                      # factories (advanced use: from_cli, params); hidden by default
 │   ├── tools/                        # polar, ldpc, itl, cst, gen, turbo…
 │   ├── codec.py reporter.py interfaces.py
-│   └── py.typed + *.pyi              # stubs générés (pybind11-stubgen)
+│   └── py.typed + *.pyi              # generated stubs (pybind11-stubgen)
 ├── tests/
 ├── examples/
-├── docs/                             # mkdocs (comme pystreampu) ; docs/design/* générés
+├── docs/                             # mkdocs (as pystreampu); docs/design/* generated
 └── scripts/                          # gen_class_graph, aff3ct_api, aff3ct_diff, track_aff3ct, gen_instantiations
 ```
 
-Sous-modules Python = préfixes de factory AFF3CT (`crc`, `chn`, `cst`, `dec`, `enc`, `ext`, `itl`, `mdm`, `mnt`,
-`pct`, `qnt`, `src`) : ce sont les mêmes que dans la CLI (`--enc-type`, `--dec-implem`…), donc rien de nouveau à apprendre.
+Python submodules = AFF3CT factory prefixes (`crc`, `chn`, `cst`, `dec`, `enc`, `ext`, `itl`, `mdm`, `mnt`,
+`pct`, `qnt`, `src`): they are the same as in the CLI (`--enc-type`, `--dec-implem`…), so nothing new to learn.
 
-## 4. Stratégie de wrapping (règles appliquées par l'inventaire)
+## 4. Wrapping strategy (rules applied by the inventory)
 
-Chiffres tirés de `docs/design/inventory.md` (AFF3CT `develop` @ `e1b5296`) :
+Figures taken from `docs/design/inventory.md` (AFF3CT `develop` @ `e1b5296`):
 
-| Espace | abstract | wrap | factory-only | fonctions | non exposé |
+| Namespace | abstract | wrap | factory-only | functions | not exposed |
 |---|---|---|---|---|---|
 | `aff3ct::module` | 13 | 129 | 47 | – | – |
 | `aff3ct::tools` | 23 | 66 | 16 (`Codec_*`) | 5 | 88 |
 | `aff3ct::factory` | 1 | 83 | – | – | – |
 
-**R1 — Héritage.** `py::class_<T, Base, Interfaces...>`, où les bases StreamPU proviennent du module importé. Exemple :
+**R1 — Inheritance.** `py::class_<T, Base, Interfaces...>`, where the StreamPU bases come from the imported module. Example:
 `Encoder_polar<B>` → `Encoder<B>` → (`spu::module::Stateful`, `spu::tools::Interface_set_seed`) +
-`tools::Interface_get_set_frozen_bits`. Les interfaces AFF3CT (`Interface_get_set_frozen_bits`, `_noise`,
-`_pretransform`, `_dynamic_frozen_bits`, `get_trellis`, `notify_noise_update`) sont liées une fois, sans constructeur.
+`tools::Interface_get_set_frozen_bits`. The AFF3CT interfaces (`Interface_get_set_frozen_bits`, `_noise`,
+`_pretransform`, `_dynamic_frozen_bits`, `get_trellis`, `notify_noise_update`) are bound once, without a constructor.
 
-**R2 — Bases abstraites (bleu).** `CRC`, `Channel`, `Coset`, `Decoder`/`_HIHO`/`_SIHO`/`_SISO`, `Encoder`,
-`Extractor`, `Modem`, `Monitor`, `Puncturer`, `Quantizer` : aucun constructeur. On y lie les accesseurs communs.
-Les tâches et sockets existent déjà à l'exécution : l'accès `mod.encode`, `mod["encode::U_K"]` et l'appel
-`mod.encode(u)` viennent de la surcouche de `streampu.Module`, sans code supplémentaire.
+**R2 — Abstract bases (blue).** `CRC`, `Channel`, `Coset`, `Decoder`/`_HIHO`/`_SIHO`/`_SISO`, `Encoder`,
+`Extractor`, `Modem`, `Monitor`, `Puncturer`, `Quantizer`: no constructor. The common accessors are bound on them.
+The tasks and sockets already exist at runtime: the access `mod.encode`, `mod["encode::U_K"]` and the call
+`mod.encode(u)` come from the `streampu.Module` layer, without additional code.
 
-*Convention des accesseurs (comme pystreampu)* : `get_X()` → propriété en lecture seule `X` (`enc.K`, `enc.N`,
-`enc.info_bits_pos`) ; `is_X()` et `set_X()` restent des méthodes (`enc.is_sys()`, `dec.set_auto_reset(False)`,
-`mdm.is_filter()`). Aucune propriété en écriture sur les modules. pystreampu atteint les tâches par
-`Module.__getattr__` (repli) : un attribut portant le nom d'une tâche la masquerait (`Modem.filter`) ; un test
-(`test_no_attribute_hides_a_task`) le vérifie pour toutes les classes wrappées, à partir des tâches de l'empreinte.
+*Accessor convention (as pystreampu)*: `get_X()` → read-only property `X` (`enc.K`, `enc.N`,
+`enc.info_bits_pos`); `is_X()` and `set_X()` stay methods (`enc.is_sys()`, `dec.set_auto_reset(False)`,
+`mdm.is_filter()`). No writable property on the modules. pystreampu reaches the tasks through
+`Module.__getattr__` (fallback): an attribute named after a task would hide it (`Modem.filter`); a test
+(`test_no_attribute_hides_a_task`) checks it for all the wrapped classes, from the tasks of the fingerprint.
 
-**R3 — Templates et dtypes.** pyaff3ct **ne définit aucun type de données** : les seuls dtypes sont ceux de
+**R3 — Templates and dtypes.** pyaff3ct **defines no data type**: the only dtypes are those of
 pystreampu (`streampu.dtype`, `spu.int8`, `spu.int16`, `spu.int32`, `spu.int64`, `spu.float32`, `spu.float64`),
-côté Python comme côté C++ (`pyspu::dtype`, `pyspu::dtype::of<T>()`, `spu::runtime::type_to_string`,
-`tl::type_list`). Il n'y a donc ni ré-export, ni alias, ni conversion : un socket produit par un module AFF3CT a le
-même `dtype` qu'un socket pystreampu, et `spu.int32(x)` / `socket.astype(spu.float32)` s'appliquent directement.
-Correspondance avec `Tools/types.h` : `B_8/Q_8 → spu.int8`, `B_16/Q_16 → spu.int16`, `B_32 → spu.int32`,
-`B_64 → spu.int64`, `R_8/R_16/R_32/Q_32 → spu.float32`, `R_64/Q_64 → spu.float64`. Les dtypes non signés de
-pystreampu (`uint*`) ne sont instanciés par aucun module AFF3CT : les passer lève une `TypeError` explicite.
+on the Python side as on the C++ side (`pyspu::dtype`, `pyspu::dtype::of<T>()`, `spu::runtime::type_to_string`,
+`tl::type_list`). There is therefore no re-export, alias or conversion: a socket produced by an AFF3CT module has the
+same `dtype` as a pystreampu socket, and `spu.int32(x)` / `socket.astype(spu.float32)` apply directly.
+Mapping with `Tools/types.h`: `B_8/Q_8 → spu.int8`, `B_16/Q_16 → spu.int16`, `B_32 → spu.int32`,
+`B_64 → spu.int64`, `R_8/R_16/R_32/Q_32 → spu.float32`, `R_64/Q_64 → spu.float64`. The unsigned dtypes of
+pystreampu (`uint*`) are instantiated by no AFF3CT module: passing them raises an explicit `TypeError`.
 
-Une classe template est instanciée **pour les seules combinaisons compilées par AFF3CT**
-en `MULTI_PREC` (par exemple `Modem_BPSK<B,R,Q>` : `(i8,f32,f32)`, `(i8,f32,i8)`, `(i16,f32,f32)`, `(i16,f32,i16)`,
-`(i32,f32,f32)`, `(i64,f64,f64)` ; `Decoder_*<B,Q>` : `(i8,i8)`, `(i16,i16)`, `(i32,f32)`, `(i64,f64)`).
-`scripts/gen_instantiations.py` extrait ces listes des blocs `explicit template instantiation` des `.cpp`, ce qui
-évite tout symbole manquant. Côté C++, les classes sont nommées `Encoder_polar_int32`, `Modem_BPSK_int32_float32_float32`
-(convention pystreampu) ; côté Python, les dtypes se donnent sous les noms des paramètres template AFF3CT (`B=`,
-`R=`, `Q=`…), ou `dtype=` quand il n'y en a qu'un :
+A class template is instantiated **only for the combinations compiled by AFF3CT**
+in `MULTI_PREC` (for instance `Modem_BPSK<B,R,Q>`: `(i8,f32,f32)`, `(i8,f32,i8)`, `(i16,f32,f32)`, `(i16,f32,i16)`,
+`(i32,f32,f32)`, `(i64,f64,f64)`; `Decoder_*<B,Q>`: `(i8,i8)`, `(i16,i16)`, `(i32,f32)`, `(i64,f64)`).
+`scripts/gen_instantiations.py` extracts these lists from the `explicit template instantiation` blocks of the `.cpp`
+files, which avoids any missing symbol. On the C++ side, the classes are named `Encoder_polar_int32`,
+`Modem_BPSK_int32_float32_float32` (pystreampu convention); on the Python side, the dtypes are given under the names
+of the AFF3CT template parameters (`B=`, `R=`, `Q=`…), or `dtype=` when there is only one:
 
 ```python
 import streampu as spu
 enc = aff3ct.enc.polar(K, N, frozen_bits, B=spu.int64)              # -> _ext.enc.Encoder_polar_int64
 mdm = aff3ct.mdm.bpsk(N, B=spu.int16, R=spu.float32, Q=spu.int16)
-dec = aff3ct.dec.polar(K, N, frozen_bits, B=spu.int8)               # Q = int8 : seule valeur compilée avec B=int8
+dec = aff3ct.dec.polar(K, N, frozen_bits, B=spu.int8)               # Q = int8: the only value compiled with B=int8
 ```
 
-Résolution (`aff3ct/_dispatch.py`) : les dtypes donnés sont gardés ; un paramètre absent prend la **seule valeur
-compatible** avec les autres quand elle est unique (`B=int8` ⇒ `Q=int8`), sinon son **défaut**. Les défauts de `B`,
-`R` et `Q` sont ceux de la précision 32 bits de la CLI AFF3CT (`B=int32`, `R=Q=float32`) et non les défauts C++
-littéraux, qui peuvent désigner une combinaison non compilée (`Quantizer<R = float, Q = int>`) ; `Q = R` est respecté.
-Une combinaison absente ou ambiguë lève une `TypeError` qui liste les combinaisons disponibles.
+Resolution (`aff3ct/_dispatch.py`): the given dtypes are kept; a missing parameter takes the **only value
+compatible** with the others when it is unique (`B=int8` ⇒ `Q=int8`), otherwise its **default**. The defaults of `B`,
+`R` and `Q` are those of the 32-bit precision of the AFF3CT CLI (`B=int32`, `R=Q=float32`) and not the literal C++
+defaults, which can designate a combination that is not compiled (`Quantizer<R = float, Q = int>`); `Q = R` is respected.
+A missing or ambiguous combination raises a `TypeError` that lists the available combinations.
 
-*Templates indexables* : chaque sous-module Python regroupe les instances d'une classe template
-(`_ext.enc.Encoder_int8` … `Encoder_int64`) en un objet `Template` : `isinstance(enc, af.enc.Encoder)` quel que soit
-`B`, `af.enc.Encoder[spu.int16]` pour une instance, `af.dec.Decoder_SIHO[spu.int32, spu.float32]`. Les noms suffixés
-restent dans `aff3ct._ext` ; le regroupement est automatique (`aff3ct._dispatch.export`), les classes ajoutées
-apparaissent donc sans code Python.
+*Indexable templates*: each Python submodule groups the instances of a class template
+(`_ext.enc.Encoder_int8` … `Encoder_int64`) into a `Template` object: `isinstance(enc, af.enc.Encoder)` whatever
+`B`, `af.enc.Encoder[spu.int16]` for one instance, `af.dec.Decoder_SIHO[spu.int32, spu.float32]`. The suffixed names
+stay in `aff3ct._ext`; the grouping is automatic (`aff3ct._dispatch.export`), so added classes appear without
+Python code.
 
-**R4 — Factory-only (orange).** Les classes dont le template porte des paramètres de *politique* (`API_polar`,
-`Update_rule`, `MAX`, pointeurs de fonctions `F/G/H`, `PSI`…) ne sont pas instanciées par le wrapper : la factory
-choisit l'implémentation (`Decoder_polar` avec `implem="FAST"`, `Decoder_LDPC` avec `type="BP_HORIZONTAL_LAYERED"` et
-`implem="NMS"`…). Le résultat est renvoyé sous le type enregistré le plus dérivé (polymorphisme pybind11) : par
-exemple `Decoder_SIHO_int32_float32`, avec toutes ses tâches. Les familles intermédiaires sans politique
-(`Decoder_LDPC_BP`, `Decoder_RSC_BCJR`, `Decoder_turbo`…) sont enregistrées pour exposer leurs accesseurs (`n_ite`…).
+**R4 — Factory-only (orange).** The classes whose template carries *policy* parameters (`API_polar`,
+`Update_rule`, `MAX`, function pointers `F/G/H`, `PSI`…) are not instantiated by the wrapper: the factory
+chooses the implementation (`Decoder_polar` with `implem="FAST"`, `Decoder_LDPC` with `type="BP_HORIZONTAL_LAYERED"`
+and `implem="NMS"`…). The result is returned under the most derived registered type (pybind11 polymorphism): for
+example `Decoder_SIHO_int32_float32`, with all its tasks. The intermediate families without policies
+(`Decoder_LDPC_BP`, `Decoder_RSC_BCJR`, `Decoder_turbo`…) are registered to expose their accessors (`n_ite`…).
 
-**R5 — Factories transparentes.** L'utilisateur ne crée pas de factory : il appelle la fonction de la famille, qui
-rend le module prêt à l'emploi. En interne : instanciation de la factory, affectation des paramètres passés par
-mots-clés, `build` avec les dtypes demandés.
+**R5 — Transparent factories.** The user does not create a factory: they call the function of the family, which
+returns the module ready to use. Internally: instantiation of the factory, assignment of the parameters passed as
+keywords, `build` with the requested dtypes.
 
 ```python
-dec = af.dec.polar(K, N_cw=N, frozen_bits=fb, type="SCL", implem="FAST", L=8)    # Decoder_SIHO prêt à l'emploi
+dec = af.dec.polar(K, N_cw=N, frozen_bits=fb, type="SCL", implem="FAST", L=8)    # Decoder_SIHO ready to use
 ```
 
-Les paramètres gardent **les noms des attributs des factories AFF3CT** (`N_cw`, `type`, `implem`, `n_ite`, `L`…),
-sans table de traduction à maintenir.
+The parameters keep **the names of the attributes of the AFF3CT factories** (`N_cw`, `type`, `implem`, `n_ite`, `L`…),
+with no translation table to maintain.
 
-- Les mots-clés acceptés = paramètres publics de la factory (extraits dans `aff3ct_api.json` avec leurs défauts) +
-  arguments de `build` (`frozen_bits`, `crc`, `encoder`…) + dtypes. Signatures, docstrings et stubs sont **générés**
-  depuis l'empreinte : une évolution amont d'un paramètre de factory apparaît dans le rapport de suivi et se répercute
-  par régénération.
-- Un paramètre inconnu lève une `TypeError` qui liste les paramètres valides (pas d'affectation silencieuse).
-- Sans factory (classe simple), la même fonction appelle directement le constructeur : l'utilisateur ne voit pas la
-  différence.
-- Usage avancé, explicitement opt-in dans `aff3ct.factory` (les fonctions suffisent au quotidien) :
+- Accepted keywords = public parameters of the factory (extracted in `aff3ct_api.json` with their defaults) +
+  arguments of `build` (`frozen_bits`, `crc`, `encoder`…) + dtypes. Signatures, docstrings and stubs are **generated**
+  from the fingerprint: an upstream change of a factory parameter appears in the tracking report and is carried over
+  by regeneration.
+- An unknown parameter raises a `TypeError` that lists the valid parameters (no silent assignment).
+- Without a factory (simple class), the same function calls the constructor directly: the user does not see the
+  difference.
+- Advanced use, explicitly opt-in in `aff3ct.factory` (the functions are enough day to day):
 
   ```python
-  f = af.factory.Decoder_polar.from_cli("--dec-type SCL --dec-L 8")   # sur la classe : crée la factory
-  f.K, f.N_cw = K, N                                                  # paramètres = attributs
-  f.from_cli("--dec-implem NAIVE")                                    # sur une instance : la met à jour
-  dec = f.build(fb, B=spu.int16)                                      # builder choisi selon les dtypes
+  f = af.factory.Decoder_polar.from_cli("--dec-type SCL --dec-L 8")   # on the class: creates the factory
+  f.K, f.N_cw = K, N                                                  # parameters = attributes
+  f.from_cli("--dec-implem NAIVE")                                    # on an instance: updates it
+  dec = f.build(fb, B=spu.int16)                                      # builder chosen from the dtypes
   f.parameters, f.headers(), f.print_help(), f.clone()
   ```
 
-  `from_cli` passe par le parseur `cli::Argument_handler` d'AFF3CT (parité exacte avec la CLI) ; un argument inconnu
-  ou d'une autre factory lève une `ValueError`.
+  `from_cli` goes through the `cli::Argument_handler` parser of AFF3CT (exact parity with the CLI); an unknown argument
+  or one of another factory raises a `ValueError`.
 
-**R6 — Ownership et durée de vie.**
+**R6 — Ownership and lifetime.**
 
-- `build()` / constructeurs : `return_value_policy::take_ownership`.
-- Objets gardés par référence dans un module : `py::keep_alive<1, n>()` sur le constructeur, et `<0, n>` sur `build()`.
-  Cas recensés par les arêtes `uses` : `Interleaver(core)`, `Encoder_turbo(enc_n, enc_i, itl)`, `Decoder_turbo(siso_n, siso_i, itl)`,
+- `build()` / constructors: `return_value_policy::take_ownership`.
+- Objects kept by reference in a module: `py::keep_alive<1, n>()` on the constructor, and `<0, n>` on `build()`.
+  Cases listed by the `uses` edges: `Interleaver(core)`, `Encoder_turbo(enc_n, enc_i, itl)`, `Decoder_turbo(siso_n, siso_i, itl)`,
   `Decoder_RA(itl)`, `Decoder_*_CA(crc)`, `Decoder_ML/chase(encoder)`, `Encoder_LDPC(G/H)`, `Decoder_LDPC_*(H)`,
-  `Modem_generic(constellation)`, `Channel_*(generator)`, `Puncturer_polar(fb_generator)`. Pour chaque cas, on vérifie dans
-  le source C++ s'il s'agit d'une copie ou d'une référence, et un test `gc.collect()` le couvre.
-- `deep_copy` / `clone` des modules (utilisés par `Sequence` multi-thread) : on vérifie que les références internes
-  sont re-câblées (comme le fait AFF3CT pour `Decoder_turbo`) avant d'exposer un module en multi-thread.
+  `Modem_generic(constellation)`, `Channel_*(generator)`, `Puncturer_polar(fb_generator)`. For each case, the C++
+  source is checked for a copy or a reference, and a `gc.collect()` test covers it.
+- `deep_copy` / `clone` of the modules (used by the multi-threaded `Sequence`): we check that the internal references
+  are rewired (as AFF3CT does for `Decoder_turbo`) before exposing a module in multi-threading.
 
-**R7 — Conversions de types (fluidité).**
+**R7 — Type conversions (smoothness).**
 
 | C++ | Python |
 |---|---|
-| `std::vector<bool>` (frozen bits) | `numpy.ndarray[bool]` (et liste acceptée) |
-| `std::vector<T>` / `std::vector<std::vector<T>>` | `numpy.ndarray` / liste de listes |
-| `tools::Sparse_matrix` | classe liée + `to_scipy()` / `from_scipy()` / `from_dense()` ; `aff3ct.tools.ldpc.read_alist(path)` |
-| `tools::Noise<R>` (`Sigma`…) | classe liée + acceptation d'un `float` (`sigma=`) |
-| enums `*_implem` (`STD`, `FAST`, `GSL`, `MKL`) | `py::enum_` + chaîne acceptée (`"FAST"`) |
-| chemins de fichiers | `str` ou `os.PathLike` |
-| fonctions `esn0_to_sigma`, `ebn0_to_esn0`, `sigma_to_esn0`, `esn0_to_ebn0` | `aff3ct.tools.*`, vectorisées numpy |
+| `std::vector<bool>` (frozen bits) | `numpy.ndarray[bool]` (and list accepted) |
+| `std::vector<T>` / `std::vector<std::vector<T>>` | `numpy.ndarray` / list of lists |
+| `tools::Sparse_matrix` | bound class + `to_scipy()` / `from_scipy()` / `from_dense()`; `aff3ct.tools.ldpc.read_alist(path)` |
+| `tools::Noise<R>` (`Sigma`…) | bound class + a `float` accepted (`sigma=`) |
+| `*_implem` enums (`STD`, `FAST`, `GSL`, `MKL`) | `py::enum_` + string accepted (`"FAST"`) |
+| file paths | `str` or `os.PathLike` |
+| functions `esn0_to_sigma`, `ebn0_to_esn0`, `sigma_to_esn0`, `esn0_to_ebn0` | `aff3ct.tools.*`, numpy-vectorized |
 
-**R8 — Exceptions.** AFF3CT lève les exceptions `spu::tools::*` (`invalid_argument` ×313, `runtime_error` ×235…),
-traduites par pystreampu (`streampu.exceptions`). *Vérifié en phase 1* malgré la copie statique de StreamPU propre à
-`aff3ct._ext` : une erreur levée dans libaff3ct arrive en `streampu.exceptions.InvalidArgument` avec le message
-AFF3CT complet (`test_aff3ct_exceptions_are_the_streampu_ones`). Les erreurs propres au wrapper sont des exceptions
-Python standards (`TypeError` pour les dtypes et paramètres inconnus, `ValueError` pour la CLI).
+**R8 — Exceptions.** AFF3CT raises the `spu::tools::*` exceptions (`invalid_argument` ×313, `runtime_error` ×235…),
+translated by pystreampu (`streampu.exceptions`). *Checked in phase 1* despite the static copy of StreamPU of
+`aff3ct._ext`: an error raised in libaff3ct arrives as `streampu.exceptions.InvalidArgument` with the full AFF3CT
+message (`test_aff3ct_exceptions_are_the_streampu_ones`). The errors of the wrapper itself are standard Python
+exceptions (`TypeError` for unknown dtypes and parameters, `ValueError` for the CLI).
 
-**R8 bis — Type des modules renvoyés par pystreampu.** pybind11 type un `Module*` renvoyé (modules d'une `Sequence`,
-`task.module`…) d'après son type dynamique exact ; si cette classe concrète n'est pas enregistrée
-(`CRC_polynomial_fast<int>`, et surtout les 47 classes « factory-only »), il retombe sur `Module` : les tâches restent
-utilisables mais les accesseurs AFF3CT sont perdus. *Constaté en phase 1*. **Décision et réalisation** : registre de
-« downcasters » dans pystreampu (mergé sur `develop`, en-tête
-`wrapper/Common/Tools/Module_downcast.hpp`) — spécialisation de `pybind11::polymorphic_type_hook<spu::module::Module>`
-qui, pour un type dynamique non enregistré, interroge les downcasters inscrits par les extensions (stockés dans les
-*shared data* des internals pybind11, donc partagés malgré les copies de StreamPU ; mutex pour le mode sans GIL).
-Côté pyaff3ct, chaque `py::class_` de module appelle `add_module_class<T>()` (bases d'abord) et un seul downcaster
-renvoie la classe enregistrée la plus dérivée (`internal/Common/Tools/downcast.hpp`). Détection à la compilation
-(`__has_include`, `aff3ct._ext.HAS_STREAMPU_DOWNCAST_REGISTRY`) : avec un pystreampu sans registre, tout fonctionne
-sauf ce typage (test en `xfail`). Tests : clones d'une `Sequence` à 2 threads typés `CRC_int16` avec leurs
-accesseurs ; toute classe de module enregistrée est inscrite (`_N_MODULE_CLASSES`). La CI construit pystreampu
-depuis `develop` ; à faire à sa prochaine publication : exiger cette version de streampu dans `pyproject.toml`.
+**R8 bis — Type of the modules returned by pystreampu.** pybind11 types a returned `Module*` (modules of a `Sequence`,
+`task.module`…) after its exact dynamic type; if this concrete class is not registered
+(`CRC_polynomial_fast<int>`, and above all the 47 "factory-only" classes), it falls back to `Module`: the tasks remain
+usable but the AFF3CT accessors are lost. *Observed in phase 1*. **Decision and implementation**: a registry of
+"downcasters" in pystreampu (merged into `develop`, header
+`wrapper/Common/Tools/Module_downcast.hpp`) — a specialization of `pybind11::polymorphic_type_hook<spu::module::Module>`
+that, for an unregistered dynamic type, queries the downcasters registered by the extensions (stored in the
+*shared data* of the pybind11 internals, hence shared despite the copies of StreamPU; mutex for the free-threaded mode).
+On the pyaff3ct side, each module `py::class_` calls `add_module_class<T>()` (bases first) and a single downcaster
+returns the most derived registered class (`internal/Common/Tools/downcast.hpp`). Detection at compile time
+(`__has_include`, `aff3ct._ext.HAS_STREAMPU_DOWNCAST_REGISTRY`): with a pystreampu without the registry, everything
+works except this typing (`xfail` test). Tests: clones of a 2-thread `Sequence` typed `CRC_int16` with their
+accessors; every registered module class is registered (`_N_MODULE_CLASSES`). The CI builds pystreampu
+from `develop`; to do at its next release: require this version of streampu in `pyproject.toml`.
 
-**R9 — Non exposé.** 88 classes outils (API polaires SIMD, règles de mise à jour LDPC, réseaux de tri, PRNG, arbres,
-`Reorderer`, constantes DVB-S2, `Contents_*`…) : ce sont des détails d'implémentation choisis par les factories.
+**R9 — Not exposed.** 88 tool classes (SIMD polar APIs, LDPC update rules, sorting networks, PRNGs, trees,
+`Reorderer`, DVB-S2 constants, `Contents_*`…): these are implementation details chosen by the factories.
 
-**R10 — Documentation.** Docstrings `R"pbdoc(...)"` sur chaque classe, propriété et `build` (format Google, comme
-pystreampu) ; stubs `.pyi` générés ; pages mkdocs générées depuis l'inventaire.
+**R10 — Documentation.** `R"pbdoc(...)"` docstrings on every class, property and `build` (Google format, as
+pystreampu); generated `.pyi` stubs; mkdocs pages generated from the inventory.
 
-## 5. API Python visée (exemple de bout en bout)
+## 5. Target Python API (end-to-end example)
 
 ```python
 import numpy as np
@@ -292,344 +292,343 @@ src = af.src.random(K, B=spu.int32)                                  # Source_ra
 enc = af.enc.polar(K, N_cw=N, frozen_bits=fb)
 mdm = af.mdm.bpsk(N)
 chn = af.chn.awgn_llr(N, seed=42)
-dec = af.dec.polar(K, N_cw=N, frozen_bits=fb, type="SC", implem="FAST")   # factory Decoder_polar, cachée
+dec = af.dec.polar(K, N_cw=N, frozen_bits=fb, type="SC", implem="FAST")   # Decoder_polar factory, hidden
 mnt = af.mnt.bfer(K, max_fe=100)
 
-cp  = spu.array([sigma], dtype=spu.float32)          # paramètre de canal (socket CP)
-u   = src.generate()[0]                               # generate -> (out_data, out_count), comme pystreampu
+cp  = spu.array([sigma], dtype=spu.float32)          # channel parameter (CP socket)
+u   = src.generate()[0]                               # generate -> (out_data, out_count), as pystreampu
 y   = chn.add_noise(cp, mdm.modulate(enc.encode(u)))
 v   = dec.decode_siho(mdm.demodulate(cp, y))
 mnt.check_errors(u, v)
 
-seq = spu.Sequence(mnt["check_errors::status"], n_threads=8)   # API de pystreampu
-seq.exec()                                              # arrêt : Monitor_BFER implémente Interface_is_done
+seq = spu.Sequence(mnt["check_errors::status"], n_threads=8)   # pystreampu API
+seq.exec()                                              # stop: Monitor_BFER implements Interface_is_done
 print(af.reporter.Reporter_BFER(mnt))
 ```
 
-Les noms des tâches et sockets sont ceux d'AFF3CT (`generate`, `encode`, `modulate`, `add_noise`,
-`demodulate(CP, Y_N1)`, `decode_siho`, `check_errors`). L'appel et le binding par position ou par nom suivent les
-règles de pystreampu. Deux helpers restent à créer : `af.tools.polar.frozen_bits` (sucre au-dessus de
-`Frozenbits_generator_*`) et l'arrêt de `Sequence.exec()` via le moniteur (à valider dès la phase 2 ; sinon,
-`exec_n_times` ou un `stop_condition` à exposer dans pystreampu).
+The names of the tasks and sockets are those of AFF3CT (`generate`, `encode`, `modulate`, `add_noise`,
+`demodulate(CP, Y_N1)`, `decode_siho`, `check_errors`). Calls and bindings by position or by name follow the
+rules of pystreampu. Two helpers remain to be created: `af.tools.polar.frozen_bits` (sugar on top of
+`Frozenbits_generator_*`) and the stop of `Sequence.exec()` through the monitor (to be validated in phase 2;
+otherwise, `exec_n_times` or a `stop_condition` to expose in pystreampu).
 
-## 6. Feuille de route
+## 6. Roadmap
 
-Chaque phase se termine par une MR, et sa **Definition of Done** inclut : compilation OK, `pytest` vert,
-inventaire mis à jour (`done`), docstrings présentes.
+Each phase ends with an MR, and its **Definition of Done** includes: compilation OK, `pytest` green,
+inventory updated (`done`), docstrings present.
 
-### Phase 0 — Amorçage du dépôt ✅ (livrée avec la phase 1)
-- `pyproject.toml` (scikit-build-core, `pybind11==3.0.4`, `streampu` requis au build), `CMakeLists.txt`, sous-module
-  `lib/aff3ct` épinglé sur `e1b5296` (v4.7.2) avec ses sous-modules `cli` (+ `rang`), `MIPP`, `date`.
-- AFF3CT compilé en statique `MULTI_PREC`, `AFF3CT_INCLUDE_SPU_LIB=OFF`, lié à la StreamPU installée par pystreampu
-  (`find_package(cpptrace)` puis `find_package(StreamPU)`, comme `examples/custom_cpp_module`).
-- Base SIMD commune `PYAFF3CT_ARCH_FLAGS` (défaut `-msse4.2` sur x86-64 : MIPP s'arrête à l'exécution avec la base
-  SSE2, cf. AFF3CT `420db34` ; `-march=native` pour un build local).
-- `scripts/dev_build.sh` : build de développement (`build/dev`) et lien de `_ext` dans `aff3ct/` pour `pytest`.
-- Reste à faire : CI (build + tests Linux/macOS) et vérification du `pip install .` complet.
+### Phase 0 — Repository bootstrap ✅ (delivered with phase 1)
+- `pyproject.toml` (scikit-build-core, `pybind11==3.0.4`, `streampu` required at build time), `CMakeLists.txt`,
+  `lib/aff3ct` submodule pinned at `e1b5296` (v4.7.2) with its submodules `cli` (+ `rang`), `MIPP`, `date`.
+- AFF3CT compiled as static `MULTI_PREC`, `AFF3CT_INCLUDE_SPU_LIB=OFF`, linked to the StreamPU installed by pystreampu
+  (`find_package(cpptrace)` then `find_package(StreamPU)`, as `examples/custom_cpp_module`).
+- Common SIMD baseline `PYAFF3CT_ARCH_FLAGS` (default `-msse4.2` on x86-64: MIPP stops at runtime with the
+  SSE2 baseline, see AFF3CT `420db34`; `-march=native` for a local build).
+- `scripts/dev_build.sh`: development build (`build/dev`) and link of `_ext` into `aff3ct/` for `pytest`.
+- Left to do: CI (build + tests Linux/macOS) and check of the full `pip install .`.
 
-### Phase 1 — Socle (infrastructure générique) ✅
-- `internal/include/internal/Common/Tools` : `combos.hpp` / `dtypes.hpp` (enregistrement d'une classe par
-  combinaison de dtypes, noms suffixés pystreampu), `casters.hpp` (`std::vector<bool>` ↔ `numpy.ndarray[bool]`).
-- `scripts/gen_instantiations.py` → `internal/include/internal/Generated/instantiations.hpp` et
-  `aff3ct/_generated/instantiations.py` : combinaisons compilées (201 templates, 81 builders de factory), défauts
-  précision 32 bits.
-- Interfaces AFF3CT (6), 13 bases abstraites de modules (convention d'accesseurs R2), `Noise` / `Sigma` /
+### Phase 1 — Foundation (generic infrastructure) ✅
+- `internal/include/internal/Common/Tools`: `combos.hpp` / `dtypes.hpp` (registration of one class per
+  dtype combination, pystreampu suffixed names), `casters.hpp` (`std::vector<bool>` ↔ `numpy.ndarray[bool]`).
+- `scripts/gen_instantiations.py` → `internal/include/internal/Generated/instantiations.hpp` and
+  `aff3ct/_generated/instantiations.py`: compiled combinations (201 templates, 81 factory builders), 32-bit
+  precision defaults.
+- AFF3CT interfaces (6), 13 abstract module bases (R2 accessor convention), `Noise` / `Sigma` /
   `Event_probability` / `Received_optical_power`.
-- `factory::Factory` : `from_cli` (classe ou instance), `parameters`, `headers`, `print_help`, `clone`, paramètres par
-  mots-clés, builders choisis selon les dtypes ; moteur des factories transparentes `_factory.build`.
-  Factory jouet : `CRC` (construit de vrais modules dont les tâches s'exécutent via pystreampu).
-- `aff3ct/_dispatch.py` : résolution des dtypes et `Template` indexables, export automatique par sous-module.
-- Tests : import, dispatch (dont `uint*` refusés), héritage pystreampu, convention d'accesseurs, absence de conflit
-  attribut/tâche, casters, bruit, factory (mots-clés ≡ `from_cli`, erreurs, `headers`, `clone`, build par dtype,
-  exécution des tâches `build`/`extract` d'un CRC).
+- `factory::Factory`: `from_cli` (class or instance), `parameters`, `headers`, `print_help`, `clone`, parameters as
+  keywords, builders chosen from the dtypes; engine of the transparent factories `_factory.build`.
+  Toy factory: `CRC` (builds real modules whose tasks run through pystreampu).
+- `aff3ct/_dispatch.py`: dtype resolution and indexable `Template`s, automatic export per submodule.
+- Tests: import, dispatch (`uint*` refused included), pystreampu inheritance, accessor convention, no
+  attribute/task conflict, casters, noise, factory (keywords ≡ `from_cli`, errors, `headers`, `clone`, build per dtype,
+  execution of the `build`/`extract` tasks of a CRC).
 
-### Phase 2 — MVP : chaîne BFER complète (priorité **P0**, 93 entrées)
-- **D'abord** ✅ : générateur `scripts/gen_factories.py` (depuis `aff3ct_api.json`, `instantiations.py` et
-  `status.json`) → une unité C++ par factory (79 factories, 88 builders : paramètres `def_param`, sous-factories en
-  références, builders par dtype, builders non templates en `_<builder>_raw`) et `aff3ct/_generated/functions.py`
-  (55 fonctions de famille, exportées par chaque sous-module). Règles appliquées :
-  - **Positionnels** : les tailles (`K`, `N_cw`, `N`) de la factory la plus haute de la famille qui en déclare
-    (`Decoder` → `K, N_cw` ; `Monitor_BFER` → `K` ; le `N` de `Decoder_LDPC` reste un mot-clé), puis les arguments du
-    builder ; **mots-clés seuls** : tous les autres paramètres (`None` = défaut AFF3CT) et les dtypes (`B=`, `Q=`…).
-  - **Un builder = une fonction** : `polar` (`build`), `polar_siso`, `polar_gen` ; les surcharges d'un builder
-    (`Channel.build()` / `build(dist)`) sont fusionnées, pybind11 choisit d'après les arguments donnés.
-  - Arguments optionnels : liés aussi en surcharges tronquées (pybind11 ne charge pas `None` vers un pointeur de type
-    non wrappé) ; un défaut non littéral (`std::ostream& stream = std::cout`) n'est pas exposé.
-  - Une fonction n'est générée que si la classe renvoyée est wrappée (module : une base wrappée suffit, grâce au
-    registre de downcasters ; outil : le type exact) ; les autres sont listées dans `SKIPPED` (28 : `Codec_*`,
-    `Frozenbits_generator`, `Interleaver_core`, `Constellation`…) et apparaîtront en wrappant ces outils.
-  - `Codec` et `Decoder` (bases de famille) sont liées sans constructeur ; `Terminal.build` est écarté
-    (`vector<unique_ptr<Reporter>>`, utiliser `streampu.Terminal_std`).
-  - Convention AFF3CT à connaître : un bit vaut 0 ou « non nul » ; les moniteurs comparent en booléens.
-    `aff3ct.tools.hard(x)` (socket ou tableau) en donne la vue 0 / 1. Mesuré par `scripts/probe_bit_convention.py`
-    → `docs/design/bit_convention.md` (à relancer à chaque évolution d'AFF3CT) : sur 100 combinaisons
-    (fonction × type × implem × dtypes), les encodeurs rendent toujours 0 / 1, et seuls les décodeurs polaires
-    **FAST** (SC, SCL, SCL_MEM, ASCL, ASCL_MEM) et **SCAN** rendent le bit de signe pour un 1 (`-128` en `int8`,
-    `-2147483648` en `int32`), sur `V_K` comme sur `V_N` ; tous décodent correctement.
-  - Défaut des surcharges tronquées corrigé : un argument suivant peut être donné sans les précédents
-    (`encoder=` sans `crc=`), les défauts littéraux étant gardés.
-  - **Interfaces des classes concrètes** ✅ : un module construit par une factory est typé d'après sa base wrappée la
-    plus dérivée (`Decoder_SIHO_int32_float32`) ; plutôt que d'enregistrer chaque classe concrète (les factories les
-    instancient avec des paramètres de template non exposés : `Decoder_polar_SC_fast_sys<B, Q, API_polar>`…), les
-    accesseurs d'une interface sont liés sur les bases dont des enfants l'implémentent (d'après l'empreinte :
-    `Encoder` → `frozen_bits`, `dynamic_frozen_bits`, `pretransform`, `trellis` ; `Decoder` → les trois premiers ;
-    `Extractor` → `frozen_bits`) et atteignent l'interface par `dynamic_cast`
-    (`internal/Common/Tools/interfaces.hpp`). Sur un module qui ne l'implémente pas, ils lèvent `AttributeError` :
-    `hasattr(dec, "frozen_bits")` dit si le décodeur utilise des bits gelés.
-  - **Templates appelables** ✅ : `af.tools.Sigma(0.5)`, `af.itl.Interleaver(core, D=spu.float32)` ; les mots-clés
-    nommés comme les paramètres de template (ou `dtype=`) choisissent l'instance, les autres vont au constructeur.
-  - **Modules header-only** (`module::Interleaver<D, T>`) : leurs combinaisons de dtypes viennent des builders qui les
-    renvoient (`gen_instantiations.py`) ; builders `static` non `const` reconnus (`Interleaver::build`).
-  - Vérifié : chaîne source → `enc.polar` → BPSK → AWGN → `dec.polar` (SC NAIVE/FAST, `int8`/`int16`/`int32`) →
-    `mnt.bfer`, CA-SCL avec un CRC gardé en vie par le décodeur, SISO SCAN.
-- Modules (via les fonctions générées ; vérifiés : polaire, LDPC, BCH, RS, répétition, RSC, BPSK, AWGN, BFER) :
+### Phase 2 — MVP: complete BFER chain (priority **P0**, 93 entries)
+- **First** ✅: generator `scripts/gen_factories.py` (from `aff3ct_api.json`, `instantiations.py` and
+  `status.json`) → one C++ unit per factory (79 factories, 88 builders: `def_param` parameters, sub-factories as
+  references, builders per dtype, non-template builders as `_<builder>_raw`) and `aff3ct/_generated/functions.py`
+  (55 family functions, exported by each submodule). Rules applied:
+  - **Positional**: the sizes (`K`, `N_cw`, `N`) of the highest factory of the family that declares any
+    (`Decoder` → `K, N_cw`; `Monitor_BFER` → `K`; the `N` of `Decoder_LDPC` stays a keyword), then the arguments of the
+    builder; **keyword-only**: all the other parameters (`None` = AFF3CT default) and the dtypes (`B=`, `Q=`…).
+  - **One builder = one function**: `polar` (`build`), `polar_siso`, `polar_gen`; the overloads of a builder
+    (`Channel.build()` / `build(dist)`) are merged, pybind11 chooses from the given arguments.
+  - Optional arguments: also bound as truncated overloads (pybind11 does not load `None` into a pointer of an
+    unwrapped type); a non-literal default (`std::ostream& stream = std::cout`) is not exposed.
+  - A function is generated only if the returned class is wrapped (module: a wrapped base is enough, thanks to the
+    downcaster registry; tool: the exact type); the others are listed in `SKIPPED` (28: `Codec_*`,
+    `Frozenbits_generator`, `Interleaver_core`, `Constellation`…) and will appear when these tools are wrapped.
+  - `Codec` and `Decoder` (family bases) are bound without a constructor; `Terminal.build` is left out
+    (`vector<unique_ptr<Reporter>>`, use `streampu.Terminal_std`).
+  - AFF3CT convention to know: a bit is 0 or "non-zero"; the monitors compare as booleans.
+    `aff3ct.tools.hard(x)` (socket or array) gives the 0 / 1 view. Measured by `scripts/probe_bit_convention.py`
+    → `docs/design/bit_convention.md` (to rerun at each AFF3CT change): over 100 combinations
+    (function × type × implem × dtypes), the encoders always return 0 / 1, and only the **FAST** polar decoders
+    (SC, SCL, SCL_MEM, ASCL, ASCL_MEM) and **SCAN** return the sign bit for a 1 (`-128` in `int8`,
+    `-2147483648` in `int32`), on `V_K` as on `V_N`; all decode correctly.
+  - Default of the truncated overloads fixed: a later argument can be given without the earlier ones
+    (`encoder=` without `crc=`), the literal defaults being kept.
+  - **Interfaces of the concrete classes** ✅: a module built by a factory is typed after its most derived wrapped
+    base (`Decoder_SIHO_int32_float32`); rather than registering each concrete class (the factories instantiate them
+    with template parameters that are not exposed: `Decoder_polar_SC_fast_sys<B, Q, API_polar>`…), the
+    accessors of an interface are bound on the bases whose children implement it (from the fingerprint:
+    `Encoder` → `frozen_bits`, `dynamic_frozen_bits`, `pretransform`, `trellis`; `Decoder` → the first three;
+    `Extractor` → `frozen_bits`) and reach the interface through `dynamic_cast`
+    (`internal/Common/Tools/interfaces.hpp`). On a module that does not implement it, they raise `AttributeError`:
+    `hasattr(dec, "frozen_bits")` tells whether the decoder uses frozen bits.
+  - **Callable templates** ✅: `af.tools.Sigma(0.5)`, `af.itl.Interleaver(core, D=spu.float32)`; the keywords
+    named after the template parameters (or `dtype=`) choose the instance, the others go to the constructor.
+  - **Header-only modules** (`module::Interleaver<D, T>`): their dtype combinations come from the builders that
+    return them (`gen_instantiations.py`); non-`const` `static` builders recognized (`Interleaver::build`).
+  - Checked: chain source → `enc.polar` → BPSK → AWGN → `dec.polar` (SC NAIVE/FAST, `int8`/`int16`/`int32`) →
+    `mnt.bfer`, CA-SCL with a CRC kept alive by the decoder, SISO SCAN.
+- Modules (through the generated functions; checked: polar, LDPC, BCH, RS, repetition, RSC, BPSK, AWGN, BFER):
   `Source_random_fast`, `CRC_polynomial/NO`, `Encoder_{NO,polar,polar_sys,LDPC,LDPC_from_H,BCH,RS,repetition_sys}`,
   `Modem_BPSK(_fast)`, `Channel_{AWGN_LLR,NO}`, `Quantizer_{NO,pow2}`, `Decoder_{NO,repetition,BCH_std,RS_std}` +
-  polaire SC et LDPC BP via factory, `Interleaver`, `Puncturer_NO`, `Monitor_BFER`.
-- Tools ✅ : `Sparse_matrix` (depuis/vers NumPy, `__array__`, `to_scipy` / `from_scipy`, `T`, `turn`…), `AList`, `QC`,
+  polar SC and LDPC BP through a factory, `Interleaver`, `Puncturer_NO`, `Monitor_BFER`.
+- Tools ✅: `Sparse_matrix` (from/to NumPy, `__array__`, `to_scipy` / `from_scipy`, `T`, `turn`…), `AList`, `QC`,
   `LDPC_matrix_handler` (`read` → `(H, info_bits_pos, pct_pattern)`, `transform_H_to_G`), `Galois`,
   `BCH_polynomial_generator`, `RS_polynomial_generator`, `Frozenbits_generator_{GA_Arikan,BEC,file}`
-  (`gen.generate(noise)` → tableau de booléens), `Interleaver_core_*` (les 12 cœurs, tous les `T`) + module
+  (`gen.generate(noise)` → array of booleans), `Interleaver_core_*` (the 12 cores, all the `T`) + module
   `aff3ct.itl.Interleaver`, `Sigma` + conversions (`ebn0_to_esn0`, `esn0_to_sigma`…, `sigma_from_ebn0`),
-  `Reporter_{BFER,noise,throughput}` (avec `spu.Terminal_std`), module `Monitor_BFER` (compteurs `n_fe`, `ber`, `fer`…,
+  `Reporter_{BFER,noise,throughput}` (with `spu.Terminal_std`), module `Monitor_BFER` (counters `n_fe`, `ber`, `fer`…,
   `collect`, callbacks).
-  Notes : dans AFF3CT, `sigma_to_esn0` n'est pas l'inverse de `esn0_to_sigma` (écart de 3,01 dB, facteur 2) ;
-  `H` est stocké verticalement (N lignes, comme les fichiers AList), l'encodeur `type="LDPC_H"` calcule G lui-même
-  et donne `info_bits_pos` au décodeur ; les tailles de `enc.rs` / `dec.rs` sont en symboles.
-- Empreinte : `strip` des commentaires corrigé (un `//` dans un `/* … */`, ici une URL, masquait sa fin) : deux
-  classes manquaient (`RS_polynomial_generator`, `Decoder_RS_std`).
-- **Validation numérique** ✅ (`tests/test_references.py`, < 2 s) : polaire SC (128, 96) GA, BCH (127, 106) t = 3 et
-  LDPC CCSDS (128, 64) BP SPA à 50 itérations, comparés aux références `lib/aff3ct/refs` (FER à 4 écarts-types
-  binomiaux) ; la CI récupère `refs` et, de `conf`, la seule matrice utilisée.
-- Exemple ✅ `examples/polar_bfer.py` (`streampu.Sequence` multi-thread, `Terminal_std`, bits gelés adaptés au bruit
-  par `set_frozen_bits` sur les clones). Restent `examples/ldpc_bfer.py` et un notebook.
-- Constaté côté pystreampu, corrigé dans la v1.2.1 (exigée) : `Terminal_std(reporters)` ne gardait pas ses reporters
-  en vie ; `stop_temp_report` était lié à `start_temp_report`. `Sequence(task)` prend la tâche pour la **première**
-  (le passer par une socket de fin : `Sequence(mnt["check_errors::status"])`).
-- **Réduction multi-thread** ✅ : avec `Monitor_BFER`, chaque thread a son clone et la séquence s'arrête dès qu'**un**
-  clone atteint `max_fe` (FER réduit biaisé vers le haut ; l'original ne compte au mieux que les trames du premier
+  Notes: in AFF3CT, `sigma_to_esn0` is not the inverse of `esn0_to_sigma` (3.01 dB gap, factor 2);
+  `H` is stored vertically (N rows, as the AList files), the `type="LDPC_H"` encoder computes G itself
+  and gives `info_bits_pos` to the decoder; the sizes of `enc.rs` / `dec.rs` are in symbols.
+- Fingerprint: comment `strip` fixed (a `//` inside a `/* … */`, here a URL, hid its end): two
+  classes were missing (`RS_polynomial_generator`, `Decoder_RS_std`).
+- **Numerical validation** ✅ (`tests/test_references.py`, < 2 s): polar SC (128, 96) GA, BCH (127, 106) t = 3 and
+  LDPC CCSDS (128, 64) BP SPA with 50 iterations, compared with the `lib/aff3ct/refs` references (FER within 4
+  binomial standard deviations); the CI fetches `refs` and, from `conf`, the only matrix used.
+- Example ✅ `examples/polar_bfer.py` (multi-threaded `streampu.Sequence`, `Terminal_std`, frozen bits adapted to the
+  noise through `set_frozen_bits` on the clones). Remaining: `examples/ldpc_bfer.py` and a notebook.
+- Found on the pystreampu side, fixed in v1.2.1 (required): `Terminal_std(reporters)` did not keep its reporters
+  alive; `stop_temp_report` was bound to `start_temp_report`. `Sequence(task)` takes the task as the **first** one
+  (pass it through an end socket: `Sequence(mnt["check_errors::status"])`).
+- **Multi-thread reduction** ✅: with `Monitor_BFER`, each thread has its clone and the sequence stops as soon as
+  **one** clone reaches `max_fe` (reduced FER biased upwards; the original counts at best the frames of the first
   thread).
-  Classe propre à pyaff3ct, temporaire, d'après `Monitor_BFER_AR` de py_aff3ct :
+  Class specific to pyaff3ct, temporary, after the `Monitor_BFER_AR` of py_aff3ct:
   `internal/include/internal/Module/Monitor/BFER_AR/Monitor_BFER_AR.hpp` → `af.mnt.Monitor_BFER_AR(K, max_fe)`.
-  Elle dérive de `Monitor_BFER<B>` (les reporters et accesseurs restent valables) ; ses clones partagent des totaux
-  (mutex) recopiés dans le clone et dans l'original à chaque trame, `is_done()` relit les totaux, `reset()` les
-  remet à zéro. Les classes de pyaff3ct sont déclarées dans `PYAFF3CT_TEMPLATES` (`_dispatch.py`) pour le
-  regroupement par dtype. Vérifié : 4 threads → FE total = `max_fe` (+ trames en vol), FER conforme à la référence
-  polaire. À retirer si AFF3CT / pystreampu offrent l'équivalent (`Monitor_reduction`).
+  It derives from `Monitor_BFER<B>` (the reporters and accessors remain valid); its clones share totals
+  (mutex) copied into the clone and into the original at each frame, `is_done()` reads the totals again, `reset()`
+  zeroes them. The pyaff3ct classes are declared in `PYAFF3CT_TEMPLATES` (`_dispatch.py`) for the
+  grouping by dtype. Checked: 4 threads → total FE = `max_fe` (+ frames in flight), FER consistent with the polar
+  reference. To remove if AFF3CT / pystreampu offer the equivalent (`Monitor_reduction`).
 
-### Phase 3 — Couverture cœur (priorité **P1**, 229 entrées) ✅
-- Toutes les familles restantes « mainstream » : Turbo/RSC (+ `Post_processing_SISO`, `Flip_and_check`, `Scaling_factor`),
-  RA, Repetition, Conv/Viterbi, Polar SCL/ASCL/SCF/SCAN, LDPC (toutes les règles via factory), Modem générique
-  (`Constellation_*`), OOK, Rayleigh, BEC/BSC, `Extractor_*`, `Puncturer_*`, `Quantizer_custom`, générateurs de bruit.
-- `Codec_*` (via factories) : propriétés `encoder`, `decoder_siso`, `decoder_siho`, `extractor`, `puncturer`.
-- **Codecs** ✅ (en cours de phase 3) : sous-module `aff3ct.codec`, une fonction par famille (`polar`, `ldpc`, `turbo`,
+### Phase 3 — Core coverage (priority **P1**, 229 entries) ✅
+- All the remaining "mainstream" families: Turbo/RSC (+ `Post_processing_SISO`, `Flip_and_check`, `Scaling_factor`),
+  RA, Repetition, Conv/Viterbi, Polar SCL/ASCL/SCF/SCAN, LDPC (all the rules through a factory), generic modem
+  (`Constellation_*`), OOK, Rayleigh, BEC/BSC, `Extractor_*`, `Puncturer_*`, `Quantizer_custom`, noise generators.
+- `Codec_*` (through factories): properties `encoder`, `decoder_siso`, `decoder_siho`, `extractor`, `puncturer`.
+- **Codecs** ✅ (during phase 3): submodule `aff3ct.codec`, one function per family (`polar`, `ldpc`, `turbo`,
   `turbo_db`, `turbo_product`, `bch`, `rs`, `rsc`, `rsc_db`, `conv`, `ra`, `repetition`, `uncoded`, `polar_mk`,
-  `polar_pac`, `polar_pt`) ; classes `Codec_*` (bases `Codec`, `Codec_HIHO/SIHO/SISO`) avec les modules en propriétés
-  (`encoder`, `decoder_siho`, `decoder_siso`, `puncturer`, `extractor`, `interleaver` ; `None` si absent), qui gardent
-  le codec en vie, et les accesseurs propres (`frozen_bits`, `trellis`, `H`, `GF`…).
-  - Signature : `K`, `N_cw` et les arguments du builder (`crc`) positionnels ; `N` (taille de trame : une autre valeur
-    que `N_cw` ajoute le poinçonneur) ; les paramètres des sous-factories **préfixés** par le nom de la
-    sous-factory, comme les options de la ligne de commande (`dec_type`, `dec_L`, `enc_systematic`, `fbg_noise`,
-    `pct_pattern`, `itl_core_type`…) ; les sous-factories sœurs de même préfixe CLI sont réglées ensemble
-    (`enc_sub_standard` → `enc.sub1` et `enc.sub2`, comme `--enc-sub-std`) ; dtypes `B=`, `Q=`.
-  - Les types dynamiques des sous-factories n'étant connus qu'à l'exécution, les fonctions sont construites à
-    l'import (`aff3ct/codec.py`, depuis `CODECS` généré) : `inspect.signature` et `help()` les listent toutes.
-    `af.codec.turbo.factory(...)` (mêmes arguments) rend la factory configurée (`headers()` comme le simulateur).
-  - Les paramètres sont ceux des factories : une option CLI qui en règle plusieurs doit être traduite
-    (`--dec-sf-type` → `dec_sf_enable=True, dec_sf_type=...`) ; `from_cli` reste disponible.
-  - `cdc.set_noise(noise)` agit sur les modules du codec, pas sur leurs clones d'une `Sequence` multi-thread
-    (bits gelés adaptatifs : `set_frozen_bits` sur les clones, comme `examples/polar_bfer.py`).
-  - Générateur : factories templates à arguments par défaut liées (`Decoder_turbo<>`, `Encoder_turbo<>` : `dec_n_ite`,
-    `dec_sub_*`, `dec_sf_*`…), leurs builders prenant les combinaisons du module renvoyé ; `enable_puncturer` lié.
-  - Validé contre `refs` : RA (4096, 1024) MS 10 itérations et turbo LTE (K = 2048, CRC 24-LTEA, poinçonnage
-    `11,10,01`, 8 itérations, facteur d'échelle LTE_VEC), à 4 threads ; `examples/ldpc_bfer.py` (codec LDPC).
-- **Modems et canaux** ✅ : `Constellation_{PAM,PSK,QAM,user}` (`symbols` en tableau complexe, `bps`…) ;
-  `af.mdm.modem(N, type="QAM", bps=4)` construit (et garde) la constellation des types génériques, comme le
-  simulateur, et une constellation donnée fixe le type ; `af.mdm.modem(N, symbols=...)` pour une constellation
-  quelconque sans objet ni fichier (constructeur protégé `Constellation(symbols, name)` d'AFF3CT, exposé par
-  `af.tools.Constellation(symbols, normalize=True)` ; symbole `i` = image des bits de `i`, premier bit de poids
-  faible) ; `mdm.N_mod` donne la taille du canal. Canaux AWGN,
-  Rayleigh (`add_noise_wg` → `demodulate_wg`, `complex=True`), BEC et BSC (modem `OOK` avec `channel_type`, moniteur
-  `count_unknown_values=True` comme le simulateur pour un bruit EP) validés contre `refs` (non codé : 16-QAM AWGN,
-  QPSK Rayleigh, OOK BEC / BSC, BER à 5 écarts-types). Générateur : les templates d'outils header-only qui
-  transmettent leurs paramètres à leur base en prennent les combinaisons (`Constellation_QAM<R>`).
-- **Décodeurs et outils polaires** ✅ : `Polar_code` (mono / multi-noyaux), `Frozenbits_generator_{GA,RM,5G,TV}`,
-  `Pretransform_generator(_file)`. `from_cli(args, strict=False)` : une ligne de commande AFF3CT complète donnée à
-  chaque factory, qui n'en prend que ses arguments. `tests/test_references.py` reconstruit les chaînes **depuis la
-  ligne de commande des références** (source, CRC, codec, modem, canal ; tailles propagées et AZCW comme
-  `BFER_std.cpp`, poinçonneur activé comme les lanceurs polaire / turbo / LDPC) : CA-ASCL polaire raccourci,
-  Viterbi, BCJR, répétition, LDPC BP flooding SPA / AMS (min, min*), layered NMS, Gallager A / B / E, WBF, MWBF,
-  LDPC NMS sur BEC et BSC (bruit EP). La CI récupère les 4 matrices utilisées.
-  Restent sans fonction : `Scaling_factor`, `Flip_and_check` (post-traitements internes aux décodeurs turbo, réglés
-  par les codecs : `dec_sf_*`, `dec_fnc_*`).
-- **Clôture de la phase 3** ✅ :
-  - **Build après `from_cli`** : `_complete()` (le `store()` d'AFF3CT sur une ligne de commande vide) perdait ce
-    qu'AFF3CT ne dérive qu'en lisant la ligne de commande (taille de trame du poinçonneur depuis `-N`, sizes BCH
-    depuis `-T`). Les arguments des `from_cli` sont mémorisés (`_CLI`, par factory) et rejoués au build
-    (`_complete_cli`), puis les paramètres changés depuis le dernier `from_cli` sont réappliqués. Sans ligne de
-    commande, un `t` BCH cohérent avec les tailles est conservé (`n_rdncy(N, t) = N - K`).
-  - **Précisions fixes** : chaînes 8 et 16 bits (`-p`) avec quantificateur après le démodulateur, comme
-    `Simulation_BFER_std.cpp` (défauts de quantification des lanceurs) ; conversion Eb/N0 avec le nombre de bits par
-    symbole du modem (`Noise.cpp`).
-  - **Références vérifiées depuis leur ligne de commande** (33, `tests/test_references.py`, ~80 s en séquentiel) :
-    polaire SC 8/16 bits, SCAN 16 bits, RSC 8/16 bits, répétition 8/16 bits, RSC double binaire (DVB-RCS2), turbo
-    double binaire (DVB-RCS1 / RCS2 : QPSK, CRC, facteur d'échelle adaptatif, flip and check ; BEC), codes produits
-    (BCH étendus, Chase-Pyndiah), BCH et RS algébriques (AWGN, BSC, BEC), en plus des précédentes.
-  - Extracteurs et poinçonneurs : accesseurs de base (`K`, `N`, `N_cw`, `frozen_bits` du poinçonneur polaire et de
-    l'extracteur) ; pas d'accesseur propre supplémentaire utile (motifs réglés par les factories).
+  `polar_pac`, `polar_pt`); `Codec_*` classes (bases `Codec`, `Codec_HIHO/SIHO/SISO`) with the modules as properties
+  (`encoder`, `decoder_siho`, `decoder_siso`, `puncturer`, `extractor`, `interleaver`; `None` if absent), which keep
+  the codec alive, and their own accessors (`frozen_bits`, `trellis`, `H`, `GF`…).
+  - Signature: `K`, `N_cw` and the arguments of the builder (`crc`) positional; `N` (frame size: a value other
+    than `N_cw` adds the puncturer); the parameters of the sub-factories **prefixed** with the name of the
+    sub-factory, as the command-line options (`dec_type`, `dec_L`, `enc_systematic`, `fbg_noise`,
+    `pct_pattern`, `itl_core_type`…); sibling sub-factories with the same CLI prefix are set together
+    (`enc_sub_standard` → `enc.sub1` and `enc.sub2`, as `--enc-sub-std`); dtypes `B=`, `Q=`.
+  - As the dynamic types of the sub-factories are known only at runtime, the functions are built at
+    import (`aff3ct/codec.py`, from the generated `CODECS`): `inspect.signature` and `help()` list them all.
+    `af.codec.turbo.factory(...)` (same arguments) returns the configured factory (`headers()` as the simulator).
+  - The parameters are those of the factories: a CLI option that sets several of them must be translated
+    (`--dec-sf-type` → `dec_sf_enable=True, dec_sf_type=...`); `from_cli` remains available.
+  - `cdc.set_noise(noise)` acts on the modules of the codec, not on their clones in a multi-threaded `Sequence`
+    (adaptive frozen bits: `set_frozen_bits` on the clones, as `examples/polar_bfer.py`).
+  - Generator: template factories with default arguments bound (`Decoder_turbo<>`, `Encoder_turbo<>`: `dec_n_ite`,
+    `dec_sub_*`, `dec_sf_*`…), their builders taking the combinations of the returned module; `enable_puncturer` bound.
+  - Validated against `refs`: RA (4096, 1024) MS 10 iterations and turbo LTE (K = 2048, CRC 24-LTEA, puncturing
+    `11,10,01`, 8 iterations, LTE_VEC scaling factor), on 4 threads; `examples/ldpc_bfer.py` (LDPC codec).
+- **Modems and channels** ✅: `Constellation_{PAM,PSK,QAM,user}` (`symbols` as a complex array, `bps`…);
+  `af.mdm.modem(N, type="QAM", bps=4)` builds (and keeps) the constellation of the generic types, as the
+  simulator, and a given constellation sets the type; `af.mdm.modem(N, symbols=...)` for an arbitrary
+  constellation without an object or a file (protected constructor `Constellation(symbols, name)` of AFF3CT, exposed by
+  `af.tools.Constellation(symbols, normalize=True)`; symbol `i` = image of the bits of `i`, first bit least
+  significant); `mdm.N_mod` gives the size of the channel. AWGN,
+  Rayleigh (`add_noise_wg` → `demodulate_wg`, `complex=True`), BEC and BSC channels (`OOK` modem with `channel_type`,
+  monitor `count_unknown_values=True` as the simulator for an EP noise) validated against `refs` (uncoded: 16-QAM AWGN,
+  QPSK Rayleigh, OOK BEC / BSC, BER within 5 standard deviations). Generator: the header-only tool templates that
+  pass their parameters to their base take its combinations (`Constellation_QAM<R>`).
+- **Polar decoders and tools** ✅: `Polar_code` (single / multi-kernel), `Frozenbits_generator_{GA,RM,5G,TV}`,
+  `Pretransform_generator(_file)`. `from_cli(args, strict=False)`: a full AFF3CT command line given to
+  each factory, which takes only its own arguments. `tests/test_references.py` rebuilds the chains **from the
+  command line of the references** (source, CRC, codec, modem, channel; sizes propagated and AZCW as
+  `BFER_std.cpp`, puncturer enabled as the polar / turbo / LDPC launchers): shortened polar CA-ASCL,
+  Viterbi, BCJR, repetition, LDPC BP flooding SPA / AMS (min, min*), layered NMS, Gallager A / B / E, WBF, MWBF,
+  LDPC NMS on BEC and BSC (EP noise). The CI fetches the 4 matrices used.
+  Left without a function: `Scaling_factor`, `Flip_and_check` (post-processing internal to the turbo decoders, set
+  by the codecs: `dec_sf_*`, `dec_fnc_*`).
+- **Closing of phase 3** ✅:
+  - **Build after `from_cli`**: `_complete()` (the AFF3CT `store()` on an empty command line) lost what
+    AFF3CT derives only when reading the command line (frame size of the puncturer from `-N`, BCH sizes
+    from `-T`). The arguments of the `from_cli` calls are recorded (`_CLI`, per factory) and replayed at build time
+    (`_complete_cli`), then the parameters changed since the last `from_cli` are applied again. Without a command
+    line, a BCH `t` consistent with the sizes is kept (`n_rdncy(N, t) = N - K`).
+  - **Fixed precisions**: 8 and 16-bit chains (`-p`) with a quantizer after the demodulator, as
+    `Simulation_BFER_std.cpp` (quantization defaults of the launchers); Eb/N0 conversion with the number of bits per
+    symbol of the modem (`Noise.cpp`).
+  - **References checked from their command line** (33, `tests/test_references.py`, ~80 s sequentially):
+    polar SC 8/16 bits, SCAN 16 bits, RSC 8/16 bits, repetition 8/16 bits, double-binary RSC (DVB-RCS2),
+    double-binary turbo (DVB-RCS1 / RCS2: QPSK, CRC, adaptive scaling factor, flip and check; BEC), product codes
+    (extended BCH, Chase-Pyndiah), algebraic BCH and RS (AWGN, BSC, BEC), in addition to the previous ones.
+  - Extractors and puncturers: base accessors (`K`, `N`, `N_cw`, `frozen_bits` of the polar puncturer and of the
+    extractor); no other useful specific accessor (patterns set by the factories).
 
-- DoD : un test de construction et d'exécution par classe, et un test de parité CLI par factory.
+- DoD: one construction and execution test per class, and one CLI parity test per factory.
 
-### Phase 4 — Avancé (priorité **P2**, 51 entrées) ✅
-- Polar MK / PAC / PT (`Polar_code`, `Pretransform_generator`), SCMA, CPM, optique (`Distributions`), `Channel_user*`,
-  Monitors EXIT/MI et leurs reporters, Turbo product, variantes AVX/SSE, `Monitor_reduction` (multi-thread).
+### Phase 4 — Advanced (priority **P2**, 51 entries) ✅
+- Polar MK / PAC / PT (`Polar_code`, `Pretransform_generator`), SCMA, CPM, optical (`Distributions`), `Channel_user*`,
+  EXIT/MI monitors and their reporters, Turbo product, AVX/SSE variants, `Monitor_reduction` (multi-thread).
 
-Avancement :
-- ✅ **4A — polaires MK, PAC, PT** : codecs `af.codec.polar_mk / polar_pac / polar_pt` validés sur 8 références AFF3CT
-  rebâties depuis leur ligne de commande (SC, SCL, ASCL CRC32, systématique, Fano) ; fichiers `conf/cde` récupérés
-  par `scripts/fetch_aff3ct_data.sh` ; exemple `examples/polar_variants.py`, section du guide polaire.
-- ✅ **4B — SCMA, CPM** : modems validés sur 5 références non codées (SCMA AWGN et Rayleigh, CPM `k/p` et GSM) et
-  une référence turbo + SCMA, construites depuis leur ligne de commande. Comme le simulateur : `-F` (trames par
-  exécution ; SCMA : une par utilisateur, imposé par le modem), canal `add_users` pour SCMA, tâche `filter` des
-  modems CPM avant la démodulation. Codebooks `conf/mod/SCMA` ; exemple `examples/scma_cpm.py`, section du guide.
-  Les références itératives (`--sim-type BFERI`, LDPC + CPM) sont couvertes en phase 5.
-- ✅ **4C — canal optique, canaux « user »** : `af.tools.Distributions` (densités lues d'un fichier, `Distribution`,
-  `Distribution_mode`) : les builders du canal et du modem qui la prennent sont de nouveau liés (`af.chn.channel(N,
-  dist, type="OPTICAL")`, `af.mdm.modem(N, None, dist, ...)`) ; 2 références LDPC sur canal optique (bruit ROP)
-  rebâties depuis leur ligne de commande ; canaux `USER`, `USER_ADD`, `USER_BEC`, `USER_BSC`, `RAYLEIGH_USER` testés
-  (`tests/test_user_channels.py`) ; exemple `examples/optical.py`, sections du guide.
-- ✅ **4D — moniteurs MI et EXIT** : `Monitor_MI`, `Monitor_EXIT`, `Reporter_MI`, `Reporter_EXIT` liés
-  (`af.mnt.mi(N, n_trials=...)`, `af.mnt.exit(size, ...)` ; `size` devient positionnel comme `N`, sauf pour le
-  CRC) ; `af.mnt.reduce(seq, mnt)` somme les mesures des clones (rôle de `Monitor_reduction`, dont la boucle
-  statique propre au simulateur n'est pas liée) ; capacité BI-AWGN mesurée = théorie (`examples/mutual_information.py`,
-  figure), EXIT vérifié sur des LLR gaussiens (fonction J) ; guide « Monitors ».
-- ✅ **4E — modules restants** : atteints par les factories et testés (`tests/test_p2_modules.py`) : encodeurs AZCW,
-  coset, utilisateur (`af.enc.encoder(K, N, type=...)`), décodeur BCH genius (= décodeur algébrique), Viterbi liste
-  (PLVA : 2 références), BCJR SIMD inter/intra-trames (int8 / int16), encodeur polaire bit-packé (= naïf), encodeur
-  LDPC DVB-S2, OOK optique avec estimation de la ROP ; modules turbo produit via le codec (références TPC).
-  Ces modules restent `todo` dans `status.json` (`done` = classe Python propre enregistrée) : ils sont construits par
-  les factories et typés d'après leur classe de base enveloppée, comme les décodeurs de la phase 3.
+Progress:
+- ✅ **4A — MK, PAC, PT polar codes**: codecs `af.codec.polar_mk / polar_pac / polar_pt` validated on 8 AFF3CT
+  references rebuilt from their command line (SC, SCL, ASCL CRC32, systematic, Fano); `conf/cde` files fetched
+  by `scripts/fetch_aff3ct_data.sh`; example `examples/polar_variants.py`, section of the polar guide.
+- ✅ **4B — SCMA, CPM**: modems validated on 5 uncoded references (SCMA AWGN and Rayleigh, CPM `k/p` and GSM) and
+  one turbo + SCMA reference, built from their command line. As the simulator: `-F` (frames per
+  execution; SCMA: one per user, imposed by the modem), `add_users` channel for SCMA, `filter` task of the
+  CPM modems before the demodulation. Codebooks `conf/mod/SCMA`; example `examples/scma_cpm.py`, section of the guide.
+  The iterative references (`--sim-type BFERI`, LDPC + CPM) are covered in phase 5.
+- ✅ **4C — optical channel, "user" channels**: `af.tools.Distributions` (densities read from a file, `Distribution`,
+  `Distribution_mode`): the builders of the channel and of the modem that take it are bound again (`af.chn.channel(N,
+  dist, type="OPTICAL")`, `af.mdm.modem(N, None, dist, ...)`); 2 LDPC references on the optical channel (ROP noise)
+  rebuilt from their command line; channels `USER`, `USER_ADD`, `USER_BEC`, `USER_BSC`, `RAYLEIGH_USER` tested
+  (`tests/test_user_channels.py`); example `examples/optical.py`, sections of the guide.
+- ✅ **4D — MI and EXIT monitors**: `Monitor_MI`, `Monitor_EXIT`, `Reporter_MI`, `Reporter_EXIT` bound
+  (`af.mnt.mi(N, n_trials=...)`, `af.mnt.exit(size, ...)`; `size` becomes positional as `N`, except for the
+  CRC); `af.mnt.reduce(seq, mnt)` sums the measures of the clones (role of `Monitor_reduction`, whose static loop,
+  specific to the simulator, is not bound); measured BI-AWGN capacity = theory (`examples/mutual_information.py`,
+  figure), EXIT checked on Gaussian LLRs (J function); "Monitors" guide.
+- ✅ **4E — remaining modules**: reached through the factories and tested (`tests/test_p2_modules.py`): AZCW,
+  coset and user encoders (`af.enc.encoder(K, N, type=...)`), BCH genius decoder (= algebraic decoder), list Viterbi
+  (PLVA: 2 references), inter/intra-frame SIMD BCJR (int8 / int16), bit-packed polar encoder (= naive), DVB-S2 LDPC
+  encoder, optical OOK with ROP estimation; turbo product modules through the codec (TPC references).
+  These modules stay `todo` in `status.json` (`done` = own registered Python class): they are built by
+  the factories and typed after their wrapped base class, as the decoders of phase 3.
 
-**Clôture de la phase 4** : 52 références AFF3CT rebâties depuis leur ligne de commande (62 tests de référence au
-total), 249 tests. Restent hors
-périmètre : `Decoder_RS_genius`, inutilisable dans AFF3CT v4.7.2 (il ne redéfinit que l'ancien décodage dur sans statut ;
-test `xfail` strict qui signalera une correction amont), les simulations itératives `--sim-type BFERI` (faites en
-phase 5) et `Monitor_reduction` (sa boucle statique est propre au simulateur ;
-`af.mnt.reduce` en tient lieu).
+**Closing of phase 4**: 52 AFF3CT references rebuilt from their command line (62 reference tests in
+total), 249 tests. Left out of scope: `Decoder_RS_genius`, unusable in AFF3CT v4.7.2 (it only overrides the old hard
+decoding without a status; strict `xfail` test that will report an upstream fix), the iterative simulations
+`--sim-type BFERI` (done in phase 5) and `Monitor_reduction` (its static loop is specific to the simulator;
+`af.mnt.reduce` takes its place).
 
-### Phase 5 — Industrialisation (priorité **P3** inclus)
-- Docs mkdocs (API générée, guides, galerie d'exemples) ✅, stubs `.pyi` ✅, wheels `cibuildwheel`.
-- **Publication sur PyPI : pas encore** (décision du mainteneur) ; le dépôt GitHub et la documentation sont
-  publics. Les wheels seront préparées (métadonnées, `twine check`, job de publication écrit mais désactivé).
-- Versions : tags `vX.Y.Z` sur `main` (`setuptools_scm`), `CHANGELOG.md` (Keep a Changelog), procédure dans
-  `docs/development.md` ; `v0.1.0` = phases 0 à 3 et documentation.
-- Ordre retenu : versions et changelog, outils de debug P3, simulations itératives `BFERI`, comparaison de débit
-  avec le simulateur natif ; puis wheels, CI macOS et préparation PyPI.
-  - **Documentation (avancée, en anglais)** : MkDocs Material + mkdocstrings (`mkdocs.yml`, `docs/`, hors
-    `docs/design/`). Le code des pages est inclus depuis `examples/*.py` entre marqueurs `# --8<-- [start:x]` /
-    `[end:x]` (pymdownx.snippets) ; les exemples sont exécutés et vérifiés par `tests/test_examples.py` (théorie ou
-    références AFF3CT à 4 écarts-types), les blocs `>>>` des pages par `tests/test_docs.py`. Les figures
-    (`docs/assets/figures/*.svg`, non versionnées) sont calculées par `scripts/doc_figures.py`. CI : job `docs`
-    (`mkdocs build --strict`, artefact `public/`) et `pages` (branche par défaut). Pages : accueil, installation,
-    tutoriel (première chaîne, courbes BER/FER, codecs, factories et ligne de commande), guides (polaire, LDPC,
-    turbo, modems et canaux, virgule fixe), concepts, référence d'API, développement.
-- Outils de debug : ✅ `Histogram` (aussi l'histogramme de `Monitor_MI`), `Frame_trace` (texte renvoyé au lieu
-  d'être écrit sur `std::cout`, invisible des notebooks), `Dumper` (trames en erreur) ; guide « Debugging ». Non liés :
-  `Dumper_reduction` (prend la propriété de `unique_ptr`), générateurs GSL/MKL (AFF3CT compilé sans ces
-  bibliothèques).
-- Simulations itératives : ✅ démodulation turbo (`BFERI`) : boucle de séquence avec `Switcher` et `Iterator` de
-  StreamPU, liée en style Python (`spu.Task.call_auto_exec = False` le temps des liaisons) ;
-  `af.tools.reset_decoders_on_check(seq)` (décodeurs SISO sans remise à zéro automatique, remis à zéro après chaque
-  trame vérifiée par le moniteur du thread, comme `Simulation_BFER_ite`) ; 2 références LDPC (4224, 2112) + GMSK
-  rebâties depuis leur ligne de commande (approche coset, entrelaceur `USER`) ; exemple
-  `examples/turbo_demodulation.py` (vrai encodeur, sans coset), guide « Iterative receivers ».
+### Phase 5 — Industrialization (priority **P3** included)
+- mkdocs docs (generated API, guides, examples gallery) ✅, `.pyi` stubs ✅, `cibuildwheel` wheels.
+- **Publication on PyPI: not yet** (maintainer's decision); the GitHub repository and the documentation are
+  public. The wheels will be prepared (metadata, `twine check`, publication job written but disabled).
+- Versions: `vX.Y.Z` tags on `main` (`setuptools_scm`), `CHANGELOG.md` (Keep a Changelog), procedure in
+  `docs/development.md`; `v0.1.0` = phases 0 to 3 and documentation.
+- Chosen order: versions and changelog, P3 debug tools, `BFERI` iterative simulations, throughput comparison
+  with the native simulator; then wheels, macOS CI and PyPI preparation.
+  - **Documentation (advanced, in English)**: MkDocs Material + mkdocstrings (`mkdocs.yml`, `docs/`, excluding
+    `docs/design/`). The code of the pages is included from `examples/*.py` between `# --8<-- [start:x]` /
+    `[end:x]` markers (pymdownx.snippets); the examples are run and checked by `tests/test_examples.py` (theory or
+    AFF3CT references within 4 standard deviations), the `>>>` blocks of the pages by `tests/test_docs.py`. The figures
+    (`docs/assets/figures/*.svg`, not versioned) are computed by `scripts/doc_figures.py`. CI: `docs` job
+    (`mkdocs build --strict`, `public/` artifact) and `pages` (default branch). Pages: home, installation,
+    tutorial (first chain, BER/FER curves, codecs, factories and command line), guides (polar, LDPC,
+    turbo, modems and channels, fixed point), concepts, API reference, development.
+- Debug tools: ✅ `Histogram` (also the histogram of `Monitor_MI`), `Frame_trace` (text returned instead of
+  written to `std::cout`, invisible from notebooks), `Dumper` (frames in error); "Debugging" guide. Not bound:
+  `Dumper_reduction` (takes ownership of `unique_ptr`s), GSL/MKL generators (AFF3CT compiled without these
+  libraries).
+- Iterative simulations: ✅ turbo demodulation (`BFERI`): sequence loop with the `Switcher` and `Iterator` of
+  StreamPU, bound in Python style (`spu.Task.call_auto_exec = False` during the bindings);
+  `af.tools.reset_decoders_on_check(seq)` (SISO decoders without automatic reset, reset after each
+  frame checked by the monitor of the thread, as `Simulation_BFER_ite`); 2 LDPC (4224, 2112) + GMSK references
+  rebuilt from their command line (coset approach, `USER` interleaver); example
+  `examples/turbo_demodulation.py` (real encoder, no coset), "Iterative receivers" guide.
 
-## 7. Suivi des évolutions d'AFF3CT
+## 7. Tracking the evolutions of AFF3CT
 
-Principe : l'API d'AFF3CT dont dépendent les bindings est réduite à une **empreinte** versionnée
-(`docs/design/aff3ct_api.json`, produite par `scripts/aff3ct_api.py`). Pour chaque classe : en-tête, paramètres
-template, bases, constructeurs (types **et** valeurs par défaut), méthodes publiques, paramètres publics des factories
-(avec défauts), tâches et sockets (direction, type, ordre — l'ordre conditionne l'appel positionnel Python),
-instanciations `MULTI_PREC` (classes et `build<…>`, donc les combinaisons de dtypes disponibles) ; plus les commits des
-sous-modules StreamPU et cli.
+Principle: the AFF3CT API the bindings depend on is reduced to a versioned **fingerprint**
+(`docs/design/aff3ct_api.json`, produced by `scripts/aff3ct_api.py`). For each class: header, template
+parameters, bases, constructors (types **and** default values), public methods, public parameters of the factories
+(with defaults), tasks and sockets (direction, type, order — the order drives the positional Python call),
+`MULTI_PREC` instantiations (classes and `build<…>`, hence the available dtype combinations); plus the commits of the
+StreamPU and cli submodules.
 
-Comparer deux empreintes (`aff3ct_diff.py`) classe chaque changement :
+Comparing two fingerprints (`aff3ct_diff.py`) classifies each change:
 
-| Niveau | Exemples | Conséquence |
+| Level | Examples | Consequence |
 |---|---|---|
-| Cassant | classe/constructeur/méthode/tâche/socket/paramètre/instanciation supprimé ou modifié, base changée, en-tête déplacé | binding ou API Python à modifier |
-| Défauts | valeur par défaut modifiée (constructeur, paramètre de factory, `build`) | défauts Python à aligner |
-| Ajout | nouvelle classe (avec sa stratégie et priorité calculées), constructeur, paramètre, tâche, instanciation | backlog |
-| Réorganisation | méthode désormais héritée d'une base | vérification rapide |
+| Breaking | class/constructor/method/task/socket/parameter/instantiation removed or modified, base changed, header moved | binding or Python API to modify |
+| Defaults | default value modified (constructor, factory parameter, `build`) | Python defaults to align |
+| Addition | new class (with its computed strategy and priority), constructor, parameter, task, instantiation | backlog |
+| Reorganization | method now inherited from a base | quick check |
 
-Chaque changement est croisé avec `status.json` : un changement cassant ou de défaut sur une classe `done`/`wip` est
-une **action requise**, mise en tête du rapport ; `--fail-on-impact` rend alors le code de sortie 1 (CI).
+Each change is crossed with `status.json`: a breaking or default change on a `done`/`wip` class is
+a **required action**, put at the top of the report; `--fail-on-impact` then makes the exit code 1 (CI).
 
-Utilisation :
+Usage:
 
 ```bash
-# Quoi de neuf en amont depuis la référence de pyaff3ct ?
+# What is new upstream since the pyaff3ct reference?
 python3 scripts/track_aff3ct.py --repo lib/aff3ct --fetch --to origin/develop
-# Montée de version acceptée : nouvelle référence + graphe + inventaire régénérés
+# Accepted upgrade: new reference + regenerated graph and inventory
 python3 scripts/track_aff3ct.py --repo lib/aff3ct --to <ref> --update
 ```
 
-Les révisions sont extraites dans des `git worktree` temporaires : le sous-module de travail n'est jamais touché.
+The revisions are extracted into temporary `git worktree`s: the working submodule is never touched.
 
-Validé sur deux cas réels :
-- `v4.1.2 → v4.7.2` (écart `_pyaff3ct` → aujourd'hui) : 13 cassants (ajout de `Syndrome_checker` aux décodeurs LDPC BP,
-  Viterbi déplacé de `RSC/` vers `Conv/`, `Encoder_polar_PAC` qui hérite d'`Encoder_polar`…), 1 défaut, 42 ajouts ;
-- `ec05893^ → v4.7.2` (Polar PT + encodeur bitpacked) : 1 cassant, 24 ajouts, 3 réorganisations, changement de
-  StreamPU signalé.
+Validated on two real cases:
+- `v4.1.2 → v4.7.2` (gap `_pyaff3ct` → today): 13 breaking (`Syndrome_checker` added to the LDPC BP decoders,
+  Viterbi moved from `RSC/` to `Conv/`, `Encoder_polar_PAC` inheriting from `Encoder_polar`…), 1 default, 42 additions;
+- `ec05893^ → v4.7.2` (Polar PT + bitpacked encoder): 1 breaking, 24 additions, 3 reorganizations, StreamPU change
+  reported.
 
-Organisation proposée :
-1. **CI planifiée (hebdomadaire)** : `track_aff3ct.py --fetch --to origin/develop --fail-on-impact` ; le rapport est
-   publié comme artefact, et une issue est ouverte (ou mise à jour) s'il y a des changements.
-2. **Montée du sous-module** = une MR dédiée qui contient : bump de `lib/aff3ct`, `--update` (empreinte, graphe,
-   inventaire), le rapport dans `docs/design/changes/`, et les corrections de bindings pour chaque action requise.
-3. **Test de cohérence** (dès la phase 1) : chaque classe `done` de `status.json` doit exister dans `aff3ct._ext` avec
-   ses tâches/sockets conformes à l'empreinte ; une classe wrappée absente de `status.json` fait aussi échouer le test.
-4. Alignement StreamPU : le rapport signale tout changement du sous-module StreamPU d'AFF3CT, à confronter au commit
-   épinglé par pystreampu avant d'accepter la montée.
+Proposed organization:
+1. **Scheduled CI (weekly)**: `track_aff3ct.py --fetch --to origin/develop --fail-on-impact`; the report is
+   published as an artifact, and an issue is opened (or updated) if there are changes.
+2. **Submodule upgrade** = a dedicated MR containing: bump of `lib/aff3ct`, `--update` (fingerprint, graph,
+   inventory), the report in `docs/design/changes/`, and the binding fixes for each required action.
+3. **Consistency test** (from phase 1): each `done` class of `status.json` must exist in `aff3ct._ext` with
+   tasks/sockets matching the fingerprint; a wrapped class missing from `status.json` also makes the test fail.
+4. StreamPU alignment: the report flags any change of the StreamPU submodule of AFF3CT, to be compared with the commit
+   pinned by pystreampu before accepting the upgrade.
 
-## 8. Stratégie de tests
+## 8. Testing strategy
 
-| Niveau | Contenu |
+| Level | Content |
 |---|---|
-| Unitaire | construction pour chaque combinaison de dtypes pystreampu ; `uint*` refusés ; propriétés ; erreurs (`TypeError` dtype, `ValueError` paramètres) |
-| Tâches | exécution d'une tâche sur des entrées `numpy` connues (ex. encodeur systématique : `U == X[sys]`) |
-| Factory | `build()` vs construction directe ; `from_cli()` vs paramètres Python ; `params` vs `get_headers` |
-| Durée de vie | création d'objets dépendants, suppression des références Python, `gc.collect()`, exécution |
-| Multi-thread | `Sequence(n_threads>1)` sur une chaîne complète (vérifie clone/deep_copy) |
-| Numérique | BER/FER vs `refs/` AFF3CT sur quelques points d'Eb/N0 (marquage `@pytest.mark.slow`) |
+| Unit | construction for each pystreampu dtype combination; `uint*` refused; properties; errors (`TypeError` dtype, `ValueError` parameters) |
+| Tasks | execution of a task on known `numpy` inputs (e.g. systematic encoder: `U == X[sys]`) |
+| Factory | `build()` vs direct construction; `from_cli()` vs Python parameters; `params` vs `get_headers` |
+| Lifetime | creation of dependent objects, deletion of the Python references, `gc.collect()`, execution |
+| Multi-thread | `Sequence(n_threads>1)` on a complete chain (checks clone/deep_copy) |
+| Numerical | BER/FER vs AFF3CT `refs/` on a few Eb/N0 points (`@pytest.mark.slow` marker) |
 
-## 9. Risques et points ouverts
+## 9. Risks and open points
 
-1. **Version de StreamPU** : *résolu à date* (pystreampu et AFF3CT sur `85ed022`, v1.10.0) ; surveillé par le suivi (§7).
-2. **Deux copies statiques de StreamPU** (modèle officiel des extensions) : `set_task_autoalloc` refait à l'import.
-   *Vérifié en phase 1* : traduction des exceptions, `Sequence` multi-thread (clones de modules AFF3CT) et typage des
-   modules renvoyés par pystreampu (R8 bis, registre de downcasters, mergé dans pystreampu `develop`).
-   Attention : réinstaller streampu touche les en-têtes StreamPU dont dépend AFF3CT, d'où une recompilation complète
-   d'AFF3CT (~15 min sur 2 cœurs) au build suivant.
-   pystreampu v1.2.1 (exigée par `pyproject.toml`, `PYSTREAMPU_REF` de la CI) : registre de downcast publié,
-   `streampu.Stateful` exporté, indexation des sockets bornée (`IndexError`, fin de `iter(socket)`),
-   `Terminal_std` qui garde ses reporters, `stop_temp_report` corrigé.
-3. **ABI pybind11** : même contrainte que pystreampu (`>=3.0.4,<3.1`, même compilateur et stdlib), contrôlée en CI.
-4. **Temps de compilation et taille binaire** : environ 190 classes × 4 à 6 instanciations. Leviers : une TU par famille,
-   option CMake pour restreindre les précisions (`PYAFF3CT_PRECISIONS=32` en dev), ccache, LTO uniquement en release.
-5. **Références internes et `clone()`** : certains modules (turbo, CA) gardent des références vers d'autres objets ;
-   à auditer famille par famille (R6).
-6. **Dépendances optionnelles** (GSL, MKL, MPI) : désactivées par défaut, exposées seulement si compilées.
-7. **Évolution AFF3CT** : couverte par §7 ; limite connue : l'empreinte est extraite par analyse textuelle des
-   en-têtes (pas de compilateur), donc une construction C++ inhabituelle peut échapper au diff — les tests de
-   cohérence (§7, point 3) servent de filet.
-8. **Sans GIL (3.14t)** : les modules AFF3CT exécutés par `Sequence` multi-thread n'appellent pas Python ; les seuls
-   callbacks Python (reporters, conditions d'arrêt) reprennent le GIL comme dans pystreampu.
+1. **StreamPU version**: *resolved to date* (pystreampu and AFF3CT on `85ed022`, v1.10.0); monitored by the tracking (§7).
+2. **Two static copies of StreamPU** (official extension model): `set_task_autoalloc` called again at import.
+   *Checked in phase 1*: exception translation, multi-threaded `Sequence` (clones of AFF3CT modules) and typing of the
+   modules returned by pystreampu (R8 bis, downcaster registry, merged into pystreampu `develop`).
+   Beware: reinstalling streampu touches the StreamPU headers AFF3CT depends on, hence a full recompilation
+   of AFF3CT (~15 min on 2 cores) at the next build.
+   pystreampu v1.2.1 (required by `pyproject.toml`, `PYSTREAMPU_REF` of the CI): downcast registry published,
+   `streampu.Stateful` exported, bounded socket indexing (`IndexError`, end of `iter(socket)`),
+   `Terminal_std` keeping its reporters, `stop_temp_report` fixed.
+3. **pybind11 ABI**: same constraint as pystreampu (`>=3.0.4,<3.1`, same compiler and stdlib), checked in CI.
+4. **Compilation time and binary size**: about 190 classes × 4 to 6 instantiations. Levers: one TU per family,
+   CMake option to restrict the precisions (`PYAFF3CT_PRECISIONS=32` in dev), ccache, LTO only in release.
+5. **Internal references and `clone()`**: some modules (turbo, CA) keep references to other objects;
+   to audit family by family (R6).
+6. **Optional dependencies** (GSL, MKL, MPI): disabled by default, exposed only if compiled.
+7. **AFF3CT evolution**: covered by §7; known limit: the fingerprint is extracted by textual analysis of the
+   headers (no compiler), so an unusual C++ construct can escape the diff — the consistency tests
+   (§7, point 3) act as a safety net.
+8. **Free-threaded (3.14t)**: the AFF3CT modules run by a multi-threaded `Sequence` do not call Python; the only
+   Python callbacks (reporters, stop conditions, `reset_decoders_on_check`) take the GIL back as in pystreampu.
 
-## 10. Conventions de contribution
+## 10. Contribution conventions
 
-- Branches `feat/<domaine>-<famille>`, `fix/...` ; une MR par famille ou phase.
-- Messages de commit à l'impératif, préfixés par le domaine (`enc: wrap Encoder_polar`, `factory: add Decoder_LDPC build`).
-- Toute MR met à jour `docs/design/status.json` (puis régénère `inventory.md`) et ajoute ses tests.
-- Checklist MR (reprise des guidelines) : miroir include/src respecté, compilation et import OK, API Python documentée,
-  tests ajoutés, chemins et noms de classes corrects dans la doc.
+- Branches `feat/<domain>-<family>`, `fix/...`; one MR per family or phase.
+- Commit messages in the imperative mood, prefixed with the domain (`enc: wrap Encoder_polar`, `factory: add Decoder_LDPC build`).
+- Every MR updates `docs/design/status.json` (then regenerates `inventory.md`) and adds its tests.
+- MR checklist (taken from the guidelines): include/src mirror respected, compilation and import OK, Python API
+  documented, tests added, correct paths and class names in the docs.
