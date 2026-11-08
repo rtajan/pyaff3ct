@@ -25,6 +25,17 @@ log-likelihood ratios (LLRs).
 The symbol $i$ carries the bits of the integer $i$, **least significant bit first**: with 16-QAM, the bits
 `1, 0, 0, 0` are mapped to the symbol 1. The PAM, PSK and QAM constellations of AFF3CT are Gray-mapped.
 
+A user constellation can be labelled the other way, the first bit being the **most** significant one:
+
+```python
+>>> import aff3ct as af
+>>> mdm = af.mdm.modem(4, symbols=[-3, -1, 3, 1], bit_order="MSB")   # Gray-mapped 4-PAM: 00, 01, 11, 10
+>>> import streampu as spu
+>>> x = mdm.modulate(spu.array([1, 1, 1, 0], dtype=spu.int32))       # bits 1, 1 then 1, 0
+>>> [round(float(v) * 5 ** 0.5, 3) for v in x.numpy[0, 0::2]]         # real parts (unit mean energy: / sqrt(5))
+[1.0, 3.0]
+```
+
 ![16-QAM constellation](../assets/figures/qam16.svg){ width="420" }
 
 ## Channels
