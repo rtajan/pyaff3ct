@@ -6,8 +6,8 @@ Usage:
 
 The script parses every ``*.hpp`` of ``include/Module``, ``include/Tools`` and
 ``include/Factory``, extracts the class declarations and their base classes,
-then classifies each class with the rules of ``Plan.md`` (section "Stratégie
-de wrapping"). It writes:
+then classifies each class with the rules of ``Plan.md`` (section "Wrapping
+strategy"). It writes:
 
 * ``class_graph.md``   : Mermaid graphs (one per domain) + "uses" dependencies.
 * ``inventory.md``     : one row per class with strategy / priority / Python name.
