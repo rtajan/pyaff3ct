@@ -486,6 +486,14 @@ inventaire mis à jour (`done`), docstrings présentes.
 
 ### Phase 5 — Industrialisation (priorité **P3** inclus)
 - Docs mkdocs (API générée, guides, galerie d'exemples), stubs `.pyi`, wheels `cibuildwheel`, publication.
+  - **Documentation (avancée, en anglais)** : MkDocs Material + mkdocstrings (`mkdocs.yml`, `docs/`, hors
+    `docs/design/`). Le code des pages est inclus depuis `examples/*.py` entre marqueurs `# --8<-- [start:x]` /
+    `[end:x]` (pymdownx.snippets) ; les exemples sont exécutés et vérifiés par `tests/test_examples.py` (théorie ou
+    références AFF3CT à 4 écarts-types), les blocs `>>>` des pages par `tests/test_docs.py`. Les figures
+    (`docs/assets/figures/*.svg`, non versionnées) sont calculées par `scripts/doc_figures.py`. CI : job `docs`
+    (`mkdocs build --strict`, artefact `public/`) et `pages` (branche par défaut). Pages : accueil, installation,
+    tutoriel (première chaîne, courbes BER/FER, codecs, factories et ligne de commande), guides (polaire, LDPC,
+    turbo, modems et canaux, virgule fixe), concepts, référence d'API, développement.
 - Outils de debug optionnels : `Dumper`, `Frame_trace`, `Histogram`, générateurs GSL/MKL.
 
 ## 7. Suivi des évolutions d'AFF3CT

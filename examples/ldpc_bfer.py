@@ -22,10 +22,12 @@ def simulate(H_path: str, ebn0s, max_fe=100, n_threads=1, n_ite=50, quiet=False)
     K_N = sorted(af.tools.AList.read_matrix_size(H_path))
     N = K_N[1]
     K = N - K_N[0]
+    # --8<-- [start:codec]
     # encoder computed from H (as the simulator), decoder from the same matrix: one codec builds and connects them
     cdc = af.codec.ldpc(K, N, enc_type="LDPC_H", dec_H_path=H_path, dec_type="BP_HORIZONTAL_LAYERED",
                         dec_implem="SPA", dec_n_ite=n_ite)
     enc, dec = cdc.encoder, cdc.decoder_siho
+    # --8<-- [end:codec]
 
     src = af.src.source(K, type="RAND", seed=0)
     mdm, chn = af.mdm.modem(N, type="BPSK"), af.chn.channel(N, type="AWGN", seed=1)

@@ -66,6 +66,19 @@ variables:
   - git submodule update --init lib/aff3ct
   - git -C lib/aff3ct submodule update --init --recursive lib/cli lib/MIPP lib/date
 
+# BER/FER references (tests/test_references.py, curves of the documentation): the refs submodule of AFF3CT (5 MB)
+# and, from its configuration files, only the LDPC matrices used (the repository is large)
+.aff3ct_data: &aff3ct_data
+  - git submodule update --init lib/aff3ct
+  - git -C lib/aff3ct submodule update --init refs
+  - |
+    CONF_SHA=$(git -C lib/aff3ct ls-tree HEAD conf | awk '{print $3}')
+    rm -rf lib/aff3ct/conf
+    git clone -q --filter=blob:none --no-checkout https://github.com/aff3ct/configuration_files.git lib/aff3ct/conf
+    git -C lib/aff3ct/conf sparse-checkout set --no-cone /dec/LDPC/CCSDS_64_128.alist /dec/LDPC/WIMAX_288_576.alist \
+      /dec/LDPC/MACKAY_504_1008.alist /dec/LDPC/PEG_Reg_1008x504.alist
+    git -C lib/aff3ct/conf checkout -q "$CONF_SHA"
+
 .python_cache: &python_cache
   key: ${CI_PROJECT_PATH}
   paths:
@@ -80,6 +93,7 @@ stages:
   - build-streampu
   - build
   - tests
+  - docs
   - tracking
 
 
@@ -144,18 +158,9 @@ tests:
     <<: *python_cache
   script:
     - python -m pip install dist-streampu/*.whl dist/*.whl
-    - python -m pip install pytest pytest-xdist scipy
-    # BER/FER references (tests/test_references.py): the refs submodule of AFF3CT (5 MB) and, from its configuration
-    # files, only the LDPC matrices of the tests (the repository is large)
-    - git submodule update --init lib/aff3ct
-    - git -C lib/aff3ct submodule update --init refs
-    - |
-      CONF_SHA=$(git -C lib/aff3ct ls-tree HEAD conf | awk '{print $3}')
-      rm -rf lib/aff3ct/conf
-      git clone -q --filter=blob:none --no-checkout https://github.com/aff3ct/configuration_files.git lib/aff3ct/conf
-      git -C lib/aff3ct/conf sparse-checkout set --no-cone /dec/LDPC/CCSDS_64_128.alist /dec/LDPC/WIMAX_288_576.alist \
-        /dec/LDPC/MACKAY_504_1008.alist /dec/LDPC/PEG_Reg_1008x504.alist
-      git -C lib/aff3ct/conf checkout -q "$CONF_SHA"
+    # matplotlib: tests/test_examples.py (examples of the documentation)
+    - python -m pip install pytest pytest-xdist scipy matplotlib
+    - *aff3ct_data
     # outside the source tree: `python -c` puts the current directory first in sys.path, where aff3ct/ has no _ext
     - (cd /tmp && python -c "import aff3ct as af; print(af.__file__, af.AFF3CT_VERSION, 'registry:', af._ext.HAS_STREAMPU_DOWNCAST_REGISTRY)")
     # `pytest` (not `python -m pytest`): the source tree must not shadow the installed package
@@ -164,6 +169,48 @@ tests:
     when: always
     reports:
       junit: report.xml
+
+
+# Documentation (MkDocs): the figures are computed by the examples (scripts/doc_figures.py), the code blocks are
+# included from examples/ (checked by tests/test_examples.py); --strict fails on a missing snippet or a broken link
+docs:
+  stage: docs
+  <<: *linux_base
+  needs: [build-streampu, build]
+  cache:
+    <<: *python_cache
+  script:
+    - python -m pip install dist-streampu/*.whl dist/*.whl
+    - python -m pip install "matplotlib>=3.5" "mkdocs>=1.6,<2" "mkdocs-material>=9.5" "mkdocstrings[python]>=0.29" "pymdown-extensions>=10.7"
+    - *aff3ct_data
+    # mkdocstrings inspects the installed package: the source tree (no _ext) must not shadow it
+    - mv aff3ct aff3ct.src
+    - python scripts/doc_figures.py --threads $PYTEST_WORKERS
+    - NO_MKDOCS_2_WARNING=1 mkdocs build --strict --site-dir public
+  artifacts:
+    name: documentation
+    paths:
+      - public/
+    expire_in: 1 week
+
+
+# GitLab Pages: the documentation of the default branch
+pages:
+  stage: docs
+  image: $CI_BASE_IMAGE
+  tags:
+    - x86_64
+    - docker
+  needs: [docs]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - ls public/index.html
+  artifacts:
+    paths:
+      - public/
 
 
 # The generated files are committed: they must match the pinned AFF3CT (run after a bump of lib/aff3ct:
