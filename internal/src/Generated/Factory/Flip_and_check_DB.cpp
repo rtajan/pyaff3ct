@@ -12,16 +12,4 @@ pyaf::generated::wrap_factory_Flip_and_check_DB(py::handle scope)
     using F = aff3ct::factory::Flip_and_check_DB;
     py::class_<F, aff3ct::factory::Flip_and_check> cls(scope, "Flip_and_check_DB", "AFF3CT factory ``aff3ct::factory::Flip_and_check_DB`` (parameters by keyword, ``from_cli``, builders by dtype).");
     cls.def(py::init<const std::string&>(), "prefix"_a = aff3ct::factory::Flip_and_check_DB_prefix);
-    def_builders<gen::Factory_Flip_and_check_DB__build>(
-      cls,
-      "build",
-      [](auto c)
-      {
-          using B = typename decltype(c)::template at<0>; using Q = typename decltype(c)::template at<1>;
-          return [](const F& f, const aff3ct::module::CRC<B>& crc) -> aff3ct::tools::Flip_and_check_DB<B, Q>*
-          { return f.template build<B, Q>(crc); };
-      },
-          py::arg("crc"),
-          py::keep_alive<0, 2>());
-
 }

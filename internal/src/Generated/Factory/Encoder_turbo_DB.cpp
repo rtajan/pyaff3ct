@@ -22,18 +22,4 @@ pyaf::generated::wrap_factory_Encoder_turbo_DB(py::handle scope)
       [](const F& f) { return f.sub.get(); },
       py::return_value_policy::reference_internal,
       "aff3ct.factory.Encoder_RSC_DB: sub-factory ``sub`` (None if not used).");
-    def_builders<gen::Factory_Encoder_turbo_DB__build>(
-      cls,
-      "build",
-      [](auto c)
-      {
-          using B = typename decltype(c)::template at<0>;
-          return [](const F& f, const aff3ct::module::Encoder_RSC_DB<B>& sub_enc, const aff3ct::module::Interleaver<B>& itl) -> spu::module::Module*
-          { return f.template build<B>(sub_enc, itl); };
-      },
-          py::arg("sub_enc"),
-          py::arg("itl"),
-          py::keep_alive<0, 2>(),
-          py::keep_alive<0, 3>());
-
 }

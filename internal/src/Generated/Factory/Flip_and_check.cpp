@@ -20,16 +20,4 @@ pyaf::generated::wrap_factory_Flip_and_check(py::handle scope)
     def_param(cls, "ite_max", &F::ite_max, "int: AFF3CT parameter ``ite_max`` (``int``).");
     def_param(cls, "ite_step", &F::ite_step, "int: AFF3CT parameter ``ite_step`` (``int``).");
     def_param(cls, "crc_start_ite", &F::crc_start_ite, "int: AFF3CT parameter ``crc_start_ite`` (``int``).");
-    def_builders<gen::Factory_Flip_and_check__build>(
-      cls,
-      "build",
-      [](auto c)
-      {
-          using B = typename decltype(c)::template at<0>; using Q = typename decltype(c)::template at<1>;
-          return [](const F& f, const aff3ct::module::CRC<B>& crc) -> aff3ct::tools::Flip_and_check<B, Q>*
-          { return f.template build<B, Q>(crc); };
-      },
-          py::arg("crc"),
-          py::keep_alive<0, 2>());
-
 }

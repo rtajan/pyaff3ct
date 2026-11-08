@@ -16,14 +16,4 @@ pyaf::generated::wrap_factory_Scaling_factor(py::handle scope)
     def_param(cls, "n_ite", &F::n_ite, "int: AFF3CT parameter ``n_ite`` (``int``).");
     def_param(cls, "enable", &F::enable, "bool: AFF3CT parameter ``enable`` (``bool``).");
     def_param(cls, "cst", &F::cst, "float: AFF3CT parameter ``cst`` (``float``).");
-    def_builders<gen::Factory_Scaling_factor__build>(
-      cls,
-      "build",
-      [](auto c)
-      {
-          using B = typename decltype(c)::template at<0>; using Q = typename decltype(c)::template at<1>;
-          return [](const F& f) -> aff3ct::tools::Scaling_factor<B, Q>*
-          { return f.template build<B, Q>(); };
-      });
-
 }

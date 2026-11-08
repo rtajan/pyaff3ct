@@ -23,20 +23,4 @@ pyaf::generated::wrap_factory_Encoder_turbo_product(py::handle scope)
       [](const F& f) { return f.itl.get(); },
       py::return_value_policy::reference_internal,
       "aff3ct.factory.Interleaver: sub-factory ``itl`` (None if not used).");
-    def_builders<gen::Factory_Encoder_turbo_product__build>(
-      cls,
-      "build",
-      [](auto c)
-      {
-          using B = typename decltype(c)::template at<0>;
-          return [](const F& f, const aff3ct::module::Encoder_BCH<B>& enc_r, const aff3ct::module::Encoder_BCH<B>& enc_c, const aff3ct::module::Interleaver<B>& itl) -> spu::module::Module*
-          { return f.template build<B>(enc_r, enc_c, itl); };
-      },
-          py::arg("enc_r"),
-          py::arg("enc_c"),
-          py::arg("itl"),
-          py::keep_alive<0, 2>(),
-          py::keep_alive<0, 3>(),
-          py::keep_alive<0, 4>());
-
 }

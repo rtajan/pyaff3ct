@@ -237,13 +237,30 @@ def chain(name: str, facs: dict) -> list[str]:
     return out
 
 
+def sub_factories(v: dict) -> list[str]:
+    """Factories of the sub-factory members (auto_cloned_unique_ptr<Encoder>...), template defaults resolved."""
+    tdef = tpl_defaults(v)
+    out = []
+    for m in v["members"]:
+        m = re.search(r"auto_cloned_unique_ptr<\s*(?:factory::)?(\w+)\s*>", m)
+        if m:
+            out.append(tdef.get(m.group(1), m.group(1)))
+    return out
+
+
 def ordered(facs: dict) -> list[str]:
-    done, out = set(), []
+    """Registration order: a factory after its base and after the factories of its sub-factories, so that pybind11
+    knows their Python types when it writes the signatures (otherwise the raw C++ names: aff3ct::factory::Encoder)."""
+    done, visiting, out = set(), set(), []
 
     def visit(n: str) -> None:
-        if n in done or n not in facs:
+        if n in done or n not in facs or n in visiting:
             return
+        visiting.add(n)
         visit(base_of(facs[n]))
+        for sub in sub_factories(facs[n]):
+            visit(sub)
+        visiting.discard(n)
         done.add(n)
         out.append(n)
 
@@ -274,6 +291,42 @@ def wrapped(api: dict, status: dict, ret: str) -> bool:
         for b in api.get(key, {}).get("bases", []):
             todo.append("Module::" + re.sub(r"<.*", "", b).split("::")[-1])
     return False
+
+
+BUILTIN_TYPES = {"bool", "int", "unsigned", "float", "double", "size_t", "uint8_t", "uint16_t", "uint32_t",
+                 "uint64_t", "int8_t", "int16_t", "int32_t", "int64_t", "B", "Q", "R", "S", "T", "D", "Q1", "Q2",
+                 "B1", "B2", "R1", "R2"}
+
+
+def arg_bindable(status: dict, facs: dict, t: str) -> bool:
+    """True if Python can give an argument of this C++ type: builtin, std::, or a class registered with exactly this
+    type (pybind11 does not convert a base into a derived class: a Decoder_SISO is not a Decoder_RSC_DB_BCJR)."""
+    t = re.sub(r"\bconst\b|[&*]", "", qualify(t)).strip()
+    if t in BUILTIN_TYPES or t.startswith("std::"):
+        return True
+    m = re.fullmatch(r"(aff3ct|spu)::(module|tools|factory)::(\w+)(<.*>)?", t)
+    if not m:
+        return False
+    if m.group(1) == "spu":
+        return m.group(3) in SPU_REGISTERED
+    if m.group(2) == "factory":
+        return m.group(3) in facs or m.group(3) == "Interleaver_core"
+    return status.get(f"{'Module' if m.group(2) == 'module' else 'Tools'}::{m.group(3)}") == "done"
+
+
+UNBOUND_BUILDERS: list[str] = []  # builder overloads without binding (class returned or of a required argument)
+
+
+def bindable_builder(api: dict, status: dict, facs: dict, b: dict) -> dict | None:
+    """The builder limited to the arguments Python can give: its optional arguments up to the first one of a type
+    without Python class (tools::Distributions, module::Encoder_BCH...); None if a required argument has such a type
+    or if the returned class has no Python class either."""
+    if not wrapped(api, status, qualify(b["ret"])):
+        return None
+    for i, a in enumerate(b["args"]):
+        if not arg_bindable(status, facs, a["type"]):
+            return None if a["default"] is None else {**b, "args": b["args"][:i]}
+    return b
 
 
 # --------------------------------------------------------------------------------------------- C++ output
@@ -328,7 +381,7 @@ def cpp_builder_overload(name: str, b: dict, combos: dict | None) -> str:
             f'      }}{extra});\n')
 
 
-def cpp_factory(name: str, v: dict, facs: dict, inst: dict) -> tuple[str, list[dict]]:
+def cpp_factory(name: str, v: dict, facs: dict, inst: dict, api: dict, status: dict) -> tuple[str, list[dict]]:
     base = base_of(v)
     lines = [HEADER, f'#include "{v["file"]}"\n', '#include "internal/Generated/factories.hpp"',
              '#include "internal/Wrapper/Factory/Factory.hpp"\n',
@@ -374,6 +427,11 @@ def cpp_factory(name: str, v: dict, facs: dict, inst: dict) -> tuple[str, list[d
         b = parse_builder(sig)
         if b is None or (name, b["name"]) in SKIP_BUILDERS:
             continue
+        bound_b = bindable_builder(api, status, facs, b)
+        if bound_b is None:
+            UNBOUND_BUILDERS.append(f"{name}.{b['name']} -> {b['ret']}")
+            continue
+        b = bound_b
         combos = inst.get(f"Factory::{name}", {}).get("builders", {}).get(b["name"])
         if b["tpl"] and combos is None:
             continue  # template without explicit instantiation in libaff3ct
@@ -412,7 +470,7 @@ def main() -> None:
     params_of: dict[str, list[dict]] = {}
     builders_of: dict[str, list[dict]] = {}
     for name in order:
-        code, bound, builders = cpp_factory(name, facs[name], facs, inst)
+        code, bound, builders = cpp_factory(name, facs[name], facs, inst, api, status)
         write(SRC_GEN / "Factory" / f"{name}.cpp", code)
         params_of[name] = [b for b in bound if b["kind"] == "param"]
         builders_of[name] = builders
@@ -441,7 +499,9 @@ def main() -> None:
         "from typing import Any\n",
         "from aff3ct._factory import make as _make\n",
     ]
-    skipped = []
+    # builders whose every overload is unbound, and builders of a class not wrapped
+    bound_names = {f"{n}.{b['name']}" for n in order for b in builders_of[n]}
+    skipped = [s for s in dict.fromkeys(UNBOUND_BUILDERS) if s.split(" -> ")[0] not in bound_names]
     codecs: dict[str, dict] = {}
     for name in order:
         v = facs[name]
@@ -544,7 +604,7 @@ def main() -> None:
     n_fun = sum(len(v) for v in funcs.values())
     n_build = sum(len(v) for v in builders_of.values())
     print(f"{len(order)} factories, {n_build} builders -> internal/src/Generated; "
-          f"{n_fun} functions ({len(skipped)} skipped: class not wrapped) -> aff3ct/_generated/functions.py")
+          f"{n_fun} functions ({len(skipped)} skipped: class or argument not wrapped) -> aff3ct/_generated/functions.py")
 
 
 if __name__ == "__main__":

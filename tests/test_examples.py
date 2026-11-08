@@ -63,18 +63,27 @@ def test_codecs_comparison():
     assert res["Polar CA-SCL (L=8)"][1] < res["Polar SC"][1] < res["Repetition"][1]
 
 
+def near_theory(ber, expected, n_bits, model=0.0, n_sd=4):
+    """BER measured on n_bits bits close to its expected value: n_sd standard deviations of the estimate (binomial
+    count of errors), plus the relative error of the model (approximate formula)."""
+    sd = math.sqrt(expected * (1 - expected) / n_bits)
+    return abs(ber - expected) <= n_sd * sd + model * expected
+
+
 def test_modulations():
     import modulations
 
-    ebn0s = [0.0, 6.0]
-    res = modulations.run(ebn0s, K=1200, n_frames=100)
-    for name in ("BPSK", "16-QAM"):
+    ebn0s, K, n_frames = [0.0, 6.0], 1200, 300
+    n_bits = K * n_frames
+    res = modulations.run(ebn0s, K=K, n_frames=n_frames)
+    bpsk = modulations.theory("BPSK", ebn0s)
+    for name, model in (("BPSK", 0.0), ("QPSK", 0.0), ("16-QAM", 0.1)):  # 16-QAM: nearest-neighbour approximation
         for got, th in zip(res[f"{name}, AWGN"], modulations.theory(name, ebn0s)):
-            assert got == pytest.approx(th, rel=0.15), name
-    assert res["QPSK, AWGN"][1] == pytest.approx(res["BPSK, AWGN"][1], rel=0.15)  # same BER per Eb/N0
+            assert near_theory(got, th, n_bits, model), (name, got, th)
+    assert modulations.theory("QPSK", ebn0s) == pytest.approx(bpsk)  # same BER per Eb/N0
     rayleigh = 0.5 * (1 - math.sqrt(10**0.6 / (1 + 10**0.6)))  # BPSK over Rayleigh at 6 dB
-    assert res["BPSK, Rayleigh"][1] == pytest.approx(rayleigh, rel=0.1)
-    assert res["QPSK, Rayleigh"][1] == pytest.approx(rayleigh, rel=0.1)
+    for name in ("BPSK", "QPSK"):
+        assert near_theory(res[f"{name}, Rayleigh"][1], rayleigh, n_bits), name
 
 
 def test_constellation_figure(tmp_path):
