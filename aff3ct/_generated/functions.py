@@ -13,7 +13,7 @@ from aff3ct._factory import make as _make
 
 
 
-def _crc__crc(K: int, *, type: str | None = None, implem: str | None = None, size: int | None = None, B: Any = None) -> Any:
+def _crc__crc(K: int, *, type: str | None = None, implem: str | None = None, size: int | None = None, B: Any = None) -> aff3ct.crc.CRC:
     """Build module::CRC<B> with the AFF3CT factory ``CRC`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.CRC(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.CRC().parameters``).
@@ -34,7 +34,7 @@ def _crc__crc(K: int, *, type: str | None = None, implem: str | None = None, siz
 
 
 
-def _chn__channel(N: int, *, type: str | None = None, implem: str | None = None, path: str | None = None, block_fading: str | None = None, add_users: bool | None = None, complex: bool | None = None, seed: int | None = None, gain_occur: int | None = None, R: Any = None) -> Any:
+def _chn__channel(N: int, *, type: str | None = None, implem: str | None = None, path: str | None = None, block_fading: str | None = None, add_users: bool | None = None, complex: bool | None = None, seed: int | None = None, gain_occur: int | None = None, R: Any = None) -> aff3ct.chn.Channel:
     """Build module::Channel<R> with the AFF3CT factory ``Channel`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Channel(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Channel().parameters``).
@@ -60,7 +60,7 @@ def _chn__channel(N: int, *, type: str | None = None, implem: str | None = None,
 
 
 
-def _enc__encoder(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> Any:
+def _enc__encoder(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder<B> with the AFF3CT factory ``Encoder`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder().parameters``).
@@ -86,7 +86,7 @@ def _enc__encoder(K: int, N_cw: int, *, type: str | None = None, path: str | Non
 
 
 
-def _pct__puncturer(K: int, N: int, N_cw: int, *, type: str | None = None, B: Any = None, Q: Any = None) -> Any:
+def _pct__puncturer(K: int, N: int, N_cw: int, *, type: str | None = None, B: Any = None, Q: Any = None) -> aff3ct.pct.Puncturer:
     """Build module::Puncturer<B, Q> with the AFF3CT factory ``Puncturer`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Puncturer(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Puncturer().parameters``).
@@ -108,7 +108,7 @@ def _pct__puncturer(K: int, N: int, N_cw: int, *, type: str | None = None, B: An
 
 
 
-def _tools__interleaver_core(*, size: int | None = None, type: str | None = None, path: str | None = None, read_order: str | None = None, n_cols: int | None = None, seed: int | None = None, uniform: bool | None = None, T: Any = None) -> Any:
+def _tools__interleaver_core(*, size: int | None = None, type: str | None = None, path: str | None = None, read_order: str | None = None, n_cols: int | None = None, seed: int | None = None, uniform: bool | None = None, T: Any = None) -> aff3ct.tools.Interleaver_core:
     """Build tools::Interleaver_core<T> with the AFF3CT factory ``Interleaver_core`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Interleaver_core(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver_core().parameters``).
@@ -132,7 +132,7 @@ def _tools__interleaver_core(*, size: int | None = None, type: str | None = None
 
 
 
-def _itl__interleaver(itl_core: Any, *, D: Any = None) -> Any:
+def _itl__interleaver(itl_core: Any, *, D: Any = None) -> aff3ct.itl.Interleaver:
     """Build module::Interleaver<D> with the AFF3CT factory ``Interleaver`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Interleaver(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver().parameters``).
@@ -150,7 +150,7 @@ def _itl__interleaver(itl_core: Any, *, D: Any = None) -> Any:
 
 
 
-def _tools__frozenbits_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
+def _tools__frozenbits_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> aff3ct.tools.Frozenbits_generator:
     """Build tools::Frozenbits_generator with the AFF3CT factory ``Frozenbits_generator`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Frozenbits_generator(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Frozenbits_generator().parameters``).
@@ -171,7 +171,7 @@ def _tools__frozenbits_generator(K: int, N_cw: int, *, type: str | None = None, 
 
 
 
-def _tools__polar_code(N_cw: int, *, kernel_matrix: list[numpy.ndarray] | None = None, code_path: str | None = None) -> Any:
+def _tools__polar_code(N_cw: int, *, kernel_matrix: list[numpy.ndarray] | None = None, code_path: str | None = None) -> aff3ct.tools.Polar_code:
     """Build tools::Polar_code with the AFF3CT factory ``Polar_code`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Polar_code(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Polar_code().parameters``).
@@ -188,7 +188,7 @@ def _tools__polar_code(N_cw: int, *, kernel_matrix: list[numpy.ndarray] | None =
 
 
 
-def _tools__frozenbits_generator_mk(K: int, N_cw: int, pc: Any, *, type: str | None = None, path_fb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
+def _tools__frozenbits_generator_mk(K: int, N_cw: int, pc: Any, *, type: str | None = None, path_fb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> aff3ct.tools.Frozenbits_generator:
     """Build tools::Frozenbits_generator with the AFF3CT factory ``Frozenbits_generator_MK`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Frozenbits_generator_MK(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Frozenbits_generator_MK().parameters``).
@@ -209,7 +209,7 @@ def _tools__frozenbits_generator_mk(K: int, N_cw: int, pc: Any, *, type: str | N
 
 
 
-def _tools__pretransform_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> Any:
+def _tools__pretransform_generator(K: int, N_cw: int, *, type: str | None = None, path_fb: str | None = None, path_pb: str | None = None, dump_channels_path: str | None = None, noise: float | None = None) -> aff3ct.tools.Pretransform_generator:
     """Build tools::Pretransform_generator with the AFF3CT factory ``Pretransform_generator`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Pretransform_generator(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Pretransform_generator().parameters``).
@@ -230,7 +230,7 @@ def _tools__pretransform_generator(K: int, N_cw: int, *, type: str | None = None
 
 
 
-def _cst__coset_bit(*, size: int | None = None, type: str | None = None, B1: Any = None, B2: Any = None) -> Any:
+def _cst__coset_bit(*, size: int | None = None, type: str | None = None, B1: Any = None, B2: Any = None) -> aff3ct.cst.Coset:
     """Build module::Coset<B1, B2> with the AFF3CT factory ``Coset`` (builder ``build_bit``).
 
     Equivalent to ``aff3ct.factory.Coset(**parameters).build_bit(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Coset().parameters``).
@@ -250,7 +250,7 @@ def _cst__coset_bit(*, size: int | None = None, type: str | None = None, B1: Any
 
 
 
-def _cst__coset_real(*, size: int | None = None, type: str | None = None, B: Any = None, R: Any = None) -> Any:
+def _cst__coset_real(*, size: int | None = None, type: str | None = None, B: Any = None, R: Any = None) -> aff3ct.cst.Coset:
     """Build module::Coset<B, R> with the AFF3CT factory ``Coset`` (builder ``build_real``).
 
     Equivalent to ``aff3ct.factory.Coset(**parameters).build_real(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Coset().parameters``).
@@ -270,7 +270,7 @@ def _cst__coset_real(*, size: int | None = None, type: str | None = None, B: Any
 
 
 
-def _dec__bch(K: int, N_cw: int, GF: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, t: int | None = None, m: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__bch(K: int, N_cw: int, GF: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, t: int | None = None, m: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_BCH`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_BCH(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_BCH().parameters``).
@@ -302,7 +302,7 @@ def _dec__bch(K: int, N_cw: int, GF: Any, encoder: Any = None, *, type: str | No
 
 
 
-def _dec__ldpc(K: int, N_cw: int, H: Any, info_bits_pos: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, H_path: str | None = None, H_reorder: str | None = None, min: str | None = None, simd_strategy: str | None = None, standard: str | None = None, norm_factor: float | None = None, offset: float | None = None, mwbf_factor: float | None = None, enable_syndrome: bool | None = None, syndrome_depth: int | None = None, n_ite: int | None = None, N: int | None = None, ppbf_proba: list[float] | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__ldpc(K: int, N_cw: int, H: Any, info_bits_pos: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, H_path: str | None = None, H_reorder: str | None = None, min: str | None = None, simd_strategy: str | None = None, standard: str | None = None, norm_factor: float | None = None, offset: float | None = None, mwbf_factor: float | None = None, enable_syndrome: bool | None = None, syndrome_depth: int | None = None, n_ite: int | None = None, N: int | None = None, ppbf_proba: list[float] | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_LDPC`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_LDPC(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_LDPC().parameters``).
@@ -346,7 +346,7 @@ def _dec__ldpc(K: int, N_cw: int, H: Any, info_bits_pos: Any, encoder: Any = Non
 
 
 
-def _dec__ldpc_siso(K: int, N_cw: int, H: Any, info_bits_pos: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, H_path: str | None = None, H_reorder: str | None = None, min: str | None = None, simd_strategy: str | None = None, standard: str | None = None, norm_factor: float | None = None, offset: float | None = None, mwbf_factor: float | None = None, enable_syndrome: bool | None = None, syndrome_depth: int | None = None, n_ite: int | None = None, N: int | None = None, ppbf_proba: list[float] | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__ldpc_siso(K: int, N_cw: int, H: Any, info_bits_pos: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, H_path: str | None = None, H_reorder: str | None = None, min: str | None = None, simd_strategy: str | None = None, standard: str | None = None, norm_factor: float | None = None, offset: float | None = None, mwbf_factor: float | None = None, enable_syndrome: bool | None = None, syndrome_depth: int | None = None, n_ite: int | None = None, N: int | None = None, ppbf_proba: list[float] | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SISO:
     """Build module::Decoder_SISO<B, Q> with the AFF3CT factory ``Decoder_LDPC`` (builder ``build_siso``).
 
     Equivalent to ``aff3ct.factory.Decoder_LDPC(**parameters).build_siso(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_LDPC().parameters``).
@@ -390,7 +390,7 @@ def _dec__ldpc_siso(K: int, N_cw: int, H: Any, info_bits_pos: Any, encoder: Any 
 
 
 
-def _dec__no_siso(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__no_siso(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SISO:
     """Build module::Decoder_SISO<B, Q> with the AFF3CT factory ``Decoder_NO`` (builder ``build_siso``).
 
     Equivalent to ``aff3ct.factory.Decoder_NO(**parameters).build_siso(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_NO().parameters``).
@@ -419,7 +419,7 @@ def _dec__no_siso(K: int, N_cw: int, encoder: Any = None, *, type: str | None = 
 
 
 
-def _dec__no(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__no(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_NO`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_NO(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_NO().parameters``).
@@ -448,7 +448,7 @@ def _dec__no(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None,
 
 
 
-def _dec__ra(K: int, N_cw: int, itl: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, n_ite: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__ra(K: int, N_cw: int, itl: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, n_ite: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_RA`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_RA(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_RA().parameters``).
@@ -479,7 +479,7 @@ def _dec__ra(K: int, N_cw: int, itl: Any, encoder: Any = None, *, type: str | No
 
 
 
-def _dec__rs(K: int, N_cw: int, GF: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, t: int | None = None, m: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__rs(K: int, N_cw: int, GF: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, t: int | None = None, m: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_RS`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_RS(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_RS().parameters``).
@@ -511,7 +511,7 @@ def _dec__rs(K: int, N_cw: int, GF: Any, encoder: Any = None, *, type: str | Non
 
 
 
-def _dec__rsc(K: int, N_cw: int, trellis: Any, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, max: str | None = None, simd_strategy: str | None = None, standard: str | None = None, buffered: bool | None = None, poly: list[int] | None = None, L: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__rsc(K: int, N_cw: int, trellis: Any, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, max: str | None = None, simd_strategy: str | None = None, standard: str | None = None, buffered: bool | None = None, poly: list[int] | None = None, L: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_RSC`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_RSC(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_RSC().parameters``).
@@ -546,7 +546,7 @@ def _dec__rsc(K: int, N_cw: int, trellis: Any, *, type: str | None = None, imple
 
 
 
-def _dec__rsc_siso(K: int, N_cw: int, trellis: Any, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, max: str | None = None, simd_strategy: str | None = None, standard: str | None = None, buffered: bool | None = None, poly: list[int] | None = None, L: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__rsc_siso(K: int, N_cw: int, trellis: Any, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, max: str | None = None, simd_strategy: str | None = None, standard: str | None = None, buffered: bool | None = None, poly: list[int] | None = None, L: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SISO:
     """Build module::Decoder_SISO<B, Q> with the AFF3CT factory ``Decoder_RSC`` (builder ``build_siso``).
 
     Equivalent to ``aff3ct.factory.Decoder_RSC(**parameters).build_siso(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_RSC().parameters``).
@@ -581,7 +581,7 @@ def _dec__rsc_siso(K: int, N_cw: int, trellis: Any, *, type: str | None = None, 
 
 
 
-def _dec__rsc_db_siso(K: int, N_cw: int, trellis: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, max: str | None = None, buffered: bool | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__rsc_db_siso(K: int, N_cw: int, trellis: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, max: str | None = None, buffered: bool | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SISO:
     """Build module::Decoder_RSC_DB_BCJR<B, Q> with the AFF3CT factory ``Decoder_RSC_DB`` (builder ``build_siso``).
 
     Equivalent to ``aff3ct.factory.Decoder_RSC_DB(**parameters).build_siso(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_RSC_DB().parameters``).
@@ -613,7 +613,7 @@ def _dec__rsc_db_siso(K: int, N_cw: int, trellis: Any, encoder: Any = None, *, t
 
 
 
-def _dec__rsc_db(K: int, N_cw: int, trellis: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, max: str | None = None, buffered: bool | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__rsc_db(K: int, N_cw: int, trellis: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, max: str | None = None, buffered: bool | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_RSC_DB`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_RSC_DB(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_RSC_DB().parameters``).
@@ -645,7 +645,7 @@ def _dec__rsc_db(K: int, N_cw: int, trellis: Any, encoder: Any = None, *, type: 
 
 
 
-def _dec__conv(K: int, N_cw: int, trellis: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, poly: list[int] | None = None, L: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__conv(K: int, N_cw: int, trellis: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, poly: list[int] | None = None, L: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_conv`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_conv(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_conv().parameters``).
@@ -678,7 +678,7 @@ def _dec__conv(K: int, N_cw: int, trellis: Any, crc: Any = None, encoder: Any = 
 
 
 
-def _dec__polar_siso(K: int, N_cw: int, frozen_bits: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, simd_strategy: str | None = None, polar_nodes: str | None = None, full_adaptive: bool | None = None, n_ite: int | None = None, L: int | None = None, T: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__polar_siso(K: int, N_cw: int, frozen_bits: Any, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, simd_strategy: str | None = None, polar_nodes: str | None = None, full_adaptive: bool | None = None, n_ite: int | None = None, L: int | None = None, T: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SISO:
     """Build module::Decoder_SISO<B, Q> with the AFF3CT factory ``Decoder_polar`` (builder ``build_siso``).
 
     Equivalent to ``aff3ct.factory.Decoder_polar(**parameters).build_siso(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_polar().parameters``).
@@ -714,7 +714,7 @@ def _dec__polar_siso(K: int, N_cw: int, frozen_bits: Any, encoder: Any = None, *
 
 
 
-def _dec__polar(K: int, N_cw: int, frozen_bits: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, simd_strategy: str | None = None, polar_nodes: str | None = None, full_adaptive: bool | None = None, n_ite: int | None = None, L: int | None = None, T: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__polar(K: int, N_cw: int, frozen_bits: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, simd_strategy: str | None = None, polar_nodes: str | None = None, full_adaptive: bool | None = None, n_ite: int | None = None, L: int | None = None, T: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_polar`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_polar(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_polar().parameters``).
@@ -751,7 +751,7 @@ def _dec__polar(K: int, N_cw: int, frozen_bits: Any, crc: Any = None, encoder: A
 
 
 
-def _dec__polar_gen(K: int, N_cw: int, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, simd_strategy: str | None = None, polar_nodes: str | None = None, full_adaptive: bool | None = None, n_ite: int | None = None, L: int | None = None, T: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__polar_gen(K: int, N_cw: int, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, simd_strategy: str | None = None, polar_nodes: str | None = None, full_adaptive: bool | None = None, n_ite: int | None = None, L: int | None = None, T: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_polar`` (builder ``build_gen``).
 
     Equivalent to ``aff3ct.factory.Decoder_polar(**parameters).build_gen(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_polar().parameters``).
@@ -787,7 +787,7 @@ def _dec__polar_gen(K: int, N_cw: int, crc: Any = None, encoder: Any = None, *, 
 
 
 
-def _dec__polar_mk(K: int, N_cw: int, code: Any, frozen_bits: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, L: int | None = None, node_type: str | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__polar_mk(K: int, N_cw: int, code: Any, frozen_bits: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, L: int | None = None, node_type: str | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_polar_MK`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_polar_MK(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_polar_MK().parameters``).
@@ -821,7 +821,7 @@ def _dec__polar_mk(K: int, N_cw: int, code: Any, frozen_bits: Any, crc: Any = No
 
 
 
-def _dec__polar_pac(K: int, N_cw: int, frozen_bits: Any, Perr: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, conv: str | None = None, L: int | None = None, DELTA: float | None = None, p_err_snr: float | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__polar_pac(K: int, N_cw: int, frozen_bits: Any, Perr: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, conv: str | None = None, L: int | None = None, DELTA: float | None = None, p_err_snr: float | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_polar_PAC`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_polar_PAC(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_polar_PAC().parameters``).
@@ -857,7 +857,7 @@ def _dec__polar_pac(K: int, N_cw: int, frozen_bits: Any, Perr: Any, crc: Any = N
 
 
 
-def _dec__polar_pt(K: int, N_cw: int, frozen_bits: Any, dynamic_frozen_bits: Any, pretransform: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, pt_path: str | None = None, simd_strategy: str | None = None, polar_nodes: str | None = None, full_adaptive: bool | None = None, conv: str | None = None, L: int | None = None, n_ite: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__polar_pt(K: int, N_cw: int, frozen_bits: Any, dynamic_frozen_bits: Any, pretransform: Any, crc: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, pt_path: str | None = None, simd_strategy: str | None = None, polar_nodes: str | None = None, full_adaptive: bool | None = None, conv: str | None = None, L: int | None = None, n_ite: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_polar_PT`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_polar_PT(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_polar_PT().parameters``).
@@ -897,7 +897,7 @@ def _dec__polar_pt(K: int, N_cw: int, frozen_bits: Any, dynamic_frozen_bits: Any
 
 
 
-def _dec__repetition(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, buffered: bool | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__repetition(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, buffered: bool | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_repetition`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_repetition(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_repetition().parameters``).
@@ -927,7 +927,7 @@ def _dec__repetition(K: int, N_cw: int, encoder: Any = None, *, type: str | None
 
 
 
-def _dec__turbo(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, itl: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, self_corrected: bool | None = None, enable_json: bool | None = None, n_ite: int | None = None, crc_start_ite: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__turbo(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, itl: Any = None, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, self_corrected: bool | None = None, enable_json: bool | None = None, n_ite: int | None = None, crc_start_ite: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_turbo<B, Q> with the AFF3CT factory ``Decoder_turbo`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_turbo(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_turbo().parameters``).
@@ -963,7 +963,7 @@ def _dec__turbo(K: int, N_cw: int, siso_n: Any = None, siso_i: Any = None, itl: 
 
 
 
-def _dec__turbo_db(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, n_ite: int | None = None, crc_start_ite: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _dec__turbo_db(K: int, N_cw: int, encoder: Any = None, *, type: str | None = None, implem: str | None = None, systematic: bool | None = None, hamming: bool | None = None, tail_length: int | None = None, flips: int | None = None, seed: int | None = None, R: float | None = None, n_ite: int | None = None, crc_start_ite: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.dec.Decoder_SIHO:
     """Build module::Decoder_SIHO<B, Q> with the AFF3CT factory ``Decoder_turbo_DB`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Decoder_turbo_DB(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Decoder_turbo_DB().parameters``).
@@ -994,7 +994,7 @@ def _dec__turbo_db(K: int, N_cw: int, encoder: Any = None, *, type: str | None =
 
 
 
-def _enc__bch(K: int, N_cw: int, GF: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, simd_strategy: str | None = None, B: Any = None) -> Any:
+def _enc__bch(K: int, N_cw: int, GF: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, simd_strategy: str | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_BCH<B> with the AFF3CT factory ``Encoder_BCH`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_BCH(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_BCH().parameters``).
@@ -1022,7 +1022,7 @@ def _enc__bch(K: int, N_cw: int, GF: Any, *, type: str | None = None, path: str 
 
 
 
-def _enc__ldpc(K: int, N_cw: int, G: Any, H: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, N: int | None = None, H_path: str | None = None, G_path: str | None = None, H_reorder: str | None = None, G_method: str | None = None, G_save_path: str | None = None, standard: str | None = None, B: Any = None) -> Any:
+def _enc__ldpc(K: int, N_cw: int, G: Any, H: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, N: int | None = None, H_path: str | None = None, G_path: str | None = None, H_reorder: str | None = None, G_method: str | None = None, G_save_path: str | None = None, standard: str | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_LDPC<B> with the AFF3CT factory ``Encoder_LDPC`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_LDPC(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_LDPC().parameters``).
@@ -1057,7 +1057,7 @@ def _enc__ldpc(K: int, N_cw: int, G: Any, H: Any, *, type: str | None = None, pa
 
 
 
-def _enc__no(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> Any:
+def _enc__no(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_NO<B> with the AFF3CT factory ``Encoder_NO`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_NO(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_NO().parameters``).
@@ -1083,7 +1083,7 @@ def _enc__no(K: int, N_cw: int, *, type: str | None = None, path: str | None = N
 
 
 
-def _enc__ra(K: int, N_cw: int, itl: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> Any:
+def _enc__ra(K: int, N_cw: int, itl: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_RA<B> with the AFF3CT factory ``Encoder_RA`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_RA(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_RA().parameters``).
@@ -1110,7 +1110,7 @@ def _enc__ra(K: int, N_cw: int, itl: Any, *, type: str | None = None, path: str 
 
 
 
-def _enc__rs(K: int, N_cw: int, GF: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> Any:
+def _enc__rs(K: int, N_cw: int, GF: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_RS<B> with the AFF3CT factory ``Encoder_RS`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_RS(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_RS().parameters``).
@@ -1137,7 +1137,7 @@ def _enc__rs(K: int, N_cw: int, GF: Any, *, type: str | None = None, path: str |
 
 
 
-def _enc__rsc(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, buffered: bool | None = None, standard: str | None = None, poly: list[int] | None = None, B: Any = None) -> Any:
+def _enc__rsc(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, buffered: bool | None = None, standard: str | None = None, poly: list[int] | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_RSC_sys<B> with the AFF3CT factory ``Encoder_RSC`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_RSC(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_RSC().parameters``).
@@ -1166,7 +1166,7 @@ def _enc__rsc(K: int, N_cw: int, *, type: str | None = None, path: str | None = 
 
 
 
-def _enc__rsc_db(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, buffered: bool | None = None, standard: str | None = None, B: Any = None) -> Any:
+def _enc__rsc_db(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, buffered: bool | None = None, standard: str | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_RSC_DB<B> with the AFF3CT factory ``Encoder_RSC_DB`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_RSC_DB(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_RSC_DB().parameters``).
@@ -1194,7 +1194,7 @@ def _enc__rsc_db(K: int, N_cw: int, *, type: str | None = None, path: str | None
 
 
 
-def _enc__conv(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, poly: list[int] | None = None, B: Any = None) -> Any:
+def _enc__conv(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, poly: list[int] | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_conv<B> with the AFF3CT factory ``Encoder_conv`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_conv(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_conv().parameters``).
@@ -1221,7 +1221,7 @@ def _enc__conv(K: int, N_cw: int, *, type: str | None = None, path: str | None =
 
 
 
-def _enc__polar(K: int, N_cw: int, frozen_bits: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, implem: str | None = None, B: Any = None) -> Any:
+def _enc__polar(K: int, N_cw: int, frozen_bits: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, implem: str | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_polar<B> with the AFF3CT factory ``Encoder_polar`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_polar(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_polar().parameters``).
@@ -1249,7 +1249,7 @@ def _enc__polar(K: int, N_cw: int, frozen_bits: Any, *, type: str | None = None,
 
 
 
-def _enc__polar_mk(K: int, N_cw: int, code: Any, frozen_bits: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> Any:
+def _enc__polar_mk(K: int, N_cw: int, code: Any, frozen_bits: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_polar_MK<B> with the AFF3CT factory ``Encoder_polar_MK`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_polar_MK(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_polar_MK().parameters``).
@@ -1277,7 +1277,7 @@ def _enc__polar_mk(K: int, N_cw: int, code: Any, frozen_bits: Any, *, type: str 
 
 
 
-def _enc__polar_pac(K: int, N_cw: int, frozen_bits: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, conv: str | None = None, B: Any = None) -> Any:
+def _enc__polar_pac(K: int, N_cw: int, frozen_bits: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, conv: str | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_polar_PAC<B> with the AFF3CT factory ``Encoder_polar_PAC`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_polar_PAC(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_polar_PAC().parameters``).
@@ -1305,7 +1305,7 @@ def _enc__polar_pac(K: int, N_cw: int, frozen_bits: Any, *, type: str | None = N
 
 
 
-def _enc__polar_pt(K: int, N_cw: int, frozen_bits: Any, dynamic_frozen_bits: Any, pretransform: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, pt_path: str | None = None, conv: str | None = None, B: Any = None) -> Any:
+def _enc__polar_pt(K: int, N_cw: int, frozen_bits: Any, dynamic_frozen_bits: Any, pretransform: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, pt_path: str | None = None, conv: str | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_polar_PT<B> with the AFF3CT factory ``Encoder_polar_PT`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_polar_PT(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_polar_PT().parameters``).
@@ -1336,7 +1336,7 @@ def _enc__polar_pt(K: int, N_cw: int, frozen_bits: Any, dynamic_frozen_bits: Any
 
 
 
-def _enc__repetition(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, buffered: bool | None = None, B: Any = None) -> Any:
+def _enc__repetition(K: int, N_cw: int, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, buffered: bool | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_repetition_sys<B> with the AFF3CT factory ``Encoder_repetition`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_repetition(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_repetition().parameters``).
@@ -1363,7 +1363,7 @@ def _enc__repetition(K: int, N_cw: int, *, type: str | None = None, path: str | 
 
 
 
-def _enc__turbo(K: int, N_cw: int, enc_n: Any, enc_i: Any, itl: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, json_path: str | None = None, B: Any = None) -> Any:
+def _enc__turbo(K: int, N_cw: int, enc_n: Any, enc_i: Any, itl: Any, *, type: str | None = None, path: str | None = None, systematic: bool | None = None, seed: int | None = None, tail_length: int | None = None, start_idx: int | None = None, R: float | None = None, json_path: str | None = None, B: Any = None) -> aff3ct.enc.Encoder:
     """Build module::Encoder_turbo<B> with the AFF3CT factory ``Encoder_turbo`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Encoder_turbo(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Encoder_turbo().parameters``).
@@ -1393,7 +1393,7 @@ def _enc__turbo(K: int, N_cw: int, enc_n: Any, enc_i: Any, itl: Any, *, type: st
 
 
 
-def _mdm__modem(N: int, cstl: Any = None, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, B: Any = None, R: Any = None, Q: Any = None) -> Any:
+def _mdm__modem(N: int, cstl: Any = None, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, B: Any = None, R: Any = None, Q: Any = None) -> aff3ct.mdm.Modem:
     """Build module::Modem<B, R, Q> with the AFF3CT factory ``Modem`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Modem(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Modem().parameters``).
@@ -1435,7 +1435,7 @@ def _mdm__modem(N: int, cstl: Any = None, *, type: str | None = None, implem: st
 
 
 
-def _mdm__modem_constellation(N: int, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, R: Any = None) -> Any:
+def _mdm__modem_constellation(N: int, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, R: Any = None) -> aff3ct.tools.Constellation:
     """Build tools::Constellation<R> with the AFF3CT factory ``Modem`` (builder ``build_constellation``).
 
     Equivalent to ``aff3ct.factory.Modem(**parameters).build_constellation(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Modem().parameters``).
@@ -1474,7 +1474,7 @@ def _mdm__modem_constellation(N: int, *, type: str | None = None, implem: str | 
 
 
 
-def _mnt__bfer(K: int, count_unknown_values: Any = None, *, type: str | None = None, err_hist_path: str | None = None, err_hist: int | None = None, n_frame_errors: int | None = None, max_frame: int | None = None, B: Any = None) -> Any:
+def _mnt__bfer(K: int, count_unknown_values: Any = None, *, type: str | None = None, err_hist_path: str | None = None, err_hist: int | None = None, n_frame_errors: int | None = None, max_frame: int | None = None, B: Any = None) -> aff3ct.mnt.Monitor_BFER:
     """Build module::Monitor_BFER<B> with the AFF3CT factory ``Monitor_BFER`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Monitor_BFER(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Monitor_BFER().parameters``).
@@ -1498,7 +1498,7 @@ def _mnt__bfer(K: int, count_unknown_values: Any = None, *, type: str | None = N
 
 
 
-def _mnt__exit(*, size: int | None = None, type: str | None = None, n_trials: int | None = None, B: Any = None, R: Any = None) -> Any:
+def _mnt__exit(*, size: int | None = None, type: str | None = None, n_trials: int | None = None, B: Any = None, R: Any = None) -> aff3ct.mnt.Monitor:
     """Build module::Monitor_EXIT<B, R> with the AFF3CT factory ``Monitor_EXIT`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Monitor_EXIT(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Monitor_EXIT().parameters``).
@@ -1519,7 +1519,7 @@ def _mnt__exit(*, size: int | None = None, type: str | None = None, n_trials: in
 
 
 
-def _mnt__mi(N: int, *, type: str | None = None, n_trials: int | None = None, B: Any = None, R: Any = None) -> Any:
+def _mnt__mi(N: int, *, type: str | None = None, n_trials: int | None = None, B: Any = None, R: Any = None) -> aff3ct.mnt.Monitor:
     """Build module::Monitor_MI<B, R> with the AFF3CT factory ``Monitor_MI`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Monitor_MI(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Monitor_MI().parameters``).
@@ -1540,7 +1540,7 @@ def _mnt__mi(N: int, *, type: str | None = None, n_trials: int | None = None, B:
 
 
 
-def _tools__noise(noise_val: Any = None, bit_rate: Any = None, bps: Any = None, upf: Any = None, *, range: list[float] | None = None, type: str | None = None, pdf_path: str | None = None, R: Any = None) -> Any:
+def _tools__noise(noise_val: Any = None, bit_rate: Any = None, bps: Any = None, upf: Any = None, *, range: list[float] | None = None, type: str | None = None, pdf_path: str | None = None, R: Any = None) -> aff3ct.tools.Noise:
     """Build tools::Noise<R> with the AFF3CT factory ``Noise`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Noise(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Noise().parameters``).
@@ -1564,7 +1564,7 @@ def _tools__noise(noise_val: Any = None, bit_rate: Any = None, bps: Any = None, 
 
 
 
-def _pct__ldpc(K: int, N: int, N_cw: int, *, type: str | None = None, pattern: Any | None = None, B: Any = None, Q: Any = None) -> Any:
+def _pct__ldpc(K: int, N: int, N_cw: int, *, type: str | None = None, pattern: Any | None = None, B: Any = None, Q: Any = None) -> aff3ct.pct.Puncturer:
     """Build module::Puncturer<B, Q> with the AFF3CT factory ``Puncturer_LDPC`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Puncturer_LDPC(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Puncturer_LDPC().parameters``).
@@ -1587,7 +1587,7 @@ def _pct__ldpc(K: int, N: int, N_cw: int, *, type: str | None = None, pattern: A
 
 
 
-def _pct__polar(K: int, N: int, N_cw: int, fb_generator: Any, *, type: str | None = None, B: Any = None, Q: Any = None) -> Any:
+def _pct__polar(K: int, N: int, N_cw: int, fb_generator: Any, *, type: str | None = None, B: Any = None, Q: Any = None) -> aff3ct.pct.Puncturer:
     """Build module::Puncturer_polar_shortlast<B, Q> with the AFF3CT factory ``Puncturer_polar`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Puncturer_polar(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Puncturer_polar().parameters``).
@@ -1610,7 +1610,7 @@ def _pct__polar(K: int, N: int, N_cw: int, fb_generator: Any, *, type: str | Non
 
 
 
-def _pct__turbo(K: int, N: int, N_cw: int, *, type: str | None = None, pattern: list[numpy.ndarray] | None = None, buffered: bool | None = None, tail_length: int | None = None, B: Any = None, Q: Any = None) -> Any:
+def _pct__turbo(K: int, N: int, N_cw: int, *, type: str | None = None, pattern: list[numpy.ndarray] | None = None, buffered: bool | None = None, tail_length: int | None = None, B: Any = None, Q: Any = None) -> aff3ct.pct.Puncturer:
     """Build module::Puncturer<B, Q> with the AFF3CT factory ``Puncturer_turbo`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Puncturer_turbo(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Puncturer_turbo().parameters``).
@@ -1635,7 +1635,7 @@ def _pct__turbo(K: int, N: int, N_cw: int, *, type: str | None = None, pattern: 
 
 
 
-def _pct__turbo_db(K: int, N: int, N_cw: int, *, type: str | None = None, B: Any = None, Q: Any = None) -> Any:
+def _pct__turbo_db(K: int, N: int, N_cw: int, *, type: str | None = None, B: Any = None, Q: Any = None) -> aff3ct.pct.Puncturer:
     """Build module::Puncturer<B, Q> with the AFF3CT factory ``Puncturer_turbo_DB`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Puncturer_turbo_DB(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Puncturer_turbo_DB().parameters``).
@@ -1657,7 +1657,7 @@ def _pct__turbo_db(K: int, N: int, N_cw: int, *, type: str | None = None, B: Any
 
 
 
-def _qnt__quantizer(*, size: int | None = None, type: str | None = None, implem: str | None = None, range: float | None = None, n_bits: int | None = None, n_decimals: int | None = None, R: Any = None, Q: Any = None) -> Any:
+def _qnt__quantizer(*, size: int | None = None, type: str | None = None, implem: str | None = None, range: float | None = None, n_bits: int | None = None, n_decimals: int | None = None, R: Any = None, Q: Any = None) -> aff3ct.qnt.Quantizer:
     """Build module::Quantizer<R, Q> with the AFF3CT factory ``Quantizer`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Quantizer(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Quantizer().parameters``).
@@ -1681,7 +1681,7 @@ def _qnt__quantizer(*, size: int | None = None, type: str | None = None, implem:
 
 
 
-def _snk__sink(K: int, *, type: str | None = None, implem: str | None = None, path: str | None = None, B: Any = None) -> Any:
+def _snk__sink(K: int, *, type: str | None = None, implem: str | None = None, path: str | None = None, B: Any = None) -> streampu._ext.snk.Sink_int8 | streampu._ext.snk.Sink_int16 | streampu._ext.snk.Sink_int32 | streampu._ext.snk.Sink_int64:
     """Build spu::module::Sink<B> with the AFF3CT factory ``Sink`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Sink(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Sink().parameters``).
@@ -1702,7 +1702,7 @@ def _snk__sink(K: int, *, type: str | None = None, implem: str | None = None, pa
 
 
 
-def _src__source(K: int, *, type: str | None = None, implem: str | None = None, path: str | None = None, auto_reset: bool | None = None, fifo_mode: bool | None = None, seed: int | None = None, start_idx: int | None = None, B: Any = None) -> Any:
+def _src__source(K: int, *, type: str | None = None, implem: str | None = None, path: str | None = None, auto_reset: bool | None = None, fifo_mode: bool | None = None, seed: int | None = None, start_idx: int | None = None, B: Any = None) -> streampu._ext.src.Source_int8 | streampu._ext.src.Source_int16 | streampu._ext.src.Source_int32 | streampu._ext.src.Source_int64:
     """Build spu::module::Source<B> with the AFF3CT factory ``Source`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Source(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Source().parameters``).

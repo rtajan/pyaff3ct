@@ -33,6 +33,9 @@ clones of the monitor share their counters. The sequence stops when the **total*
 - `spu.Sequence(..., n_threads=n_threads)` clones the modules once per thread. The modules of the first thread are
   the original ones; `seq.get_cloned_modules(m)` returns the clones of `m` in all the threads, to update the
   frozen bits of every encoder and decoder.
+- `af.tools.seed_sequence(seq)` gives each thread its own seeds: the clones are copies, random generators
+  included, and without it every thread would draw the same frames and the same noise (as many threads, no more
+  information than one). The AFF3CT simulator does the same.
 - `spu.Terminal_std` prints the reports of the reporters (noise, BER/FER, throughput) as the AFF3CT simulator does.
 - the `sigma` socket is changed in place: the bindings of the sequence are kept.
 

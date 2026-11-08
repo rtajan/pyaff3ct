@@ -37,12 +37,14 @@ def simulate(B, Q, ebn0s, K=96, N=128, max_fe=100, n_threads=2) -> list[float]:
     mnt.check_errors(u, v)
     # --8<-- [end:chain]
     seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
+    af.tools.seed_sequence(seq)  # each thread its own frames and noise
     fer = []
     for ebn0 in ebn0s:
         noise = af.tools.sigma_from_ebn0(ebn0, K / N)
         sigma.numpy[...] = noise.sigma
         cdc.set_noise(noise)
         seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)  # clones after set_noise
+        af.tools.seed_sequence(seq)  # each thread its own frames and noise
         mnt.reset()
         seq.exec()
         fer.append(mnt.fer)

@@ -64,6 +64,7 @@ def simulate(cdc, crc, ebn0s, max_fe=100, n_threads=4) -> list[float]:
     _, v = dec.decode_siho(y)  # the decoder stops early when the CRC is verified
     mnt.check_errors(u, crc.extract(v))
     seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
+    af.tools.seed_sequence(seq)  # each thread its own frames and noise
 
     fer = []
     for ebn0 in ebn0s:

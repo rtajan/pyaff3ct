@@ -269,28 +269,49 @@ def ordered(facs: dict) -> list[str]:
     return out
 
 
-def wrapped(api: dict, status: dict, ret: str) -> bool:
-    """True if the class returned by a builder, or one of its bases, is wrapped (status 'done')."""
+def wrapped_class(api: dict, status: dict, ret: str) -> str | None:
+    """Wrapped class of the object returned by a builder: the class itself or its most derived wrapped base
+    ("Module::Decoder_SIHO", "Tools::Interleaver_core", "spu::Source"), None if none is wrapped."""
     m = re.match(r"^(?:const\s+)?(?:(spu|aff3ct)::)?(?:(module|tools)::)?(\w+)", ret.replace("aff3ct::", ""))
     if not m:
-        return False
+        return None
     if ret.startswith("spu::"):
-        return m.group(3) in SPU_REGISTERED
+        return f"spu::{m.group(3)}" if m.group(3) in SPU_REGISTERED else None
     if m.group(2) != "module":
         # a tool is converted only if its static type is registered (no downcast registry for the tools)
-        return status.get(f"Tools::{m.group(3)}") == "done"
+        return f"Tools::{m.group(3)}" if status.get(f"Tools::{m.group(3)}") == "done" else None
     # a module: typed after its most derived wrapped base (Module downcast registry); the interfaces do not count
     todo, seen = [f"Module::{m.group(3)}"], set()
     while todo:
-        key = todo.pop()
+        key = todo.pop(0)  # breadth first: the most derived wrapped base
         if key in seen:
             continue
         seen.add(key)
         if status.get(key) == "done":
-            return True
+            return key
         for b in api.get(key, {}).get("bases", []):
             todo.append("Module::" + re.sub(r"<.*", "", b).split("::")[-1])
-    return False
+    return None
+
+
+def wrapped(api: dict, status: dict, ret: str) -> bool:
+    """True if the class returned by a builder, or one of its bases, is wrapped (status 'done')."""
+    return wrapped_class(api, status, ret) is not None
+
+
+SPU_CLASSES = {"Source": "streampu._ext.src.Source", "Sink": "streampu._ext.snk.Sink"}  # + _<dtype>
+
+
+def return_annotation(api: dict, status: dict, python_paths: dict, ret: str, combos: list | None) -> str:
+    """Annotation of a module-level function: the Python class (or class template) of the object it returns, for the
+    autocompletion of the IDEs (``aff3ct.dec.Decoder_SIHO``); ``Any`` when it has no public Python path."""
+    key = wrapped_class(api, status, ret)
+    if key is None:
+        return "Any"
+    if key.startswith("spu::"):  # pystreampu classes, one per dtype (no class template object)
+        cls = SPU_CLASSES.get(key[5:])
+        return " | ".join(f"{cls}_{c[0]}" for c in combos) if cls and combos else "Any"
+    return python_paths.get(key, "Any")
 
 
 BUILTIN_TYPES = {"bool", "int", "unsigned", "float", "double", "size_t", "uint8_t", "uint16_t", "uint32_t",
@@ -462,6 +483,13 @@ def py_ident(n: str) -> str:
 
 def main() -> None:
     api, inst, status = load()
+    # public Python path of the wrapped classes ("Module::Decoder_SIHO" -> "aff3ct.dec.Decoder_SIHO")
+    python_paths = {}
+    for c in json.loads((DESIGN / "inventory.json").read_text()):
+        if c["kind"] == "Module" and c.get("domain") in DOMAIN_MODULE:
+            python_paths[f"Module::{c['name']}"] = f"aff3ct.{DOMAIN_MODULE[c['domain']]}.{c['name']}"
+        elif c["kind"] == "Tools":
+            python_paths[f"Tools::{c['name']}"] = f"aff3ct.tools.{c['name']}"
     facs = factory_classes(api)
     order = ordered(facs)
     INC_GEN.mkdir(parents=True, exist_ok=True)
@@ -589,7 +617,9 @@ def main() -> None:
             doc_txt = "\n".join(("    " + l) if l else "" for l in doc)
             assert not set(dtypes) & {p["name"] for p in kw_params}, (name, dtypes)
             internal = f"_{module.replace('.', '_')}__{fname}"  # unique in this file; renamed at export
-            code.append(f"\n\ndef {internal}({signature}) -> Any:\n    \"\"\"{doc_txt.lstrip()}\n    \"\"\"\n{body}\n")
+            ann = return_annotation(api, status, python_paths, qualify(b["ret"]),
+                                    inst.get(f"Factory::{name}", {}).get("builders", {}).get(b["name"], {}).get("combos"))
+            code.append(f"\n\ndef {internal}({signature}) -> {ann}:\n    \"\"\"{doc_txt.lstrip()}\n    \"\"\"\n{body}\n")
             funcs.setdefault(module, [])
             assert fname not in [f for f, _ in funcs[module]], (module, fname)
             funcs[module].append((fname, internal))

@@ -30,6 +30,9 @@ first tasks, and executes the whole graph in C++, in `n` threads. Each thread ex
 
 - the modules of the first thread are the original modules;
 - `seq.get_cloned_modules(m)` returns the clones of `m`, one per thread;
+- the clones are copies, random generators included: call `af.tools.seed_sequence(seq)` after the creation of the
+  sequence, so that the sources, channels... of each thread draw their own values (otherwise every thread simulates
+  the same frames with the same noise);
 - a module changed after the creation of the sequence is not copied to the clones: change the clones as well, or
   create the sequence after the change;
 - `af.mnt.Monitor_BFER_AR` has clones that share their counters: the sequence stops when the total reaches the

@@ -362,6 +362,7 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
             cp.numpy[...] = noise.sigma
         cdc.set_noise(noise)  # modules of the codec (frozen bits of the polar codes...), cloned below
         seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
+        af.tools.seed_sequence(seq)  # as the simulator: each thread its own frames and noise
         mnt.reset()
         seq.exec()
         out.append((p, mnt.ber, mnt.fer, mnt.n_analyzed_frames))

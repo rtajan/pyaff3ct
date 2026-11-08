@@ -44,6 +44,7 @@ def simulate(K=96, N=128, ebn0s=(1.0, 2.0, 3.0), max_fe=100, n_threads=1, quiet=
     fb_gen = af.tools.Frozenbits_generator_GA_Arikan(K, N)
     modules, sigma = build_chain(K, N, fb_gen.generate(af.tools.sigma_from_ebn0(ebn0s[0], K / N)), max_fe)
     seq = spu.Sequence(modules["mnt"]["check_errors::status"], n_threads=n_threads)  # firsts found from the last socket
+    af.tools.seed_sequence(seq)  # each thread its own frames and noise
     coders = seq.get_cloned_modules(modules["enc"]) + seq.get_cloned_modules(modules["dec"])
     mnt = modules["mnt"]  # shows the totals of its clones
 

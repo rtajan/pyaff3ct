@@ -64,6 +64,7 @@ def clones_demo(K=32, N=64, n_threads=2) -> dict:
         # ...but not for the clones of an existing Sequence: build it after set_noise, or update the clones with
         # seq.get_cloned_modules(cdc.encoder) / (cdc.decoder_siho) and their set_frozen_bits
         seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
+        af.tools.seed_sequence(seq)  # each thread its own frames and noise
         mnt.reset()
         seq.exec()
         fers.append(mnt.fer)
