@@ -27,6 +27,7 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
 
     import codecs_comparison
+    import mutual_information
     import fixed_point
     import modulations
     import polar_bfer
@@ -61,8 +62,13 @@ def main() -> None:
         cdc, crc = turbo_lte.codec_from_keywords()
         turbo_lte.plot(turbo_lte.simulate(cdc, crc, ebn0s, max_fe, a.threads), ebn0s, OUT / "turbo_lte.svg")
 
+    def capacity():
+        esn0s = [-10.0, -7.5, -5.0, -2.5, 0.0, 2.5, 5.0]
+        mutual_information.plot(esn0s, mutual_information.measure(esn0s, n_frames=20 if a.quick else 100,
+                                                                   n_threads=a.threads), OUT / "capacity.svg")
+
     for name, f in [("polar", polar), ("codecs", codecs), ("modems", modems), ("fixed point", fixed),
-                    ("turbo", turbo)]:
+                    ("turbo", turbo), ("capacity", capacity)]:
         step(name, f)
 
 

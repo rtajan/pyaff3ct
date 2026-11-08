@@ -109,13 +109,13 @@ def _pct__puncturer(K: int, N: int, N_cw: int, *, type: str | None = None, B: An
 
 
 
-def _tools__interleaver_core(*, size: int | None = None, type: str | None = None, path: str | None = None, read_order: str | None = None, n_cols: int | None = None, seed: int | None = None, uniform: bool | None = None, T: Any = None) -> aff3ct.tools.Interleaver_core:
+def _tools__interleaver_core(size: int, *, type: str | None = None, path: str | None = None, read_order: str | None = None, n_cols: int | None = None, seed: int | None = None, uniform: bool | None = None, T: Any = None) -> aff3ct.tools.Interleaver_core:
     """Build tools::Interleaver_core<T> with the AFF3CT factory ``Interleaver_core`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Interleaver_core(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Interleaver_core().parameters``).
 
     Args:
-        size (int): factory parameter (``int``).
+        size (int): size (factory parameter).
         type (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
         read_order (str): factory parameter (``std::string``).
@@ -231,13 +231,13 @@ def _tools__pretransform_generator(K: int, N_cw: int, *, type: str | None = None
 
 
 
-def _cst__coset_bit(*, size: int | None = None, type: str | None = None, B1: Any = None, B2: Any = None) -> aff3ct.cst.Coset:
+def _cst__coset_bit(size: int, *, type: str | None = None, B1: Any = None, B2: Any = None) -> aff3ct.cst.Coset:
     """Build module::Coset<B1, B2> with the AFF3CT factory ``Coset`` (builder ``build_bit``).
 
     Equivalent to ``aff3ct.factory.Coset(**parameters).build_bit(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Coset().parameters``).
 
     Args:
-        size (int): factory parameter (``int``).
+        size (int): size (factory parameter).
         type (str): factory parameter (``std::string``).
         B1 (streampu.dtype): template parameter ``B1``.
         B2 (streampu.dtype): template parameter ``B2``.
@@ -251,13 +251,13 @@ def _cst__coset_bit(*, size: int | None = None, type: str | None = None, B1: Any
 
 
 
-def _cst__coset_real(*, size: int | None = None, type: str | None = None, B: Any = None, R: Any = None) -> aff3ct.cst.Coset:
+def _cst__coset_real(size: int, *, type: str | None = None, B: Any = None, R: Any = None) -> aff3ct.cst.Coset:
     """Build module::Coset<B, R> with the AFF3CT factory ``Coset`` (builder ``build_real``).
 
     Equivalent to ``aff3ct.factory.Coset(**parameters).build_real(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Coset().parameters``).
 
     Args:
-        size (int): factory parameter (``int``).
+        size (int): size (factory parameter).
         type (str): factory parameter (``std::string``).
         B (streampu.dtype): template parameter ``B``.
         R (streampu.dtype): template parameter ``R``.
@@ -1500,13 +1500,13 @@ def _mnt__bfer(K: int, count_unknown_values: Any = None, *, type: str | None = N
 
 
 
-def _mnt__exit(*, size: int | None = None, type: str | None = None, n_trials: int | None = None, B: Any = None, R: Any = None) -> aff3ct.mnt.Monitor:
+def _mnt__exit(size: int, *, type: str | None = None, n_trials: int | None = None, B: Any = None, R: Any = None) -> aff3ct.mnt.Monitor_EXIT:
     """Build module::Monitor_EXIT<B, R> with the AFF3CT factory ``Monitor_EXIT`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Monitor_EXIT(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Monitor_EXIT().parameters``).
 
     Args:
-        size (int): factory parameter (``int``).
+        size (int): size (factory parameter).
         type (str): factory parameter (``std::string``).
         n_trials (int): factory parameter (``int``).
         B (streampu.dtype): template parameter ``B``.
@@ -1521,7 +1521,7 @@ def _mnt__exit(*, size: int | None = None, type: str | None = None, n_trials: in
 
 
 
-def _mnt__mi(N: int, *, type: str | None = None, n_trials: int | None = None, B: Any = None, R: Any = None) -> aff3ct.mnt.Monitor:
+def _mnt__mi(N: int, *, type: str | None = None, n_trials: int | None = None, B: Any = None, R: Any = None) -> aff3ct.mnt.Monitor_MI:
     """Build module::Monitor_MI<B, R> with the AFF3CT factory ``Monitor_MI`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Monitor_MI(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Monitor_MI().parameters``).
@@ -1659,13 +1659,13 @@ def _pct__turbo_db(K: int, N: int, N_cw: int, *, type: str | None = None, B: Any
 
 
 
-def _qnt__quantizer(*, size: int | None = None, type: str | None = None, implem: str | None = None, range: float | None = None, n_bits: int | None = None, n_decimals: int | None = None, R: Any = None, Q: Any = None) -> aff3ct.qnt.Quantizer:
+def _qnt__quantizer(size: int, *, type: str | None = None, implem: str | None = None, range: float | None = None, n_bits: int | None = None, n_decimals: int | None = None, R: Any = None, Q: Any = None) -> aff3ct.qnt.Quantizer:
     """Build module::Quantizer<R, Q> with the AFF3CT factory ``Quantizer`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Quantizer(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Quantizer().parameters``).
 
     Args:
-        size (int): factory parameter (``int``).
+        size (int): size (factory parameter).
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         range (float): factory parameter (``float``).

@@ -498,7 +498,11 @@ Avancement :
   dist, type="OPTICAL")`, `af.mdm.modem(N, None, dist, ...)`) ; 2 références LDPC sur canal optique (bruit ROP)
   rebâties depuis leur ligne de commande ; canaux `USER`, `USER_ADD`, `USER_BEC`, `USER_BSC`, `RAYLEIGH_USER` testés
   (`tests/test_user_channels.py`) ; exemple `examples/optical.py`, sections du guide.
-- 4D — moniteurs EXIT / MI, `Monitor_reduction` ;
+- ✅ **4D — moniteurs MI et EXIT** : `Monitor_MI`, `Monitor_EXIT`, `Reporter_MI`, `Reporter_EXIT` liés
+  (`af.mnt.mi(N, n_trials=...)`, `af.mnt.exit(size, ...)` ; `size` devient positionnel comme `N`, sauf pour le
+  CRC) ; `af.mnt.reduce(seq, mnt)` somme les mesures des clones (rôle de `Monitor_reduction`, dont la boucle
+  statique propre au simulateur n'est pas liée) ; capacité BI-AWGN mesurée = théorie (`examples/mutual_information.py`,
+  figure), EXIT vérifié sur des LLR gaussiens (fonction J) ; guide « Monitors ».
   4E — modules restants (AZCW, coset, encodeur utilisateur, décodeurs genius, Viterbi liste, modules turbo produit).
 
 ### Phase 5 — Industrialisation (priorité **P3** inclus)

@@ -1,5 +1,7 @@
 #include "Module/Monitor/BFER/Monitor_BFER.hpp"
 #include "Tools/Reporter/BFER/Reporter_BFER.hpp"
+#include "Tools/Reporter/EXIT/Reporter_EXIT.hpp"
+#include "Tools/Reporter/MI/Reporter_MI.hpp"
 #include "Tools/Reporter/Noise/Reporter_noise.hpp"
 #include "Tools/Reporter/Throughput/Reporter_throughput.hpp"
 
@@ -27,6 +29,40 @@ Args:
       .def(py::init<const M&>(), "monitor"_a, py::keep_alive<1, 2>());
 }
 
+template<typename B, typename R>
+static void
+wrap_reporter_mi_internal(py::handle scope)
+{
+    using M = aff3ct::module::Monitor_MI<B, R>;
+    py::class_<Reporter_MI<B, R>, spu::tools::Reporter>(
+      scope,
+      class_name<B, R>("Reporter_MI").c_str(),
+      R"pbdoc(Columns TRIALS, MI, MIN, MAX of a mutual information monitor, for ``streampu.Terminal_std``.
+
+Args:
+    monitor (aff3ct.mnt.Monitor_MI): monitor (kept alive by the reporter).
+)pbdoc")
+      .def(py::init<const M&>(), "monitor"_a, py::keep_alive<1, 2>());
+}
+
+template<typename B, typename R>
+static void
+wrap_reporter_exit_internal(py::handle scope)
+{
+    using M = aff3ct::module::Monitor_EXIT<B, R>;
+    py::class_<Reporter_EXIT<B, R>, spu::tools::Reporter>(
+      scope,
+      class_name<B, R>("Reporter_EXIT").c_str(),
+      R"pbdoc(Columns SIG_A, I_A, I_E of an EXIT monitor, for ``streampu.Terminal_std``.
+
+Args:
+    monitor (aff3ct.mnt.Monitor_EXIT): monitor (kept alive by the reporter).
+    noise_a (aff3ct.tools.Noise): noise of the a priori LLRs (kept alive by the reporter).
+)pbdoc")
+      .def(py::init<const M&, const Noise<>&>(), "monitor"_a, "noise_a"_a, py::keep_alive<1, 2>(),
+           py::keep_alive<1, 3>());
+}
+
 template<typename R>
 static void
 wrap_reporter_noise_internal(py::handle scope)
@@ -50,6 +86,12 @@ pyaf::wrapper::wrap_reporters(py::handle scope)
 {
     for_each_combo<gen::Tools_Reporter_BFER>(
       [&](auto c) { wrap_reporter_bfer_internal<typename decltype(c)::template at<0>>(scope); });
+    for_each_combo<gen::Tools_Reporter_MI>(
+      [&](auto c)
+      { wrap_reporter_mi_internal<typename decltype(c)::template at<0>, typename decltype(c)::template at<1>>(scope); });
+    for_each_combo<gen::Tools_Reporter_EXIT>(
+      [&](auto c)
+      { wrap_reporter_exit_internal<typename decltype(c)::template at<0>, typename decltype(c)::template at<1>>(scope); });
     for_each_combo<gen::Tools_Reporter_noise>(
       [&](auto c) { wrap_reporter_noise_internal<typename decltype(c)::template at<0>>(scope); });
 

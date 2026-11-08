@@ -1,5 +1,7 @@
 #include "Module/Monitor/Monitor.hpp"
 #include "Module/Monitor/BFER/Monitor_BFER.hpp"
+#include "Module/Monitor/EXIT/Monitor_EXIT.hpp"
+#include "Module/Monitor/MI/Monitor_MI.hpp"
 
 #include "internal/Module/Monitor/BFER_AR/Monitor_BFER_AR.hpp"
 #include "internal/Wrapper/Module/Monitor/Monitor.hpp"
@@ -101,6 +103,92 @@ Same arguments, tasks and accessors as ``Monitor_BFER`` (it is one).
            "Return True if the monitor shares its counters with this one (clone or original).");
     add_module_class<AR>();
 }
+
+template<typename B, typename R>
+static void
+wrap_monitor_mi_internal(py::handle scope)
+{
+    using M = aff3ct::module::Monitor_MI<B, R>;
+    using aff3ct::module::Monitor;
+    py::class_<M, Monitor>(scope,
+                           class_name<B, R>("Monitor_MI").c_str(),
+                           R"pbdoc(Mutual information monitor: mutual information between the transmitted bits and their LLRs.
+
+Task: ``get_mutual_info(X, Y)`` (``X``: transmitted bits, ``Y``: LLRs), whose output ``mutual_info`` is the mutual
+information of the frame; ``mi``, ``mi_min``, ``mi_max`` are the mean, minimum and maximum over the checked frames.
+``is_done()`` is True once ``max_n_trials`` frames are checked (0: no limit).
+
+Args:
+    N (int): number of bits (and LLRs) per frame.
+    max_n_trials (int): number of frames to stop (0: no limit).
+
+>>> mnt = af.mnt.Monitor_MI(N, max_n_trials=1000)
+>>> mnt.get_mutual_info(x, llr)                     # binds the chain
+>>> spu.Sequence(mnt["get_mutual_info::status"]).exec()
+>>> mnt.mi
+)pbdoc")
+      .def(py::init<int, unsigned>(), "N"_a, "max_n_trials"_a = 0)
+      .def_property_readonly("N", &M::get_N, "int: number of bits per frame.")
+      .def_property_readonly("max_n_trials", &M::get_max_n_trials, "int: frames to stop (0: no limit).")
+      .def_property_readonly("n_trials", &M::get_n_trials, "int: number of checked frames.")
+      .def_property_readonly("mi", &M::get_MI, "float: mean mutual information.")
+      .def_property_readonly("mi_min", &M::get_MI_min, "float: minimum mutual information of a frame.")
+      .def_property_readonly("mi_max", &M::get_MI_max, "float: maximum mutual information of a frame.")
+      .def("n_trials_limit_achieved", &M::n_trials_limit_achieved, "Return True if max_n_trials frames are checked.")
+      .def("collect",
+           py::overload_cast<const M&, bool>(&M::collect),
+           "monitor"_a,
+           "fully"_a = false,
+           "Add the measures of another monitor (e.g. the clones of a Sequence).")
+      .def("copy",
+           py::overload_cast<const M&, bool>(&M::copy),
+           "monitor"_a,
+           "fully"_a = false,
+           "Copy the measures of another monitor.")
+      .def("record_callback_check", &M::record_callback_check, "callback"_a, "Call callback() after each check.")
+      .def("unrecord_callback_check", &M::unrecord_callback_check, "id"_a);
+    add_module_class<M>();
+}
+
+template<typename B, typename R>
+static void
+wrap_monitor_exit_internal(py::handle scope)
+{
+    using M = aff3ct::module::Monitor_EXIT<B, R>;
+    using aff3ct::module::Monitor;
+    py::class_<M, Monitor>(scope,
+                           class_name<B, R>("Monitor_EXIT").c_str(),
+                           R"pbdoc(EXIT monitor: a priori and extrinsic mutual information of a soft-input soft-output decoder.
+
+Task: ``check_mutual_info(bits, llrs_a, llrs_e)`` (``bits``: transmitted bits, ``llrs_a``: a priori LLRs given to
+the decoder, ``llrs_e``: extrinsic LLRs it returns); ``I_A`` and ``I_E`` are the mean mutual informations, the two
+coordinates of a point of an EXIT chart. ``is_done()`` is True once ``max_n_trials`` frames are checked.
+
+Args:
+    size (int): number of bits (and LLRs) per frame.
+    max_n_trials (int): number of frames to stop.
+)pbdoc")
+      .def(py::init<int, unsigned>(), "size"_a, "max_n_trials"_a)
+      .def_property_readonly("N", &M::get_N, "int: number of bits per frame.")
+      .def_property_readonly("max_n_trials", &M::get_max_n_trials, "int: frames to stop.")
+      .def_property_readonly("n_trials", &M::get_n_trials, "int: number of checked frames.")
+      .def_property_readonly("I_A", &M::get_I_A, "float: mean a priori mutual information.")
+      .def_property_readonly("I_E", &M::get_I_E, "float: mean extrinsic mutual information.")
+      .def("n_trials_achieved", &M::n_trials_achieved, "Return True if max_n_trials frames are checked.")
+      .def("collect",
+           py::overload_cast<const M&, bool>(&M::collect),
+           "monitor"_a,
+           "fully"_a = false,
+           "Add the measures of another monitor (e.g. the clones of a Sequence).")
+      .def("copy",
+           py::overload_cast<const M&, bool>(&M::copy),
+           "monitor"_a,
+           "fully"_a = false,
+           "Copy the measures of another monitor.")
+      .def("record_callback_measure", &M::record_callback_measure, "callback"_a, "Call callback() after each check.")
+      .def("unrecord_callback_measure", &M::unrecord_callback_measure, "id"_a);
+    add_module_class<M>();
+}
 } // namespace wrapper
 } // namespace pyaf
 
@@ -121,4 +209,15 @@ execution of a ``streampu.Sequence``.
 
     for_each_combo<gen::Module_Monitor_BFER>(
       [&](auto c) { wrap_monitor_bfer_internal<typename decltype(c)::template at<0>>(scope); });
+    for_each_combo<gen::Module_Monitor_MI>(
+      [&](auto c)
+      {
+          wrap_monitor_mi_internal<typename decltype(c)::template at<0>, typename decltype(c)::template at<1>>(scope);
+      });
+    for_each_combo<gen::Module_Monitor_EXIT>(
+      [&](auto c)
+      {
+          wrap_monitor_exit_internal<typename decltype(c)::template at<0>, typename decltype(c)::template at<1>>(
+            scope);
+      });
 }
