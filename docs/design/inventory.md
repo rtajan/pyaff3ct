@@ -244,13 +244,13 @@
 | `AList` | `Tools/Code/LDPC/AList/AList.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.AList` | done |
 | `LDPC_matrix_handler` | `Tools/Code/LDPC/Matrix_handler/LDPC_matrix_handler.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.LDPC_matrix_handler` | done |
 | `QC` | `Tools/Code/LDPC/QC/QC.hpp` | `` |  | func | P1 | `aff3ct.tools.ldpc.QC` | done |
-| `Frozenbits_generator_5G` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_5G.hpp` | `` | Frozenbits_generator_file | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_5G` | todo |
-| `Frozenbits_generator_GA` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_GA` | todo |
-| `Frozenbits_generator_RM` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_RM.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_RM` | todo |
-| `Frozenbits_generator_TV` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_TV.hpp` | `` | Frozenbits_generator_file | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_TV` | todo |
-| `Polar_code` | `Tools/Code/Polar/Polar_code.hpp` | `` |  | wrap | P1 | `aff3ct.tools.polar.Polar_code` | todo |
-| `Pretransform_generator` | `Tools/Code/Polar/Pretransform_generator/Pretransform_generator.hpp` | `` | Interface_get_set_noise, spu::tools::Interface_clone | abstract | P1 | `aff3ct.tools.polar.Pretransform_generator` | todo |
-| `Pretransform_generator_file` | `Tools/Code/Polar/Pretransform_generator/Pretransform_generator_file.hpp` | `` | Pretransform_generator | wrap | P1 | `aff3ct.tools.polar.Pretransform_generator_file` | todo |
+| `Frozenbits_generator_5G` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_5G.hpp` | `` | Frozenbits_generator_file | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_5G` | done |
+| `Frozenbits_generator_GA` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_GA.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_GA` | done |
+| `Frozenbits_generator_RM` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_RM.hpp` | `` | Frozenbits_generator | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_RM` | done |
+| `Frozenbits_generator_TV` | `Tools/Code/Polar/Frozenbits_generator/Frozenbits_generator_TV.hpp` | `` | Frozenbits_generator_file | wrap | P1 | `aff3ct.tools.polar.Frozenbits_generator_TV` | done |
+| `Polar_code` | `Tools/Code/Polar/Polar_code.hpp` | `` |  | wrap | P1 | `aff3ct.tools.polar.Polar_code` | done |
+| `Pretransform_generator` | `Tools/Code/Polar/Pretransform_generator/Pretransform_generator.hpp` | `` | Interface_get_set_noise, spu::tools::Interface_clone | abstract | P1 | `aff3ct.tools.polar.Pretransform_generator` | done |
+| `Pretransform_generator_file` | `Tools/Code/Polar/Pretransform_generator/Pretransform_generator_file.hpp` | `` | Pretransform_generator | wrap | P1 | `aff3ct.tools.polar.Pretransform_generator_file` | done |
 | `CRC_checker` | `Tools/Code/Turbo/Post_processing_SISO/CRC/CRC_checker.hpp` | `typename B = int, typename R = float` | Post_processing_SISO | wrap | P1 | `aff3ct.tools.turbo.CRC_checker` | todo |
 | `CRC_checker_DB` | `Tools/Code/Turbo/Post_processing_SISO/CRC/CRC_checker_DB.hpp` | `typename B = int, typename R = float` | CRC_checker | wrap | P1 | `aff3ct.tools.turbo.CRC_checker_DB` | todo |
 | `Flip_and_check` | `Tools/Code/Turbo/Post_processing_SISO/Flip_and_check/Flip_and_check.hpp` | `typename B = int, typename R = float` | CRC_checker | wrap | P1 | `aff3ct.tools.turbo.Flip_and_check` | todo |
@@ -283,11 +283,11 @@
 | `Codec_turbo_DB` | `Tools/Codec/Turbo_DB/Codec_turbo_DB.hpp` | `typename B = int, typename Q = float` | Codec_SIHO | factory | P1 | `aff3ct.codec.Codec_turbo_DB` | done |
 | `Codec_turbo_product` | `Tools/Codec/Turbo_product/Codec_turbo_product.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_turbo_product` | done |
 | `Codec_uncoded` | `Tools/Codec/Uncoded/Codec_uncoded.hpp` | `typename B = int, typename Q = float` | Codec_SISO | factory | P1 | `aff3ct.codec.Codec_uncoded` | done |
-| `Constellation` | `Tools/Constellation/Constellation.hpp` | `typename R = float` |  | abstract | P1 | `aff3ct.tools.cst.Constellation` | todo |
-| `Constellation_PAM` | `Tools/Constellation/PAM/Constellation_PAM.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PAM` | todo |
-| `Constellation_PSK` | `Tools/Constellation/PSK/Constellation_PSK.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PSK` | todo |
-| `Constellation_QAM` | `Tools/Constellation/QAM/Constellation_QAM.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_QAM` | todo |
-| `Constellation_user` | `Tools/Constellation/User/Constellation_user.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_user` | todo |
+| `Constellation` | `Tools/Constellation/Constellation.hpp` | `typename R = float` |  | abstract | P1 | `aff3ct.tools.cst.Constellation` | done |
+| `Constellation_PAM` | `Tools/Constellation/PAM/Constellation_PAM.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PAM` | done |
+| `Constellation_PSK` | `Tools/Constellation/PSK/Constellation_PSK.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_PSK` | done |
+| `Constellation_QAM` | `Tools/Constellation/QAM/Constellation_QAM.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_QAM` | done |
+| `Constellation_user` | `Tools/Constellation/User/Constellation_user.hpp` | `typename R = float` | Constellation | wrap | P1 | `aff3ct.tools.cst.Constellation_user` | done |
 | `Command_parser` | `Tools/Factory/Command_parser.hpp` | `` |  | func | P1 | `aff3ct.factory.Command_parser` | todo |
 | `Header` | `Tools/Factory/Header.hpp` | `` |  | func | P1 | `aff3ct.factory.Header` | todo |
 | `Interface_get_set_dynamic_frozen_bits` | `Tools/Interface/Interface_get_set_dynamic_frozen_bits.hpp` | `` |  | abstract | P1 | `aff3ct.interfaces.Interface_get_set_dynamic_frozen_bits` | done |

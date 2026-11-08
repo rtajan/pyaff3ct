@@ -12,7 +12,7 @@ namespace
 {
 //! Parses AFF3CT command line arguments into a factory (only the given arguments are changed).
 void
-factory_from_cli(Factory& f, const std::vector<std::string>& cmd)
+factory_from_cli(Factory& f, const std::vector<std::string>& cmd, bool strict, bool warn = true)
 {
     cli::Argument_map_info args;
     f.get_description(args);
@@ -29,8 +29,17 @@ factory_from_cli(Factory& f, const std::vector<std::string>& cmd)
     std::vector<std::string> warnings, errors;
     auto values = ah.parse_arguments(args, warnings, errors);
 
-    for (auto& w : warnings) // an unknown argument is a typo or an argument of another factory: reject it
-        if (w.rfind("Unknown argument", 0) == 0) errors.push_back(w);
+    // an unknown argument is a typo or an argument of another factory: rejected, unless not strict (a whole AFF3CT
+    // command line given to each factory)
+    std::vector<std::string> kept;
+    for (auto& w : warnings)
+        if (w.rfind("Unknown argument", 0) == 0)
+        {
+            if (strict) errors.push_back(w);
+        }
+        else
+            kept.push_back(w);
+    warnings = kept;
     if (!errors.empty())
     {
         std::string msg = "invalid AFF3CT arguments for the factory '" + f.get_name() + "':";
@@ -38,10 +47,19 @@ factory_from_cli(Factory& f, const std::vector<std::string>& cmd)
             msg += "\n  - " + e;
         throw py::value_error(msg);
     }
-    for (auto& w : warnings)
-        if (PyErr_WarnEx(PyExc_UserWarning, w.c_str(), 1) != 0) throw py::error_already_set();
+    if (warn)
+        for (auto& w : warnings)
+            if (PyErr_WarnEx(PyExc_UserWarning, w.c_str(), 1) != 0) throw py::error_already_set();
 
     f.store(values);
+}
+
+//! `store()` with the arguments of the previous `from_cli` calls (silently): what AFF3CT derives from the command line
+//! (puncturer frame size from -N, BCH sizes from -T...) is derived again, as after the parsing.
+void
+factory_complete_cli(Factory& f, const std::vector<std::string>& cmd)
+{
+    factory_from_cli(f, cmd, false, false);
 }
 
 //! Runs the AFF3CT `store()` with no argument: only the derived values are computed (CRC size from the polynomial,
@@ -96,16 +114,20 @@ for the command-line parity (``from_cli``) or to inspect the parameters (``heade
     cls.def_property_readonly("name", &Factory::get_name, "str: name of the factory.")
       .def_property_readonly("short_name", &Factory::get_short_name, "str: short name of the factory.")
       .def_property_readonly("prefix", &Factory::get_prefix, "str: prefix of the command line arguments (e.g. 'crc').")
-      .def("from_cli",
-           &factory_from_cli,
-           "args"_a,
-           R"pbdoc(Set parameters from AFF3CT command-line arguments (only the given ones change).
+      .def(
+        "from_cli",
+        [](Factory& f, const std::vector<std::string>& cmd, bool strict) { factory_from_cli(f, cmd, strict); },
+        "args"_a,
+        "strict"_a = true,
+        R"pbdoc(Set parameters from AFF3CT command-line arguments (only the given ones change).
 
 Args:
     args (list[str]): arguments, e.g. ``["--crc-poly", "32-GZIP", "--crc-implem", "STD"]``.
+    strict (bool): reject the arguments that are not of this factory (False: ignore them, to give the same whole
+        AFF3CT command line to several factories).
 
 Raises:
-    ValueError: if an argument is unknown or has an invalid value.
+    ValueError: if an argument is unknown (strict) or has an invalid value.
 )pbdoc")
       .def("headers",
            &factory_headers,
@@ -115,5 +137,9 @@ Raises:
       .def("clone", &Factory::clone, py::return_value_policy::take_ownership, "Return a copy of the factory.")
       .def("_complete",
            &factory_complete,
-           "Compute the derived parameters as AFF3CT does after parsing the command line (internal, used by build).");
+           "Compute the derived parameters as AFF3CT does after parsing the command line (internal, used by build).")
+      .def("_complete_cli",
+           &factory_complete_cli,
+           "args"_a,
+           "As _complete, with the arguments of the previous from_cli calls (internal, used by build).");
 }

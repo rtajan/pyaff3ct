@@ -35,7 +35,7 @@ variables:
   PYTEST_WORKERS: 4
   # pystreampu to build against (it must provide the Module downcast registry for every test to pass)
   PYSTREAMPU_URL: "https://github.com/rtajan/pystreampu.git"
-  PYSTREAMPU_REF: "develop"  # provides the Module downcast registry (merged); any branch or tag can be given
+  PYSTREAMPU_REF: "v1.2.1"  # the release required by pyproject.toml (downcast registry...); any branch or tag works
   # ccache: the object files are reused from one pipeline to the next (GitLab cache)
   CCACHE_DIR: "$CI_PROJECT_DIR/.ccache"
   CCACHE_BASEDIR: "$CI_PROJECT_DIR"
@@ -146,14 +146,15 @@ tests:
     - python -m pip install dist-streampu/*.whl dist/*.whl
     - python -m pip install pytest pytest-xdist scipy
     # BER/FER references (tests/test_references.py): the refs submodule of AFF3CT (5 MB) and, from its configuration
-    # files, only the LDPC matrix of the test (the repository is large)
+    # files, only the LDPC matrices of the tests (the repository is large)
     - git submodule update --init lib/aff3ct
     - git -C lib/aff3ct submodule update --init refs
     - |
       CONF_SHA=$(git -C lib/aff3ct ls-tree HEAD conf | awk '{print $3}')
       rm -rf lib/aff3ct/conf
       git clone -q --filter=blob:none --no-checkout https://github.com/aff3ct/configuration_files.git lib/aff3ct/conf
-      git -C lib/aff3ct/conf sparse-checkout set --no-cone dec/LDPC/CCSDS_64_128.alist
+      git -C lib/aff3ct/conf sparse-checkout set --no-cone /dec/LDPC/CCSDS_64_128.alist /dec/LDPC/WIMAX_288_576.alist \
+        /dec/LDPC/MACKAY_504_1008.alist /dec/LDPC/PEG_Reg_1008x504.alist
       git -C lib/aff3ct/conf checkout -q "$CONF_SHA"
     # outside the source tree: `python -c` puts the current directory first in sys.path, where aff3ct/ has no _ext
     - (cd /tmp && python -c "import aff3ct as af; print(af.__file__, af.AFF3CT_VERSION, 'registry:', af._ext.HAS_STREAMPU_DOWNCAST_REGISTRY)")

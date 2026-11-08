@@ -9,14 +9,21 @@ the AFF3CT references) — see `Plan.md`.
 
 ## Development build
 
-Requires an environment where `streampu` (pystreampu) is installed: pyaff3ct is built against its pybind11 and
-StreamPU versions.
+Requires an environment where `streampu` (pystreampu) >= 1.2.1 is installed: pyaff3ct is built against its pybind11
+and StreamPU versions. streampu is not on PyPI yet, so build without isolation:
 
 ```bash
+pip install "git+https://github.com/rtajan/pystreampu.git@v1.2.1"      # or a local clone of pystreampu
+pip install scikit-build-core setuptools_scm pybind11==3.0.4
 git submodule update --init lib/aff3ct
 git -C lib/aff3ct submodule update --init --recursive lib/cli lib/MIPP lib/date
-PYTHON=path/to/python scripts/dev_build.sh       # build/dev, links aff3ct/_ext*.so into the source tree
-path/to/python -m pytest
+
+pip install -v . --no-build-isolation            # install
+pytest tests                                     # (not `python -m pytest` from the root: the sources shadow it)
+
+PYTHON=path/to/python scripts/dev_build.sh       # or development build: build/dev, aff3ct/_ext*.so linked in the
+path/to/python -m pytest                         # source tree
+
 # optional: BER/FER references (tests/test_references.py, skipped without them)
 git -C lib/aff3ct submodule update --init refs
 ```

@@ -139,6 +139,19 @@ def compute(api: dict) -> dict[str, dict]:
                         combos[bkey].add(bc)
                         changed = True
 
+    # header-only tool templates never instantiated explicitly (Constellation_QAM<R> : Constellation<R>): the
+    # combinations of their base when they forward their parameters to it unchanged
+    for key, v in classes.items():
+        if not key.startswith("Tools::") or combos[key] or not params[key]:
+            continue
+        names = [p for p, _ in params[key]]
+        for b in v["bases"]:
+            m = re.match(r"(?:\w+::)*(\w+)\s*<(.*)>$", b)
+            bkey = f"Tools::{m.group(1)}" if m else None
+            if bkey in classes and [a.strip() for a in split_top(m.group(2))] == names and combos[bkey]:
+                combos[key] = set(combos[bkey])
+                break
+
     # factory class templates (Decoder_turbo<>): their builders are implemented in headers, without explicit
     # instantiation; they get the combinations of the module class they return (module::Decoder_turbo<B, Q>)
     for key, v in classes.items():

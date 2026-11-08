@@ -80,8 +80,9 @@ def test_function_signatures_follow_the_rules():
 
 
 def test_functions_are_generated_only_for_wrapped_classes():
-    assert not hasattr(af.tools, "polar_code")  # tools::Polar_code not wrapped yet
-    assert any(s.startswith("Polar_code.build") for s in F.SKIPPED)
+    assert not hasattr(af.tools, "scaling_factor")  # tools::Scaling_factor not wrapped yet
+    assert any(s.startswith("Scaling_factor.build") for s in F.SKIPPED)
+    assert hasattr(af.tools, "polar_code") and hasattr(af.tools, "pretransform_generator")
     assert hasattr(af.tools, "frozenbits_generator") and hasattr(af.itl, "interleaver")
     assert not any(s.startswith(("Frozenbits_generator.build", "Interleaver_core.build")) for s in F.SKIPPED)
 

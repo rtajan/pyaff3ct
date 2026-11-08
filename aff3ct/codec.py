@@ -25,7 +25,7 @@ import streampu as _spu
 
 from aff3ct import _ext
 from aff3ct._dispatch import builder_entry, export
-from aff3ct._factory import _call_builder
+from aff3ct._factory import _call_builder, _complete
 from aff3ct._generated.functions import CODECS
 
 Factory = _ext.factory.Factory
@@ -132,7 +132,7 @@ def _make_function(factory_name: str, info: dict) -> Callable:
         """The factory the codec would be built with (``print(f.headers())`` as the AFF3CT simulator)."""
         fac, _ = configure(K, N_cw, **{k: v for k, v in kwargs.items() if k not in dtypes})
         fac = fac.clone()
-        fac._complete()
+        _complete(fac)  # keyword parameters only (no command line)
         return fac
 
     fname = info["function"]

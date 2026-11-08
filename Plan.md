@@ -403,9 +403,9 @@ inventaire mis à jour (`done`), docstrings présentes.
   binomiaux) ; la CI récupère `refs` et, de `conf`, la seule matrice utilisée.
 - Exemple ✅ `examples/polar_bfer.py` (`streampu.Sequence` multi-thread, `Terminal_std`, bits gelés adaptés au bruit
   par `set_frozen_bits` sur les clones). Restent `examples/ldpc_bfer.py` et un notebook.
-- Constaté côté pystreampu (à remonter) : `Terminal_std(reporters)` ne garde pas ses reporters en vie (à garder par
-  l'appelant) ; `stop_temp_report` est lié à `start_temp_report` ; `Sequence(task)` prend la tâche pour la
-  **première** (le passer par une socket de fin : `Sequence(mnt["check_errors::status"])`).
+- Constaté côté pystreampu, corrigé dans la v1.2.1 (exigée) : `Terminal_std(reporters)` ne gardait pas ses reporters
+  en vie ; `stop_temp_report` était lié à `start_temp_report`. `Sequence(task)` prend la tâche pour la **première**
+  (le passer par une socket de fin : `Sequence(mnt["check_errors::status"])`).
 - **Réduction multi-thread** ✅ : avec `Monitor_BFER`, chaque thread a son clone et la séquence s'arrête dès qu'**un**
   clone atteint `max_fe` (FER réduit biaisé vers le haut ; l'original ne compte au mieux que les trames du premier
   thread).
@@ -417,7 +417,7 @@ inventaire mis à jour (`done`), docstrings présentes.
   regroupement par dtype. Vérifié : 4 threads → FE total = `max_fe` (+ trames en vol), FER conforme à la référence
   polaire. À retirer si AFF3CT / pystreampu offrent l'équivalent (`Monitor_reduction`).
 
-### Phase 3 — Couverture cœur (priorité **P1**, 229 entrées)
+### Phase 3 — Couverture cœur (priorité **P1**, 229 entrées) ✅
 - Toutes les familles restantes « mainstream » : Turbo/RSC (+ `Post_processing_SISO`, `Flip_and_check`, `Scaling_factor`),
   RA, Repetition, Conv/Viterbi, Polar SCL/ASCL/SCF/SCAN, LDPC (toutes les règles via factory), Modem générique
   (`Constellation_*`), OOK, Rayleigh, BEC/BSC, `Extractor_*`, `Puncturer_*`, `Quantizer_custom`, générateurs de bruit.
@@ -443,6 +443,40 @@ inventaire mis à jour (`done`), docstrings présentes.
     `dec_sub_*`, `dec_sf_*`…), leurs builders prenant les combinaisons du module renvoyé ; `enable_puncturer` lié.
   - Validé contre `refs` : RA (4096, 1024) MS 10 itérations et turbo LTE (K = 2048, CRC 24-LTEA, poinçonnage
     `11,10,01`, 8 itérations, facteur d'échelle LTE_VEC), à 4 threads ; `examples/ldpc_bfer.py` (codec LDPC).
+- **Modems et canaux** ✅ : `Constellation_{PAM,PSK,QAM,user}` (`symbols` en tableau complexe, `bps`…) ;
+  `af.mdm.modem(N, type="QAM", bps=4)` construit (et garde) la constellation des types génériques, comme le
+  simulateur, et une constellation donnée fixe le type ; `af.mdm.modem(N, symbols=...)` pour une constellation
+  quelconque sans objet ni fichier (constructeur protégé `Constellation(symbols, name)` d'AFF3CT, exposé par
+  `af.tools.Constellation(symbols, normalize=True)` ; symbole `i` = image des bits de `i`, premier bit de poids
+  faible) ; `mdm.N_mod` donne la taille du canal. Canaux AWGN,
+  Rayleigh (`add_noise_wg` → `demodulate_wg`, `complex=True`), BEC et BSC (modem `OOK` avec `channel_type`, moniteur
+  `count_unknown_values=True` comme le simulateur pour un bruit EP) validés contre `refs` (non codé : 16-QAM AWGN,
+  QPSK Rayleigh, OOK BEC / BSC, BER à 5 écarts-types). Générateur : les templates d'outils header-only qui
+  transmettent leurs paramètres à leur base en prennent les combinaisons (`Constellation_QAM<R>`).
+- **Décodeurs et outils polaires** ✅ : `Polar_code` (mono / multi-noyaux), `Frozenbits_generator_{GA,RM,5G,TV}`,
+  `Pretransform_generator(_file)`. `from_cli(args, strict=False)` : une ligne de commande AFF3CT complète donnée à
+  chaque factory, qui n'en prend que ses arguments. `tests/test_references.py` reconstruit les chaînes **depuis la
+  ligne de commande des références** (source, CRC, codec, modem, canal ; tailles propagées et AZCW comme
+  `BFER_std.cpp`, poinçonneur activé comme les lanceurs polaire / turbo / LDPC) : CA-ASCL polaire raccourci,
+  Viterbi, BCJR, répétition, LDPC BP flooding SPA / AMS (min, min*), layered NMS, Gallager A / B / E, WBF, MWBF,
+  LDPC NMS sur BEC et BSC (bruit EP). La CI récupère les 4 matrices utilisées.
+  Restent sans fonction : `Scaling_factor`, `Flip_and_check` (post-traitements internes aux décodeurs turbo, réglés
+  par les codecs : `dec_sf_*`, `dec_fnc_*`).
+- **Clôture de la phase 3** ✅ :
+  - **Build après `from_cli`** : `_complete()` (le `store()` d'AFF3CT sur une ligne de commande vide) perdait ce
+    qu'AFF3CT ne dérive qu'en lisant la ligne de commande (taille de trame du poinçonneur depuis `-N`, sizes BCH
+    depuis `-T`). Les arguments des `from_cli` sont mémorisés (`_CLI`, par factory) et rejoués au build
+    (`_complete_cli`), puis les paramètres changés depuis le dernier `from_cli` sont réappliqués. Sans ligne de
+    commande, un `t` BCH cohérent avec les tailles est conservé (`n_rdncy(N, t) = N - K`).
+  - **Précisions fixes** : chaînes 8 et 16 bits (`-p`) avec quantificateur après le démodulateur, comme
+    `Simulation_BFER_std.cpp` (défauts de quantification des lanceurs) ; conversion Eb/N0 avec le nombre de bits par
+    symbole du modem (`Noise.cpp`).
+  - **Références vérifiées depuis leur ligne de commande** (33, `tests/test_references.py`, ~80 s en séquentiel) :
+    polaire SC 8/16 bits, SCAN 16 bits, RSC 8/16 bits, répétition 8/16 bits, RSC double binaire (DVB-RCS2), turbo
+    double binaire (DVB-RCS1 / RCS2 : QPSK, CRC, facteur d'échelle adaptatif, flip and check ; BEC), codes produits
+    (BCH étendus, Chase-Pyndiah), BCH et RS algébriques (AWGN, BSC, BEC), en plus des précédentes.
+  - Extracteurs et poinçonneurs : accesseurs de base (`K`, `N`, `N_cw`, `frozen_bits` du poinçonneur polaire et de
+    l'extracteur) ; pas d'accesseur propre supplémentaire utile (motifs réglés par les factories).
 
 - DoD : un test de construction et d'exécution par classe, et un test de parité CLI par factory.
 
@@ -521,10 +555,9 @@ Organisation proposée :
    modules renvoyés par pystreampu (R8 bis, registre de downcasters, mergé dans pystreampu `develop`).
    Attention : réinstaller streampu touche les en-têtes StreamPU dont dépend AFF3CT, d'où une recompilation complète
    d'AFF3CT (~15 min sur 2 cœurs) au build suivant.
-   Note : `Stateful` n'est pas exporté au niveau de `streampu` (seul `Stateful_core` l'est) : les tests utilisent
-   `streampu._ext.sfl.Stateful` ; un export public côté pystreampu serait plus propre.
-   Note : itérer sur une `streampu.Socket` (`for s in sock`, `list(sock)`) ne termine pas (`__getitem__` sans fin
-   d'itération) — à corriger côté pystreampu (lever `IndexError` ou définir `__iter__`).
+   pystreampu v1.2.1 (exigée par `pyproject.toml`, `PYSTREAMPU_REF` de la CI) : registre de downcast publié,
+   `streampu.Stateful` exporté, indexation des sockets bornée (`IndexError`, fin de `iter(socket)`),
+   `Terminal_std` qui garde ses reporters, `stop_temp_report` corrigé.
 3. **ABI pybind11** : même contrainte que pystreampu (`>=3.0.4,<3.1`, même compilateur et stdlib), contrôlée en CI.
 4. **Temps de compilation et taille binaire** : environ 190 classes × 4 à 6 instanciations. Leviers : une TU par famille,
    option CMake pour restreindre les précisions (`PYAFF3CT_PRECISIONS=32` en dev), ccache, LTO uniquement en release.

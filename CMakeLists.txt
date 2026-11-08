@@ -40,7 +40,13 @@ message(STATUS "pyaff3ct - pystreampu headers: ${PYAF_PYSTREAMPU_INCLUDE_DIR}")
 set(PYBIND11_NEWPYTHON ON)
 find_package(pybind11 3.0.4 CONFIG REQUIRED)
 find_package(cpptrace CONFIG REQUIRED) # dependency of the StreamPU targets (spu::spu-static-lib)
+# pystreampu built with Julia (SPU_LINK_JULIA=ON): its StreamPU links Julia::Julia, defined by the CMake package
+# "Julia" that pystreampu installs next to the one of StreamPU (same CMAKE_PREFIX_PATH). Nothing otherwise.
+find_package(Julia 1.10.9 QUIET)
 find_package(StreamPU CONFIG REQUIRED)
+if(Julia_FOUND)
+    message(STATUS "pyaff3ct - pystreampu is built with Julia: ${JULIA_LIBRARY}")
+endif()
 message(STATUS "pyaff3ct - StreamPU: ${StreamPU_DIR} (version ${StreamPU_VERSION})")
 
 # --------------------------------------------------------------------------------------------------------------- AFF3CT
@@ -78,6 +84,12 @@ pybind11_add_module(_ext MODULE ${PYAF_SOURCES} ${PYAF_HEADERS})
 target_include_directories(_ext PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/internal/include"
                                         "${PYAF_PYSTREAMPU_INCLUDE_DIR}/pystreampu")
 target_link_libraries(_ext PRIVATE aff3ct-static-lib Threads::Threads)
+if(Julia_FOUND AND JULIA_LIBRARY)
+    # libjulia found at import time
+    get_filename_component(PYAF_JULIA_LIBRARY_DIR "${JULIA_LIBRARY}" DIRECTORY)
+    set_property(TARGET _ext APPEND PROPERTY BUILD_RPATH "${PYAF_JULIA_LIBRARY_DIR}")
+    set_property(TARGET _ext APPEND PROPERTY INSTALL_RPATH "${PYAF_JULIA_LIBRARY_DIR}")
+endif()
 
 option(PYAFF3CT_WERROR "Treat the warnings of the wrapper as errors" OFF)
 if(PYAFF3CT_WERROR)

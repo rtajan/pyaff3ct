@@ -45,7 +45,6 @@ def simulate(K=96, N=128, ebn0s=(1.0, 2.0, 3.0), max_fe=100, n_threads=1, quiet=
     mnt = modules["mnt"]  # shows the totals of its clones
 
     noise = af.tools.sigma_from_ebn0(ebn0s[0], K / N)
-    # streampu.Terminal_std does not keep its reporters alive: keep a reference on them
     reporters = [af.tools.Reporter_noise(noise), af.tools.Reporter_BFER(mnt), af.tools.Reporter_throughput(mnt)]
     ter = spu.Terminal_std(reporters)
     if not quiet:
