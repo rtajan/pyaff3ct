@@ -123,6 +123,8 @@
  "Tools::Constellation_PSK": "done",
  "Tools::Constellation_QAM": "done",
  "Tools::Constellation_user": "done",
+ "Tools::Distribution": "done",
+ "Tools::Distributions": "done",
  "Tools::Event_probability": "done",
  "Tools::Frozenbits_generator": "done",
  "Tools::Frozenbits_generator_5G": "done",

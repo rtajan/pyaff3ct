@@ -26,7 +26,7 @@ _generated_modem = modem  # noqa: F821  (exported above)
 
 
 @functools.wraps(_generated_modem)
-def modem(N: int, cstl: Any = None, *, symbols: Any = None, bit_order: str = "LSB",
+def modem(N: int, cstl: Any = None, dist: Any = None, *, symbols: Any = None, bit_order: str = "LSB",
           **kwargs: Any) -> Any:
     if bit_order not in ("LSB", "MSB"):
         raise ValueError(f"modem(): bit_order must be 'LSB' or 'MSB', not {bit_order!r}")
@@ -39,7 +39,7 @@ def modem(N: int, cstl: Any = None, *, symbols: Any = None, bit_order: str = "LS
             del kwargs["type"]
     elif bit_order != "LSB":
         raise TypeError("modem(): bit_order only applies to the symbols of a user constellation (symbols=...)")
-    if cstl is None and kwargs.get("type") in _CONSTELLATION_TYPES:
+    if cstl is None and dist is None and kwargs.get("type") in _CONSTELLATION_TYPES:
         # as the AFF3CT simulator: the constellation of the parameters (the modem keeps it alive)
         cstl = modem_constellation(N, **{k: v for k, v in kwargs.items() if k not in ("B", "Q")})  # noqa: F821
     elif cstl is not None and kwargs.get("type") is None:
@@ -48,7 +48,7 @@ def modem(N: int, cstl: Any = None, *, symbols: Any = None, bit_order: str = "LS
         name = type(cstl).__name__
         kwargs["type"] = next((t for t in ("QAM", "PSK", "PAM") if f"_{t}_" in name), "PSK")
         kwargs.setdefault("bps", cstl.bps)
-    return _generated_modem(N, cstl, **kwargs)
+    return _generated_modem(N, cstl, dist, **kwargs)
 
 
 def _constellation(symbols: Any, bit_order: str = "LSB", R: Any = None) -> Any:

@@ -493,7 +493,12 @@ Avancement :
   exécution ; SCMA : une par utilisateur, imposé par le modem), canal `add_users` pour SCMA, tâche `filter` des
   modems CPM avant la démodulation. Codebooks `conf/mod/SCMA` ; exemple `examples/scma_cpm.py`, section du guide.
   Les références itératives (`--sim-type BFERI`, LDPC + CPM) restent à couvrir (boucle démodulation-décodage).
-- 4C — canal optique, `Channel_user*` ; 4D — moniteurs EXIT / MI, `Monitor_reduction` ;
+- ✅ **4C — canal optique, canaux « user »** : `af.tools.Distributions` (densités lues d'un fichier, `Distribution`,
+  `Distribution_mode`) : les builders du canal et du modem qui la prennent sont de nouveau liés (`af.chn.channel(N,
+  dist, type="OPTICAL")`, `af.mdm.modem(N, None, dist, ...)`) ; 2 références LDPC sur canal optique (bruit ROP)
+  rebâties depuis leur ligne de commande ; canaux `USER`, `USER_ADD`, `USER_BEC`, `USER_BSC`, `RAYLEIGH_USER` testés
+  (`tests/test_user_channels.py`) ; exemple `examples/optical.py`, sections du guide.
+- 4D — moniteurs EXIT / MI, `Monitor_reduction` ;
   4E — modules restants (AZCW, coset, encodeur utilisateur, décodeurs genius, Viterbi liste, modules turbo produit).
 
 ### Phase 5 — Industrialisation (priorité **P3** inclus)

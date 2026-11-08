@@ -85,6 +85,33 @@ filter the received signal before the demodulation:
 --8<-- "examples/scma_cpm.py:cpm"
 ```
 
+## Optical channel
+
+The optical channel draws the received values from measured densities, one per received optical power (ROP, the
+noise of this channel, in dB). They are read from a file into an `af.tools.Distributions`, given to the channel and
+to the OOK modem (which keep it alive); the densities of the simulated ROPs are loaded before the first execution.
+Script: `examples/optical.py`.
+
+```python
+--8<-- "examples/optical.py:optical"
+```
+
+The test suite rebuilds two LDPC references over this channel from their AFF3CT command lines.
+
+## Channels from files
+
+The noise can also come from a file, with `af.chn.channel(N, type=..., path=...)`:
+
+| Type | File | Received samples |
+|---|---|---|
+| `USER` | `n_frames N` then the samples | the samples of the file, frame after frame (cyclically) |
+| `USER_ADD` | `n_frames N` then the noise | the transmitted symbols plus the noise of the file |
+| `USER_BEC` | `n_frames N` then 0 / 1 | the transmitted symbols, erased where the file has a 1 |
+| `USER_BSC` | `n_frames N` then 0 / 1 | the transmitted bits, flipped where the file has a 1 |
+| `RAYLEIGH_USER` | a list of gains | Rayleigh channel with these gains (each used `gain_occur` times), plus Gaussian noise |
+
+`tests/test_user_channels.py` shows each of them on a small file.
+
 ## Uncoded bit error rates
 
 Measured by `uncoded_ber` (markers) and compared with the theory over AWGN (dotted lines):

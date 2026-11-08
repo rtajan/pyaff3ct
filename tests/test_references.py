@@ -372,14 +372,20 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
     mdm_fac.channel_type = chn_type
     mdm_probe = mdm_fac.clone()
     mdm_probe._complete()
+    # optical channel: noise distributions read from a file (received optical power, ROP), kept alive by the modules
+    pdf = option(args, "--sim-pdf-path")
+    dist = af.tools.Distributions[R](pdf) if pdf else None
+    rop = dist is not None
     if mdm_probe.type in ("PSK", "PAM", "QAM", "USER"):  # generic modem: its constellation (kept alive by the modem)
         mdm = mdm_fac.build(mdm_fac.build_constellation(R=R), B=B, R=R, Q=R)
+    elif rop:
+        mdm = mdm_fac.build(dist=dist, B=B, R=R, Q=R)
     else:
         mdm = mdm_fac.build(B=B, R=R, Q=R)
     chn_fac = af.factory.Channel.from_cli(args, strict=False)
     chn_fac.N, chn_fac.seed, chn_fac.complex = mdm.N_mod, 1, mdm_probe.complex  # as the simulator
     chn_fac.add_users = mdm_probe.type == "SCMA"  # the channel sums the signals of the users
-    chn = chn_fac.build(R=R)
+    chn = chn_fac.build(dist, R=R) if rop else chn_fac.build(R=R)
     qnt = None
     if Q in (spu.int8, spu.int16):  # fixed point: LLRs quantized after the demodulator, as BFER_std.cpp
         qnt_fac = af.factory.Quantizer()
@@ -395,6 +401,10 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
         if m is not None and m.n_frames != F:
             m.n_frames = F
     cp = spu.array([1.0] * F, dtype=R)  # one noise value per frame
+    if rop:  # the distributions of the tested ROPs, read before the first executions (bindings)
+        for p in points:
+            dist.read_distribution(p)
+        cp.numpy[...] = points[0]
     u = src.generate()[0]
     x = enc.encode(crc.build(u) if crc is not None else u)
     if pct is not None:
@@ -414,6 +424,9 @@ def run_reference(path: Path, points, max_fe, n_threads=4):
     for p in points:
         if ep:
             noise = af.tools.Event_probability[R](p)
+            cp.numpy[...] = p
+        elif rop:
+            noise = af.tools.Received_optical_power[R](p)
             cp.numpy[...] = p
         else:
             # bits per symbol and samples per symbol of the modem, as Noise.cpp of the simulator
@@ -436,6 +449,16 @@ def read_ref_ep(path: Path) -> dict[float, tuple[int, int, float]]:
         cols = [c.strip() for c in re.split(r"\|\|?", line)]
         if len(cols) >= 6 and re.fullmatch(r"[0-9.]+", cols[0] or "x") and re.fullmatch(r"[0-9]+", cols[1] or "x"):
             pts[float(cols[0])] = (int(cols[1]), int(cols[3]), float(cols[5]))
+    return pts
+
+
+def read_ref_rop(path: Path) -> dict[float, tuple[int, int, float]]:
+    """{ROP: (FRA, FE, FER)} of an optical reference (columns ROP || MI: FRA, MI, min, max || FRA, BE, FE, BER, FER)."""
+    pts = {}
+    for line in path.read_text().splitlines():
+        cols = [c.strip() for c in re.split(r"\|\|?", line)]
+        if len(cols) >= 10 and re.fullmatch(r"-?[0-9.]+", cols[0] or "x") and re.fullmatch(r"[0-9]+", cols[5] or "x"):
+            pts[round(float(cols[0]), 4)] = (int(cols[5]), int(cols[7]), float(cols[9]))
     return pts
 
 
@@ -488,10 +511,14 @@ def read_ref_ep(path: Path) -> dict[float, tuple[int, int, float]]:
         ("POLAR_PT/AWGN/BPSK/SCL/Polar_PT_N128_K64_L128.txt", [1.0, 1.5], 100),
         # turbo code over SCMA (6 users, -F 6)
         ("TURBO/AWGN/SCMA/RSC_RSC/BCJR/LTE/Turbo_N3072_K1024_BCJR_i6_PSI2_LTE.txt", [2.5, 2.75], 100),
+        # optical channel (received optical power, noise distributions from conf/chn), OOK, LDPC IRA
+        ("LDPC/OPTICAL/OOK/BP_HORIZONTAL_LAYERED/NMS/LDPC_N16640_K13312_hlayered_NMS_i10.txt", [-44.059, -43.959], 100),
+        ("LDPC/OPTICAL/OOK/BP_HORIZONTAL_LAYERED/NMS/LDPC_N16640_K14976_hlayered_NMS_i10.txt", [-42.959, -42.859], 100),
     ],
 )
 def test_chains_from_the_reference_command_lines(ref, points, max_fe):
-    check(run_reference(REFS / ref, points, max_fe), read_ref(REFS / ref), points)
+    read = read_ref_rop if "--sim-pdf-path" in reference_args(REFS / ref) else read_ref
+    check(run_reference(REFS / ref, points, max_fe), read(REFS / ref), points)
 
 
 @pytest.mark.parametrize(

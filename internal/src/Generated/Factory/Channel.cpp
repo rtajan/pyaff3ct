@@ -31,4 +31,16 @@ pyaf::generated::wrap_factory_Channel(py::handle scope)
           { return f.template build<R>(); };
       });
 
+    def_builders<gen::Factory_Channel__build>(
+      cls,
+      "build",
+      [](auto c)
+      {
+          using R = typename decltype(c)::template at<0>;
+          return [](const F& f, const aff3ct::tools::Distributions<R>& dist) -> spu::module::Module*
+          { return f.template build<R>(dist); };
+      },
+          py::arg("dist"),
+          py::keep_alive<0, 2>());
+
 }

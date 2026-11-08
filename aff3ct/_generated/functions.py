@@ -34,13 +34,14 @@ def _crc__crc(K: int, *, type: str | None = None, implem: str | None = None, siz
 
 
 
-def _chn__channel(N: int, *, type: str | None = None, implem: str | None = None, path: str | None = None, block_fading: str | None = None, add_users: bool | None = None, complex: bool | None = None, seed: int | None = None, gain_occur: int | None = None, R: Any = None) -> aff3ct.chn.Channel:
+def _chn__channel(N: int, dist: Any = None, *, type: str | None = None, implem: str | None = None, path: str | None = None, block_fading: str | None = None, add_users: bool | None = None, complex: bool | None = None, seed: int | None = None, gain_occur: int | None = None, R: Any = None) -> aff3ct.chn.Channel:
     """Build module::Channel<R> with the AFF3CT factory ``Channel`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Channel(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Channel().parameters``).
 
     Args:
         N (int): size (factory parameter).
+        dist (aff3ct.tools.Distributions): builder argument ``const aff3ct::tools::Distributions<R>&``, only for one of the overloads.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         path (str): factory parameter (``std::string``).
@@ -56,7 +57,7 @@ def _chn__channel(N: int, *, type: str | None = None, implem: str | None = None,
     Returns:
         module::Channel<R>*: the built object (owned by Python).
     """
-    return _make("Channel", "build", {"N": N, "type": type, "implem": implem, "path": path, "block_fading": block_fading, "add_users": add_users, "complex": complex, "seed": seed, "gain_occur": gain_occur}, {}, {"R": R})
+    return _make("Channel", "build", {"N": N, "type": type, "implem": implem, "path": path, "block_fading": block_fading, "add_users": add_users, "complex": complex, "seed": seed, "gain_occur": gain_occur}, {"dist": dist}, {"R": R})
 
 
 
@@ -1393,7 +1394,7 @@ def _enc__turbo(K: int, N_cw: int, enc_n: Any, enc_i: Any, itl: Any, *, type: st
 
 
 
-def _mdm__modem(N: int, cstl: Any = None, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, B: Any = None, R: Any = None, Q: Any = None) -> aff3ct.mdm.Modem:
+def _mdm__modem(N: int, cstl: Any = None, dist: Any = None, *, type: str | None = None, implem: str | None = None, const_path: str | None = None, codebook_path: str | None = None, complex: bool | None = None, bps: int | None = None, cpm_std: str | None = None, cpm_mapping: str | None = None, cpm_wave_shape: str | None = None, cpm_L: int | None = None, cpm_k: int | None = None, cpm_p: int | None = None, cpm_upf: int | None = None, N_mod: int | None = None, max: str | None = None, psi: str | None = None, no_sig2: bool | None = None, n_ite: int | None = None, N_fil: int | None = None, rop_est_bits: int | None = None, channel_type: str | None = None, B: Any = None, R: Any = None, Q: Any = None) -> aff3ct.mdm.Modem:
     """Build module::Modem<B, R, Q> with the AFF3CT factory ``Modem`` (builder ``build``).
 
     Equivalent to ``aff3ct.factory.Modem(**parameters).build(...)``; the parameters left to ``None`` keep their AFF3CT default (see ``aff3ct.factory.Modem().parameters``).
@@ -1401,6 +1402,7 @@ def _mdm__modem(N: int, cstl: Any = None, *, type: str | None = None, implem: st
     Args:
         N (int): size (factory parameter).
         cstl (aff3ct.tools.Constellation): builder argument ``const aff3ct::tools::Constellation<R>*``, default ``nullptr``.
+        dist (aff3ct.tools.Distributions): builder argument ``const aff3ct::tools::Distributions<R>&``, only for one of the overloads.
         type (str): factory parameter (``std::string``).
         implem (str): factory parameter (``std::string``).
         const_path (str): factory parameter (``std::string``).
@@ -1431,7 +1433,7 @@ def _mdm__modem(N: int, cstl: Any = None, *, type: str | None = None, implem: st
     Returns:
         module::Modem<B, R, Q>*: the built object (owned by Python).
     """
-    return _make("Modem", "build", {"N": N, "type": type, "implem": implem, "const_path": const_path, "codebook_path": codebook_path, "complex": complex, "bps": bps, "cpm_std": cpm_std, "cpm_mapping": cpm_mapping, "cpm_wave_shape": cpm_wave_shape, "cpm_L": cpm_L, "cpm_k": cpm_k, "cpm_p": cpm_p, "cpm_upf": cpm_upf, "N_mod": N_mod, "max": max, "psi": psi, "no_sig2": no_sig2, "n_ite": n_ite, "N_fil": N_fil, "rop_est_bits": rop_est_bits, "channel_type": channel_type}, {"cstl": cstl}, {"B": B, "R": R, "Q": Q})
+    return _make("Modem", "build", {"N": N, "type": type, "implem": implem, "const_path": const_path, "codebook_path": codebook_path, "complex": complex, "bps": bps, "cpm_std": cpm_std, "cpm_mapping": cpm_mapping, "cpm_wave_shape": cpm_wave_shape, "cpm_L": cpm_L, "cpm_k": cpm_k, "cpm_p": cpm_p, "cpm_upf": cpm_upf, "N_mod": N_mod, "max": max, "psi": psi, "no_sig2": no_sig2, "n_ite": n_ite, "N_fil": N_fil, "rop_est_bits": rop_est_bits, "channel_type": channel_type}, {"cstl": cstl, "dist": dist}, {"B": B, "R": R, "Q": Q})
 
 
 
@@ -1830,7 +1832,6 @@ CODECS = {'Codec_BCH': {'args': [{'default': 'nullptr',
 
 # builders without function (the class they return is not wrapped yet)
 SKIPPED = [
-    "Channel.build_userpdf -> module::Channel<R>*",
     "Scaling_factor.build -> tools::Scaling_factor<B, Q>*",
     "Flip_and_check.build -> tools::Flip_and_check<B, Q>*",
     "Flip_and_check_DB.build -> tools::Flip_and_check_DB<B, Q>*",

@@ -200,3 +200,15 @@ def test_scma_cpm():
     for ber, ref, n_bits in [(scma_cpm.scma_ber(8.0, n_frames=3000), 0.00651, 3000 * 128),  # UNCODED/AWGN/SCMA CS1
                              (scma_cpm.cpm_ber(3.0), 0.0457, 100 * 4003)]:  # UNCODED/AWGN/CPM GSM
         assert abs(ber - ref) <= 5 * math.sqrt(ref * (1 - ref) / n_bits) + 0.05 * ref, (ber, ref)
+
+
+def test_optical():
+    import optical
+
+    if not optical.PDF.exists():
+        pytest.skip("optical channel distributions of AFF3CT not fetched (scripts/fetch_aff3ct_data.sh)")
+    import aff3ct as af
+
+    rops = [float(r) for r in af.tools.Distributions(str(optical.PDF)).noise_range[::10]]
+    ber = optical.uncoded_ber(rops, n_frames=50)
+    assert 0.03 < ber[0] < 0.1 and all(b2 < b1 for b1, b2 in zip(ber, ber[1:])), ber  # decreases with the ROP
