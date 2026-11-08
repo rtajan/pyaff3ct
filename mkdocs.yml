@@ -1,8 +1,10 @@
 site_name: pyAFF3CT
 site_description: Python interface of AFF3CT, the forward error correction toolbox, built on pyStreamPU
-repo_url: https://gitlab.bordeaux-inp.fr/rtajan/pyaff3ct
+# GitLab by default; the GitHub workflow (.github/workflows/docs.yml) sets these variables for GitHub Pages
+site_url: !ENV [DOCS_SITE_URL, "https://rtajan.pages.bordeaux-inp.fr/pyaff3ct/"]
+repo_url: !ENV [DOCS_REPO_URL, "https://gitlab.bordeaux-inp.fr/rtajan/pyaff3ct"]
 repo_name: rtajan/pyaff3ct
-edit_uri: edit/main/docs/
+edit_uri: !ENV [DOCS_EDIT_URI, "-/edit/main/docs/"]
 
 nav:
   - Home: index.md

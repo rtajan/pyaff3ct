@@ -11,7 +11,7 @@ flowchart LR
     sigma((sigma)) -.-> chn & dem
 ```
 
-The full script is [`examples/first_chain.py`](https://gitlab.bordeaux-inp.fr/rtajan/pyaff3ct/-/blob/main/examples/first_chain.py).
+The full script is `examples/first_chain.py`, in the repository.
 
 ## The modules
 

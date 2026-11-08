@@ -2,6 +2,8 @@
 
 **Forward error correction at C++ speed, from Python.**
 
+📖 [Documentation](https://rtajan.pages.bordeaux-inp.fr/pyaff3ct/): tutorial, how-to guides, API reference
+
 pyAFF3CT is the Python interface of [AFF3CT](https://aff3ct.github.io), *A Fast Forward Error Correction Toolbox*:
 the encoders, decoders, modems and channels of one of the fastest FEC libraries (SIMD, fixed point, multi-threaded),
 driven by a few lines of Python. Built on [pyStreamPU](https://github.com/aff3ct/pystreampu), a chain written as plain
@@ -93,7 +95,8 @@ repository: there, `import aff3ct` would import the sources instead of the insta
 
 ## Documentation
 
-The documentation (MkDocs, published by the CI on the GitLab Pages of the project) has a tutorial, how-to guides for
+The [documentation](https://rtajan.pages.bordeaux-inp.fr/pyaff3ct/) (MkDocs, published by the CI on GitLab Pages,
+and by `.github/workflows/docs.yml` on GitHub Pages) has a tutorial, how-to guides for
 polar, LDPC and turbo codes, modulations and fixed point, the concepts, and the API reference. Its figures are
 computed by its examples at each build. Locally:
 
@@ -109,7 +112,7 @@ code comparison, modulations, fixed point, command-line parity.
 
 ```bash
 pip install pytest pytest-xdist scipy matplotlib
-git -C lib/aff3ct submodule update --init refs     # AFF3CT reference curves (tests/test_references.py)
+scripts/fetch_aff3ct_data.sh                       # AFF3CT reference curves and LDPC matrices of the tests
 pytest tests -n 4                                  # not `python -m pytest` from the root
 
 PYTHON=path/to/python scripts/dev_build.sh         # incremental development build (build/dev, linked in aff3ct/)

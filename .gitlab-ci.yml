@@ -69,15 +69,7 @@ variables:
 # BER/FER references (tests/test_references.py, curves of the documentation): the refs submodule of AFF3CT (5 MB)
 # and, from its configuration files, only the LDPC matrices used (the repository is large)
 .aff3ct_data: &aff3ct_data
-  - git submodule update --init lib/aff3ct
-  - git -C lib/aff3ct submodule update --init refs
-  - |
-    CONF_SHA=$(git -C lib/aff3ct ls-tree HEAD conf | awk '{print $3}')
-    rm -rf lib/aff3ct/conf
-    git clone -q --filter=blob:none --no-checkout https://github.com/aff3ct/configuration_files.git lib/aff3ct/conf
-    git -C lib/aff3ct/conf sparse-checkout set --no-cone /dec/LDPC/CCSDS_64_128.alist /dec/LDPC/WIMAX_288_576.alist \
-      /dec/LDPC/MACKAY_504_1008.alist /dec/LDPC/PEG_Reg_1008x504.alist
-    git -C lib/aff3ct/conf checkout -q "$CONF_SHA"
+  - scripts/fetch_aff3ct_data.sh
 
 .python_cache: &python_cache
   key: ${CI_PROJECT_PATH}
