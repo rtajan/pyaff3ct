@@ -16,6 +16,7 @@
 #include "internal/Wrapper/Tools/Code/Frozenbits_generator.hpp"
 #include "internal/Wrapper/Tools/Codec/Codec.hpp"
 #include "internal/Wrapper/Tools/Constellation/Constellation.hpp"
+#include "internal/Wrapper/Tools/Math/Distributions.hpp"
 #include "internal/Wrapper/Tools/Code/Galois.hpp"
 #include "internal/Wrapper/Tools/Code/LDPC.hpp"
 #include "internal/Wrapper/Tools/Interface/Interfaces.hpp"
@@ -51,6 +52,7 @@ PYBIND11_MODULE(_ext, m, py::mod_gil_not_used())
     wrap_ldpc_tools(tools);
     wrap_galois(tools);
     wrap_constellations(tools);
+    wrap_distributions(tools); // before the factories: their builders take a Distributions
 
     wrap_crc(m.def_submodule("crc", "CRCs."));
     wrap_channel(m.def_submodule("chn", "Channels."));

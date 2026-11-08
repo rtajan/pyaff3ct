@@ -43,7 +43,8 @@ DOMAIN_MODULE = {
     "Interleaver": "itl", "Modem": "mdm", "Monitor": "mnt", "Puncturer": "pct", "Quantizer": "qnt", "Source": "src",
     "Sink": "snk",
 }
-SIZES = ("K", "N_cw", "N")  # positional sizes, when declared by the root factory of the family
+SIZES = ("K", "N_cw", "N", "size")
+NOT_SIZES = {"CRC": {"size"}}  # parameters named as a size that are not one (the size of a CRC: its length)  # positional sizes, when declared by the root factory of the family
 # classes registered by pystreampu that a builder may return
 SPU_REGISTERED = {"Source", "Sink", "Module", "Stateful"}
 # builders that cannot be bound (argument types without conversion), with the reason
@@ -549,7 +550,7 @@ def main() -> None:
         # factory::Monitor_BFER: K), not the sizes added by a sub-family (Decoder_LDPC::N stays a keyword)
         sizes = []
         for n in reversed(chain(name, facs)):
-            sizes = [p["name"] for p in params_of[n] if p["name"] in SIZES]
+            sizes = [p["name"] for p in params_of[n] if p["name"] in SIZES and p["name"] not in NOT_SIZES.get(n, ())]
             if sizes:
                 break
         all_params = [p for n in reversed(chain(name, facs)) for p in params_of[n]]

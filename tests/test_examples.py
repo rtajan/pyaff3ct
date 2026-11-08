@@ -177,3 +177,38 @@ def test_seed_sequence_gives_each_thread_its_own_values():
     assert len(seeds) == 6 and len(set(seeds)) == 6 and seeds == af.tools.seed_sequence(seq, seed=1)
     bits, noise = draws()
     assert not (bits[1] == bits[0]).all() and not np.allclose(noise[1], noise[0])
+
+
+def test_polar_variants():
+    import polar_variants
+
+    if not polar_variants.available():
+        pytest.skip("configuration files of AFF3CT not fetched (scripts/fetch_aff3ct_data.sh)")
+    res = polar_variants.run(ebn0s=[1.0, 2.0], max_fe=50)
+    assert len(res) == 3
+    for name, (fer_1, fer_2) in res.items():
+        assert 0 < fer_2 < fer_1 < 0.5, (name, fer_1, fer_2)
+
+
+def test_scma_cpm():
+    import math
+
+    import scma_cpm
+
+    if not scma_cpm.CODEBOOK.exists():
+        pytest.skip("SCMA codebooks of AFF3CT not fetched (scripts/fetch_aff3ct_data.sh)")
+    for ber, ref, n_bits in [(scma_cpm.scma_ber(8.0, n_frames=3000), 0.00651, 3000 * 128),  # UNCODED/AWGN/SCMA CS1
+                             (scma_cpm.cpm_ber(3.0), 0.0457, 100 * 4003)]:  # UNCODED/AWGN/CPM GSM
+        assert abs(ber - ref) <= 5 * math.sqrt(ref * (1 - ref) / n_bits) + 0.05 * ref, (ber, ref)
+
+
+def test_optical():
+    import optical
+
+    if not optical.PDF.exists():
+        pytest.skip("optical channel distributions of AFF3CT not fetched (scripts/fetch_aff3ct_data.sh)")
+    import aff3ct as af
+
+    rops = [float(r) for r in af.tools.Distributions(str(optical.PDF)).noise_range[::10]]
+    ber = optical.uncoded_ber(rops, n_frames=50)
+    assert 0.03 < ber[0] < 0.1 and all(b2 < b1 for b1, b2 in zip(ber, ber[1:])), ber  # decreases with the ROP

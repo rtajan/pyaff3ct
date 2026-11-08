@@ -20,6 +20,7 @@ nav:
       - Turbo codes: guides/turbo.md
       - Modulations and channels: guides/modems.md
       - Fixed-point decoding: guides/fixed_point.md
+      - Monitors: guides/monitors.md
   - Concepts: concepts.md
   - API reference:
       - reference/index.md

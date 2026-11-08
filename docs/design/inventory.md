@@ -200,8 +200,8 @@
 | `Modem_OOK_optical` | `Module/Modem/OOK/Modem_OOK_optical.hpp` | `typename B = int, typename R = float, typename …` | Modem_OOK | wrap | P2 | `aff3ct.mdm.ook_optical` | todo |
 | `Modem_OOK_optical_rop_estimate` | `Module/Modem/OOK/Modem_OOK_optical_rop_estimate.hpp` | `typename B = int, typename R = float, typename …` | Modem_OOK | wrap | P2 | `aff3ct.mdm.ook_optical_rop_estimate` | todo |
 | `Modem_SCMA` | `Module/Modem/SCMA/Modem_SCMA.hpp` | `typename B = int, typename R = float, typename …` | Modem | factory | P2 | `aff3ct.mdm.generic(…) [factory Modem]` | todo |
-| `Monitor_EXIT` | `Module/Monitor/EXIT/Monitor_EXIT.hpp` | `typename B = int, typename R = float` | Monitor | wrap | P2 | `aff3ct.mnt.exit` | todo |
-| `Monitor_MI` | `Module/Monitor/MI/Monitor_MI.hpp` | `typename B = int, typename R = float` | Monitor | wrap | P2 | `aff3ct.mnt.mi` | todo |
+| `Monitor_EXIT` | `Module/Monitor/EXIT/Monitor_EXIT.hpp` | `typename B = int, typename R = float` | Monitor | wrap | P2 | `aff3ct.mnt.exit` | done |
+| `Monitor_MI` | `Module/Monitor/MI/Monitor_MI.hpp` | `typename B = int, typename R = float` | Monitor | wrap | P2 | `aff3ct.mnt.mi` | done |
 
 ## Tools
 
@@ -300,14 +300,14 @@
 | `Interleaver_core_golden` | `Tools/Interleaver/Golden/Interleaver_core_golden.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_golden` | done |
 | `Interleaver_core_random_column` | `Tools/Interleaver/Random_column/Interleaver_core_random_column.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_random_column` | done |
 | `Interleaver_core_row_column` | `Tools/Interleaver/Row_column/Interleaver_core_row_column.hpp` | `typename T = uint32_t` | Interleaver_core | wrap | P1 | `aff3ct.tools.itl.Interleaver_core_row_column` | done |
-| `Distribution` | `Tools/Math/Distribution/Distribution.hpp` | `typename R = float` |  | wrap | P1 | `aff3ct.tools.Distribution` | todo |
-| `Distributions` | `Tools/Math/Distribution/Distributions.hpp` | `typename R = float` |  | wrap | P1 | `aff3ct.tools.Distributions` | todo |
+| `Distribution` | `Tools/Math/Distribution/Distribution.hpp` | `typename R = float` |  | wrap | P1 | `aff3ct.tools.Distribution` | done |
+| `Distributions` | `Tools/Math/Distribution/Distributions.hpp` | `typename R = float` |  | wrap | P1 | `aff3ct.tools.Distributions` | done |
 | `Event_probability` | `Tools/Noise/Event_probability.hpp` | `typename R = float` | Noise | wrap | P1 | `aff3ct.tools.Event_probability` | done |
 | `Received_optical_power` | `Tools/Noise/Received_optical_power.hpp` | `typename R = float` | Noise | wrap | P1 | `aff3ct.tools.Received_optical_power` | done |
 | `Monitor_reduction` | `Tools/Monitor/Monitor_reduction.hpp` | `class M` | Monitor_reduction_static, M | wrap | P2 | `aff3ct.tools.Monitor_reduction` | todo |
 | `Monitor_reduction_static` | `Tools/Monitor/Monitor_reduction.hpp` | `` |  | wrap | P2 | `aff3ct.tools.Monitor_reduction_static` | todo |
-| `Reporter_EXIT` | `Tools/Reporter/EXIT/Reporter_EXIT.hpp` | `typename B = int32_t, typename R = float` | Reporter_monitor | wrap | P2 | `aff3ct.reporter.Reporter_EXIT` | todo |
-| `Reporter_MI` | `Tools/Reporter/MI/Reporter_MI.hpp` | `typename B = int32_t, typename R = float` | Reporter_monitor | wrap | P2 | `aff3ct.reporter.Reporter_MI` | todo |
+| `Reporter_EXIT` | `Tools/Reporter/EXIT/Reporter_EXIT.hpp` | `typename B = int32_t, typename R = float` | Reporter_monitor | wrap | P2 | `aff3ct.reporter.Reporter_EXIT` | done |
+| `Reporter_MI` | `Tools/Reporter/MI/Reporter_MI.hpp` | `typename B = int32_t, typename R = float` | Reporter_monitor | wrap | P2 | `aff3ct.reporter.Reporter_MI` | done |
 | `Event_generator_GSL` | `Tools/Algo/Draw_generator/Event_generator/GSL/Event_generator_GSL.hpp` | `typename R = float, typename E = typename tools…` | Event_generator | wrap | P3 | `aff3ct.tools.gen.Event_generator_GSL` | todo |
 | `Event_generator_MKL` | `Tools/Algo/Draw_generator/Event_generator/MKL/Event_generator_MKL.hpp` | `typename R = float, typename E = typename tools…` | Event_generator | wrap | P3 | `aff3ct.tools.gen.Event_generator_MKL` | todo |
 | `Gaussian_noise_generator_GSL` | `Tools/Algo/Draw_generator/Gaussian_noise_generator/GSL/Gaussian_noise_generator_GSL.hpp` | `typename R = float` | Gaussian_noise_generator | wrap | P3 | `aff3ct.tools.gen.Gaussian_noise_generator_GSL` | todo |
