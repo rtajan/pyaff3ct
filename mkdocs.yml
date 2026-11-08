@@ -36,13 +36,20 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          paths: [.]
+          # not the root of the repository: its aff3ct/ (sources, without the compiled extension) would be imported
+          # instead of the installed package
+          paths: [docs]
           options:
             # aff3ct._ext is a compiled extension and most functions are built at import (signatures included):
             # the installed package is inspected
             allow_inspection: true
             force_inspection: true
             docstring_style: google
+            docstring_options:
+              # the type stubs installed with the package (scripts/gen_stubs.py) declare the overloads of the
+              # bindings: their docstrings list the arguments of every overload, checked against the first one only
+              warn_unknown_params: false
+              warn_missing_types: false
             show_root_heading: true
             show_root_full_path: false
             show_symbol_type_heading: true

@@ -38,3 +38,20 @@ def test_no_raw_cpp_type_in_signatures():
 
 def test_sub_factory_typed():
     assert "-> aff3ct._ext.factory.Encoder" in af.factory.Codec.enc.fget.__doc__
+
+
+def test_installed_stubs():
+    """The installed package carries its stubs (CMake option PYAFF3CT_STUBS, with pybind11-stubgen at build time)."""
+    import importlib.util
+    from pathlib import Path
+
+    import pytest
+
+    if importlib.util.find_spec("pybind11_stubgen") is None:
+        pytest.skip("pybind11-stubgen not installed: package built without stubs")
+    root = Path(af.__file__).parent
+    if root == Path(__file__).resolve().parent.parent / "aff3ct":
+        pytest.skip("aff3ct imported from the source tree (development build): no installed stubs")
+    for stub in ("py.typed", "__init__.pyi", "codec.pyi", "_ext/__init__.pyi", "_ext/factory.pyi"):
+        assert (root / stub).exists(), stub
+    assert "def polar(" in (root / "codec.pyi").read_text()

@@ -97,3 +97,26 @@ if(PYAFF3CT_WERROR)
 endif()
 
 install(TARGETS _ext DESTINATION .)
+
+# ---------------------------------------------------------------------------------------------------------- Stubs
+# Type stubs (.pyi) for the autocompletion of the IDEs, generated from the built extension (scripts/gen_stubs.py,
+# pybind11-stubgen) and installed with the package: never written in the source tree
+option(PYAFF3CT_STUBS "Generate and install the type stubs (needs pybind11-stubgen)" ON)
+if(PYAFF3CT_STUBS)
+    execute_process(COMMAND "${Python_EXECUTABLE}" -c "import pybind11_stubgen"
+                    RESULT_VARIABLE PYAF_STUBGEN_MISSING OUTPUT_QUIET ERROR_QUIET)
+    if(PYAF_STUBGEN_MISSING)
+        message(WARNING "pyaff3ct - pybind11-stubgen not found for ${Python_EXECUTABLE}: no type stubs "
+                        "(pip install pybind11-stubgen, or -DPYAFF3CT_STUBS=OFF)")
+    else()
+        set(PYAF_STUBS_DIR "${CMAKE_CURRENT_BINARY_DIR}/stubs")
+        add_custom_command(
+            TARGET _ext POST_BUILD
+            COMMAND "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/scripts/gen_stubs.py"
+                    --ext "$<TARGET_FILE:_ext>" --out "${PYAF_STUBS_DIR}"
+            COMMENT "pyaff3ct - type stubs"
+            VERBATIM)
+        install(DIRECTORY "${PYAF_STUBS_DIR}/aff3ct/" DESTINATION . FILES_MATCHING PATTERN "*.pyi" PATTERN "py.typed")
+        message(STATUS "pyaff3ct - type stubs: generated in ${PYAF_STUBS_DIR}, installed with the package")
+    endif()
+endif()

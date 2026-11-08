@@ -1,7 +1,8 @@
 [build-system]
 # streampu is needed at build time (pybind11/StreamPU CMake config and headers of pystreampu): until it is on PyPI,
 # build with `pip install --no-build-isolation .` in an environment where streampu is installed.
-requires = ["scikit-build-core>=1.0", "setuptools_scm", "pybind11==3.0.4", "streampu>=1.2.1"]
+# pybind11-stubgen: type stubs installed with the package (CMake option PYAFF3CT_STUBS)
+requires = ["scikit-build-core>=1.0", "setuptools_scm", "pybind11==3.0.4", "streampu>=1.2.1", "pybind11-stubgen==2.5.5"]
 build-backend = "scikit_build_core.build"
 
 [project]

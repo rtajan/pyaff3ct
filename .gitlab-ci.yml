@@ -60,7 +60,7 @@ variables:
     - python -m venv venv
     - . venv/bin/activate
     - python -m pip install --upgrade pip
-    - python -m pip install pybind11==3.0.4 scikit-build-core setuptools_scm  # same versions as pyproject.toml
+    - python -m pip install pybind11==3.0.4 scikit-build-core setuptools_scm pybind11-stubgen==2.5.5  # as pyproject.toml
 
 .aff3ct_submodules: &aff3ct_submodules
   - git submodule update --init lib/aff3ct
@@ -159,7 +159,7 @@ tests:
   script:
     - python -m pip install dist-streampu/*.whl dist/*.whl
     # matplotlib: tests/test_examples.py (examples of the documentation)
-    - python -m pip install pytest pytest-xdist scipy matplotlib
+    - python -m pip install pytest pytest-xdist scipy matplotlib pybind11-stubgen==2.5.5
     - *aff3ct_data
     # outside the source tree: `python -c` puts the current directory first in sys.path, where aff3ct/ has no _ext
     - (cd /tmp && python -c "import aff3ct as af; print(af.__file__, af.AFF3CT_VERSION, 'registry:', af._ext.HAS_STREAMPU_DOWNCAST_REGISTRY)")
@@ -183,8 +183,6 @@ docs:
     - python -m pip install dist-streampu/*.whl dist/*.whl
     - python -m pip install "matplotlib>=3.5" "mkdocs>=1.6,<2" "mkdocs-material>=9.5" "mkdocstrings[python]>=0.29" "pymdown-extensions>=10.7"
     - *aff3ct_data
-    # mkdocstrings inspects the installed package: the source tree (no _ext) must not shadow it
-    - mv aff3ct aff3ct.src
     - python scripts/doc_figures.py --threads $PYTEST_WORKERS
     - NO_MKDOCS_2_WARNING=1 mkdocs build --strict --site-dir public
   artifacts:

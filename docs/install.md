@@ -13,7 +13,7 @@ pyStreamPU must be installed first, and pyAFF3CT built **without build isolation
 ```bash
 python -m venv .venv && . .venv/bin/activate
 pip install "git+https://github.com/rtajan/pystreampu.git@v1.2.1"
-pip install scikit-build-core setuptools_scm pybind11==3.0.4
+pip install scikit-build-core setuptools_scm pybind11==3.0.4 pybind11-stubgen==2.5.5
 
 git clone --recursive <pyaff3ct repository> && cd pyaff3ct
 # or, in an existing clone:
@@ -25,6 +25,11 @@ pip install -v . --no-build-isolation
 
 The first build compiles AFF3CT for every precision (8, 16, 32 and 64 bits): about 15 minutes on two cores.
 `ARCH_FLAGS=-march=native` tunes it for the host (default on x86-64: `-msse4.2`).
+
+The type stubs (`.pyi`, for the autocompletion of the IDEs) are generated from the compiled extension and
+installed with the package when `pybind11-stubgen` is installed (CMake option `PYAFF3CT_STUBS`, on by default).
+Point the IDE at the Python of the environment, and start Python outside the root of the repository: there,
+`import aff3ct` would import the sources, which have neither the extension nor the stubs.
 
 Check the installation:
 
