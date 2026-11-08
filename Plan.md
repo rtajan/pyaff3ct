@@ -480,7 +480,7 @@ inventaire mis à jour (`done`), docstrings présentes.
 
 - DoD : un test de construction et d'exécution par classe, et un test de parité CLI par factory.
 
-### Phase 4 — Avancé (priorité **P2**, 51 entrées)
+### Phase 4 — Avancé (priorité **P2**, 51 entrées) ✅
 - Polar MK / PAC / PT (`Polar_code`, `Pretransform_generator`), SCMA, CPM, optique (`Distributions`), `Channel_user*`,
   Monitors EXIT/MI et leurs reporters, Turbo product, variantes AVX/SSE, `Monitor_reduction` (multi-thread).
 
@@ -503,7 +503,19 @@ Avancement :
   CRC) ; `af.mnt.reduce(seq, mnt)` somme les mesures des clones (rôle de `Monitor_reduction`, dont la boucle
   statique propre au simulateur n'est pas liée) ; capacité BI-AWGN mesurée = théorie (`examples/mutual_information.py`,
   figure), EXIT vérifié sur des LLR gaussiens (fonction J) ; guide « Monitors ».
-  4E — modules restants (AZCW, coset, encodeur utilisateur, décodeurs genius, Viterbi liste, modules turbo produit).
+- ✅ **4E — modules restants** : atteints par les factories et testés (`tests/test_p2_modules.py`) : encodeurs AZCW,
+  coset, utilisateur (`af.enc.encoder(K, N, type=...)`), décodeur BCH genius (= décodeur algébrique), Viterbi liste
+  (PLVA : 2 références), BCJR SIMD inter/intra-trames (int8 / int16), encodeur polaire bit-packé (= naïf), encodeur
+  LDPC DVB-S2, OOK optique avec estimation de la ROP ; modules turbo produit via le codec (références TPC).
+  Ces modules restent `todo` dans `status.json` (`done` = classe Python propre enregistrée) : ils sont construits par
+  les factories et typés d'après leur classe de base enveloppée, comme les décodeurs de la phase 3.
+
+**Clôture de la phase 4** : 52 références AFF3CT rebâties depuis leur ligne de commande (62 tests de référence au
+total), 249 tests. Restent hors
+périmètre : `Decoder_RS_genius`, inutilisable dans AFF3CT v4.7.2 (il ne redéfinit que l'ancien décodage dur sans statut ;
+test `xfail` strict qui signalera une correction amont), les simulations itératives `--sim-type BFERI` (boucle
+démodulation-décodage, LDPC + CPM) et `Monitor_reduction` (sa boucle statique est propre au simulateur ;
+`af.mnt.reduce` en tient lieu).
 
 ### Phase 5 — Industrialisation (priorité **P3** inclus)
 - Docs mkdocs (API générée, guides, galerie d'exemples), stubs `.pyi`, wheels `cibuildwheel`, publication.

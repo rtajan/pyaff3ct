@@ -511,6 +511,10 @@ def read_ref_rop(path: Path) -> dict[float, tuple[int, int, float]]:
         ("POLAR_PT/AWGN/BPSK/SCL/Polar_PT_N128_K64_L128.txt", [1.0, 1.5], 100),
         # turbo code over SCMA (6 users, -F 6)
         ("TURBO/AWGN/SCMA/RSC_RSC/BCJR/LTE/Turbo_N3072_K1024_BCJR_i6_PSI2_LTE.txt", [2.5, 2.75], 100),
+        # list Viterbi decoders (PLVA, CRC-aided), all-zero codewords (AZCW encoder) of a BCH code
+        ("CONV/AWGN/BPSK/Viterbi_list/CONV_N140_K32_L16_Viterbi_p32.txt", [2.5, 3.0], 150),
+        ("RSC/AWGN/BPSK/Viterbi_list/RSC_N134_K59_L32_Viterbi_p32.txt", [1.0, 1.5], 150),
+        ("BCH/AWGN/BPSK/ALGEBRAIC/BCH_N31_K11_algebraic_T5.txt", [3.0, 4.0], 150),
         # optical channel (received optical power, noise distributions from conf/chn), OOK, LDPC IRA
         ("LDPC/OPTICAL/OOK/BP_HORIZONTAL_LAYERED/NMS/LDPC_N16640_K13312_hlayered_NMS_i10.txt", [-44.059, -43.959], 100),
         ("LDPC/OPTICAL/OOK/BP_HORIZONTAL_LAYERED/NMS/LDPC_N16640_K14976_hlayered_NMS_i10.txt", [-42.959, -42.859], 100),
