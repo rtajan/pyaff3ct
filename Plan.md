@@ -518,7 +518,13 @@ démodulation-décodage, LDPC + CPM) et `Monitor_reduction` (sa boucle statique 
 `af.mnt.reduce` en tient lieu).
 
 ### Phase 5 — Industrialisation (priorité **P3** inclus)
-- Docs mkdocs (API générée, guides, galerie d'exemples), stubs `.pyi`, wheels `cibuildwheel`, publication.
+- Docs mkdocs (API générée, guides, galerie d'exemples) ✅, stubs `.pyi` ✅, wheels `cibuildwheel`.
+- **Publication sur PyPI : pas encore** (décision du mainteneur) ; le dépôt GitHub et la documentation sont
+  publics. Les wheels seront préparées (métadonnées, `twine check`, job de publication écrit mais désactivé).
+- Versions : tags `vX.Y.Z` sur `main` (`setuptools_scm`), `CHANGELOG.md` (Keep a Changelog), procédure dans
+  `docs/development.md` ; `v0.1.0` = phases 0 à 3 et documentation.
+- Ordre retenu : versions et changelog, outils de debug P3, simulations itératives `BFERI`, comparaison de débit
+  avec le simulateur natif ; puis wheels, CI macOS et préparation PyPI.
   - **Documentation (avancée, en anglais)** : MkDocs Material + mkdocstrings (`mkdocs.yml`, `docs/`, hors
     `docs/design/`). Le code des pages est inclus depuis `examples/*.py` entre marqueurs `# --8<-- [start:x]` /
     `[end:x]` (pymdownx.snippets) ; les exemples sont exécutés et vérifiés par `tests/test_examples.py` (théorie ou
