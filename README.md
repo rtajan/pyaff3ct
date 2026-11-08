@@ -55,7 +55,9 @@ for ebn0 in [1.0, 2.0, 3.0]:
     sigma.numpy[...] = noise.sigma
     cdc.set_noise(noise)                                       # frozen bits for this noise
     mnt.reset()
-    spu.Sequence(mnt["check_errors::status"], n_threads=4).exec()   # the whole chain in C++, on 4 threads
+    seq = spu.Sequence(mnt["check_errors::status"], n_threads=4)   # the whole chain in C++, on 4 threads
+    af.tools.seed_sequence(seq)                                    # each thread its own frames and noise
+    seq.exec()
     print(f"Eb/N0 = {ebn0} dB  FER = {mnt.fer:.2e}  BER = {mnt.ber:.2e}")
 ```
 

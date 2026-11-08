@@ -32,6 +32,7 @@ def uncoded_ber(mdm, bps, chn, ebn0s, K, n_frames=200, rayleigh=False) -> list[f
     _, v = dec.decode_siho(llr)
     mnt.check_errors(u, v)
     seq = spu.Sequence(mnt["check_errors::status"], n_threads=2)
+    af.tools.seed_sequence(seq)  # each thread its own frames and noise
 
     ber = []
     for ebn0 in ebn0s:

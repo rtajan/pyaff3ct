@@ -58,4 +58,40 @@ def sigma_from_ebn0(ebn0: float, code_rate: float = 1.0, bps: int = 1, upsample_
     return Sigma(sigma, ebn0, esn0, R=R)  # noqa: F821  (exported above)
 
 
-__all__ = sorted(export(_ext.tools, globals()) + export_functions(globals(), "tools") + ["hard", "sigma_from_ebn0"])
+def seed_sequence(sequence: Any, seed: int = 0) -> list[int]:
+    """Different seeds in the modules of every thread of a sequence, as the AFF3CT simulator.
+
+    A ``streampu.Sequence`` copies the modules into each of its threads, random generators included: without new
+    seeds, all the threads draw the same frames and the same noise, and a simulation on ``n`` threads gives no more
+    information than one thread (``max_fe`` then counts the same frame errors ``n`` times). Call this function once,
+    after the creation of the sequence: each module that has a seed (``streampu.Interface_set_seed``: sources,
+    channels, encoders and decoders that draw random values) receives its own seed, drawn from a generator
+    initialized with ``seed``. The interleavers keep theirs: an encoder and its decoder must keep the same
+    permutation.
+
+    Args:
+        sequence (streampu.Sequence): the sequence, after its creation (its modules in every thread).
+        seed (int): seed of the generator of the seeds; the same value gives the same simulation.
+
+    Returns:
+        out (list[int]): the seeds given, in the order of the modules (thread after thread).
+
+    Examples:
+        >>> seq = spu.Sequence(mnt["check_errors::status"], n_threads=4)
+        >>> af.tools.seed_sequence(seq)
+        >>> seq.exec()
+    """
+    from streampu import Interface_set_seed
+
+    prng = np.random.Generator(np.random.MT19937(seed))
+    seeds = []
+    for modules in sequence.get_modules_per_threads():
+        for module in modules:
+            if isinstance(module, Interface_set_seed):
+                seeds.append(int(prng.integers(0, 2**31 - 1)))
+                module.set_seed(seeds[-1])
+    return seeds
+
+
+__all__ = sorted(export(_ext.tools, globals()) + export_functions(globals(), "tools")
+                 + ["hard", "seed_sequence", "sigma_from_ebn0"])

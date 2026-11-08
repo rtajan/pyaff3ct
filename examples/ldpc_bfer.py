@@ -37,6 +37,7 @@ def simulate(H_path: str, ebn0s, max_fe=100, n_threads=1, n_ite=50, quiet=False)
     dec.decode_siho(mdm.demodulate(sigma, chn.add_noise(sigma, mdm.modulate(enc.encode(u)))))
     mnt.check_errors(u, dec["decode_siho::V_K"])
     seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)
+    af.tools.seed_sequence(seq)  # each thread its own frames and noise
 
     noise = af.tools.sigma_from_ebn0(ebn0s[0], K / N)
     reporters = [af.tools.Reporter_noise(noise), af.tools.Reporter_BFER(mnt), af.tools.Reporter_throughput(mnt)]

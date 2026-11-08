@@ -68,6 +68,7 @@ def simulate(cdc, crc, ebn0s, max_fe=100, n_threads=1, max_frames=20_000) -> lis
         sigma.numpy[...] = noise.sigma
         cdc.set_noise(noise)  # polar codes: frozen bits for this noise
         seq = spu.Sequence(mnt["check_errors::status"], n_threads=n_threads)  # after set_noise: clones up to date
+        af.tools.seed_sequence(seq)  # each thread its own frames and noise
         mnt.reset()
         seq.exec()
         fer.append(mnt.fer if mnt.n_fe else float("nan"))  # no error in max_frames frames: not plotted

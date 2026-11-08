@@ -151,3 +151,29 @@ def test_ldpc_bfer():
     res, _ = quiet(ldpc_bfer.simulate, str(H), [2.0], max_fe=100, n_threads=2, quiet=True)
     (_ebn0, _ber, fer, frames), = res
     near_reference("LDPC/AWGN/BPSK/BP_HORIZONTAL_LAYERED/SPA/LDPC_N128_K64_hlayered_SPA_i50_CCSDS.txt", 2.0, fer, frames)
+
+
+def test_seed_sequence_gives_each_thread_its_own_values():
+    import numpy as np
+    import streampu as spu
+
+    import aff3ct as af
+
+    K = 64
+    src, chn = af.src.source(K, type="RAND", seed=3), af.chn.channel(K, type="AWGN", seed=3)
+    mdm = af.mdm.modem(K, type="BPSK")
+    s = spu.array([1.0], dtype=spu.float32)
+    chn.add_noise(s, mdm.modulate(src.generate()[0]))
+    seq = spu.Sequence(chn["add_noise::Y_N"], n_threads=3)
+
+    def draws():
+        z = spu.array(np.zeros(K, dtype=np.float32), dtype=spu.float32)
+        return ([c.generate()[0].numpy.copy() for c in seq.get_cloned_modules(src)],
+                [c.add_noise(s, z).numpy.copy() for c in seq.get_cloned_modules(chn)])
+
+    bits, noise = draws()  # clones: copies of the same generators
+    assert all((b == bits[0]).all() for b in bits) and all(np.allclose(n, noise[0]) for n in noise)
+    seeds = af.tools.seed_sequence(seq, seed=1)
+    assert len(seeds) == 6 and len(set(seeds)) == 6 and seeds == af.tools.seed_sequence(seq, seed=1)
+    bits, noise = draws()
+    assert not (bits[1] == bits[0]).all() and not np.allclose(noise[1], noise[0])
