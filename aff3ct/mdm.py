@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """Modems (BPSK, PAM, QAM, PSK, OOK, CPM, SCMA...).
 
->>> mdm = af.mdm.modem(N, type="QAM", bps=4)      # the constellation is built (and kept) for the generic types
->>> mdm = af.mdm.modem(N, type="USER", const_path="cstl.txt")
->>> mdm = af.mdm.modem(N, symbols=np.exp(2j * np.pi * np.arange(8) / 8))   # any symbols, no file
-
 Class templates are grouped by dtype combination (``isinstance(x, mdm.<Class>)`` whatever the dtypes,
-``mdm.<Class>[streampu.int32]`` for one instance); see :class:`aff3ct._dispatch.Template`.
+``mdm.<Class>[streampu.int32]`` for one instance); see ``aff3ct._dispatch.Template``.
+
+Examples:
+    >>> mdm = af.mdm.modem(N, type="QAM", bps=4)      # the constellation is built (and kept) for the generic types
+    >>> mdm = af.mdm.modem(N, type="USER", const_path="cstl.txt")
+    >>> mdm = af.mdm.modem(N, symbols=np.exp(2j * np.pi * np.arange(8) / 8))   # any symbols, no file
 """
 
 import functools

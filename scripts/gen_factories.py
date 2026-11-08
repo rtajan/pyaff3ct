@@ -104,6 +104,32 @@ def qualify(t: str) -> str:
     return t
 
 
+_PY_VECTORS = {"bool": "numpy.ndarray[bool]", "int": "list[int]", "unsigned": "list[int]", "uint32_t": "list[int]",
+               "float": "list[float]", "R": "list[float]", "std::vector<int>": "list[list[int]]",
+               "std::vector<uint32_t>": "list[list[int]]"}
+_PY_MODULES = [("Encoder", "enc"), ("Decoder", "dec"), ("CRC", "crc"), ("Interleaver", "itl"), ("Puncturer", "pct"),
+               ("Modem", "mdm"), ("Channel", "chn")]
+
+
+def py_type(t: str) -> str:
+    """Python name of a C++ argument type, for the docstrings ("const aff3ct::module::CRC<B>*" -> "aff3ct.crc.CRC")."""
+    t = re.sub(r"\bconst\b|[&*]", "", qualify(t)).strip()
+    if t == "R":
+        return "float"
+    m = re.fullmatch(r"std::vector<\s*(.*?)\s*>", t)
+    if m:
+        return _PY_VECTORS.get(m.group(1), "list")
+    if t.startswith("std::map<"):
+        return "dict"
+    m = re.fullmatch(r"aff3ct::(module|tools)::(\w+)(<.*>)?", t)
+    if m:
+        if m.group(1) == "tools":
+            return f"aff3ct.tools.{m.group(2)}"
+        sub = next((s for prefix, s in _PY_MODULES if m.group(2).startswith(prefix)), None)
+        return f"aff3ct.{sub}.{m.group(2)}" if sub else m.group(2)
+    return t.replace("::", ".")
+
+
 LITERAL_DEFAULT = re.compile(r'^(nullptr|true|false|-?[0-9.]+[fuUlL]*|"[^"]*")$')
 
 
@@ -426,7 +452,7 @@ def main() -> None:
             for b in builders_of[name]:
                 if b["name"] == "build" and len(parts) > 4:  # Factory/Tools/Codec/<Family>/Codec_x.hpp
                     codecs[name] = {"function": py_name(name, "Codec", "build"),
-                                    "args": [{"name": a["name"], "type": qualify(a["type"]),
+                                    "args": [{"name": a["name"], "type": qualify(a["type"]), "py_type": py_type(a["type"]),
                                               "default": a["default"]} for a in b["args"]]}
             continue
         domain = parts[2] if parts[1] == "Module" else ""
@@ -485,7 +511,7 @@ def main() -> None:
                     " to ``None`` keep their AFF3CT default (see ``aff3ct.factory." + f"{name}().parameters``).", ""]
             doc += ["Args:"]
             doc += [f"    {s} (int): size (factory parameter)." for s in sizes]
-            doc += [f"    {py_ident(a['name'])} ({qualify(a['type'])}): builder argument"
+            doc += [f"    {py_ident(a['name'])} ({py_type(a['type'])}): builder argument ``{qualify(a['type'])}``"
                     + (", only for one of the overloads." if a["default"] == "(overload)" else
                        f", default ``{a['default']}``." if a["default"] is not None else ".") for a in b["args"]]
             doc += [f"    {py_ident(p['name'])} ({p['py']}): factory parameter (``{p['type']}``)." for p in kw_params]

@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 """Codecs: one object that builds and connects the modules of a code family (encoder, decoders, puncturer...).
 
->>> cdc = af.codec.polar(K, N_cw, dec_type="SCL", dec_implem="NAIVE", dec_L=8, fbg_noise=0.8)
->>> enc, dec = cdc.encoder, cdc.decoder_siho        # modules owned by the codec (they keep it alive)
->>> cdc.set_noise(af.tools.sigma_from_ebn0(2.0, K / N_cw))   # adaptive frozen bits, scaling factors...
-
 The parameters of a codec are those of its sub-factories, prefixed by the name of the sub-factory, like the options
 of the AFF3CT command line (``--dec-type`` → ``dec_type``): ``enc_*``, ``dec_*``, ``pct_*`` (puncturer),
 ``fbg_*`` (frozen bits generator of the polar codes), ``itl_core_*`` (interleaver of the turbo codes)...
@@ -13,7 +9,12 @@ of the AFF3CT command line (``--dec-type`` → ``dec_type``): ``enc_*``, ``dec_*
 (``af.factory.Codec_polar.from_cli("--dec-type SCL ...")``).
 
 Class templates are grouped by dtype combination (``isinstance(x, codec.<Class>)`` whatever the dtypes,
-``codec.<Class>[streampu.int32, streampu.float32]`` for one instance); see :class:`aff3ct._dispatch.Template`.
+``codec.<Class>[streampu.int32, streampu.float32]`` for one instance); see ``aff3ct._dispatch.Template``.
+
+Examples:
+    >>> cdc = af.codec.polar(K, N_cw, dec_type="SCL", dec_implem="NAIVE", dec_L=8, fbg_noise=0.8)
+    >>> enc, dec = cdc.encoder, cdc.decoder_siho        # modules owned by the codec (they keep it alive)
+    >>> cdc.set_noise(af.tools.sigma_from_ebn0(2.0, K / N_cw))   # adaptive frozen bits, scaling factors...
 """
 
 from __future__ import annotations
@@ -143,7 +144,7 @@ def _make_function(factory_name: str, info: dict) -> Callable:
         sig.append(P("N", P.KEYWORD_ONLY, default=None, annotation=int))
     sig += [P(k, P.KEYWORD_ONLY, default=None, annotation=type(d).__name__) for k, (_, _, d) in params.items()]
     sig += [P(d, P.KEYWORD_ONLY, default=None, annotation=Any) for d in dtypes]
-    function.__signature__ = inspect.Signature(sig)
+    function.__signature__ = inspect.Signature(sig, return_annotation=f"aff3ct.codec.{factory_name}")
     function.__name__ = function.__qualname__ = fname
     function.__module__ = __name__
     lines = [
@@ -155,7 +156,7 @@ def _make_function(factory_name: str, info: dict) -> Callable:
         + (" of the sub-code (the product code has K^2)." if factory_name in _SUB_CODE_SIZES else "."),
         "    N_cw (int): codeword size" + (" of the sub-code (N_cw^2)." if factory_name in _SUB_CODE_SIZES else "."),
     ]
-    lines += [f"    {a['name']} ({a['type']}): builder argument, default ``{a['default']}``." for a in info["args"]]
+    lines += [f"    {a['name']} ({a['py_type']}): builder argument ``{a['type']}``, default ``{a['default']}``." for a in info["args"]]
     if has_pct:
         lines.append("    N (int): frame size after puncturing (default N_cw; another value adds the puncturer).")
     lines += [f"    {k} ({type(d).__name__}): parameter ``{p}`` of the sub-factor"
@@ -167,7 +168,7 @@ def _make_function(factory_name: str, info: dict) -> Callable:
               "``headers()`` are "
               "those that the AFF3CT simulator prints."]
     function.__doc__ = "\n".join(lines)
-    factory.__signature__ = function.__signature__
+    factory.__signature__ = function.__signature__.replace(return_annotation=f"aff3ct.factory.{factory_name}")
     factory.__name__ = factory.__qualname__ = f"{fname}.factory"
     function.factory = factory
     return function

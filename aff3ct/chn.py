@@ -2,7 +2,7 @@
 """Channels (AWGN, Rayleigh, BEC, BSC, optical...).
 
 Class templates are grouped by dtype combination (``isinstance(x, chn.<Class>)`` whatever the dtypes,
-``chn.<Class>[streampu.int32]`` for one instance); see :class:`aff3ct._dispatch.Template`.
+``chn.<Class>[streampu.int32]`` for one instance); see ``aff3ct._dispatch.Template``.
 """
 
 from aff3ct import _ext
